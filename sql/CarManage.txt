@@ -1,0 +1,85 @@
+﻿drop database if exists carmanage;
+create database carmanage;
+use carmanage;
+
+#创建停车场parklot_inf
+create table parklot_inf (
+  id int(11),
+  name varchar(50) not null comment '停车场名字',
+  address varchar(150) default null comment '停车场地址',
+  telephone varchar(11) not null comment '电话号码',
+  activitynum int(11) default 50 comment '活动车位数',
+  fixationnum int(11) default 50 comment '固定车位数',
+  activitynum_leave int(11) default 50 comment '剩余活动车位数',
+  fixationnum_leave int(11) default 50 comment '剩余固定车位数', 
+  activitycost_per int(11) default 5 comment '活动车位元每时',  
+  primary key (id)
+) engine=innodb auto_increment=10 default charset=utf8;
+
+insert into parklot_inf(id,name,address,telephone,activitynum,fixationnum,activitynum_leave,fixationnum_leave,activitycost_per) values(0,'神风停车场','安徽省合肥市包河区合肥工业大学','15284875380',50,50,30,30,5);
+
+#创建用户表user_inf
+create table user_inf (
+  loginname varchar(20) not null comment '登录名',
+  password varchar(20) not null comment '密码',
+  username  varchar(20) not null comment '停车位所有者的外键',
+  telephone varchar(11) not null comment '电话号码',
+  createdate datetime not null default current_timestamp comment '注册时间',
+  authority enum("管理员","用户"),
+  primary key (loginname),
+  index(username)
+) engine=innodb auto_increment=2 default charset=utf8;
+
+insert into user_inf(loginname,password,username,telephone,authority) values('admin','password','xzm','15284875380','管理员'),('user','password','use','15284875380','用户');
+
+#创建停车位表parkspace_inf
+create table parkspace_inf(
+  id int(11) not null  comment '停车位标识',
+  name varchar(50) default null comment '停车位别名',
+  ownner varchar(20) default null comment '停车位所有者',
+  hire_start_date datetime default current_timestamp comment '租赁开始时间',
+  hire_stop_date datetime default current_timestamp comment '租赁结束时间',
+  rentornot enum("是","否")  comment '车辆是否外租',
+  rent_start_date datetime comment '外租开始时间',
+  rent_stop_date datetime comment '外租结束时间',  
+  primary key (id),
+  constraint fk_parkspace_user foreign key(ownner) references user_inf(username)
+) engine=innodb auto_increment=10 default charset=utf8;
+
+insert into parkspace_inf(id,name,ownner,hire_start_date,hire_stop_date,rentornot,rent_start_date,rent_stop_date) values(0,'车位00号','xzm','2019-12-15 00:00:00','2020-12-15 00:00:00','是','2019-12-15 00:00:00','2020-1-15 00:00:00');
+
+insert into parkspace_inf(id,name,rentornot) values(1,'车位01号','否'),(2,'车位02号','否'),(3,'车位03号','否')
+,(4,'车位04号','否'),(5,'车位05号','否'),(6,'车位06号','否'),(7,'车位07号','否')
+,(8,'车位08号','否'),(9,'车位09号','否'),(10,'车位10号','否'),(11,'车位11号','否')
+,(12,'车位12号','否'),(13,'车位13号','否'),(14,'车位14号','否');
+
+#创建通行日志表trarecord_inf
+create table trarecord_inf(
+  id int(11) not null auto_increment,
+  licenseplate varchar(18) not null,
+  date_in datetime not null default current_timestamp,
+  date_out datetime not null default current_timestamp,
+  primary key (id)
+) engine=innodb auto_increment=2 default charset=utf8;
+
+insert into trarecord_inf(id,licenseplate,date_in,date_out) values(0,'川HA3456','2019-12-15 16:5:55','2019-12-15 16:5:55');
+
+#创建车位出租收入表parkrent_inf
+create table parkrent_inf(
+  id int(11) not null,
+  space_id int(11) comment '停车位标识',
+  licenseplate varchar(18) not null  comment '车牌',
+  cost int(11) default 0 comment '默认费用',
+  primary key (id)
+) engine=innodb auto_increment=10 default charset=utf8;
+
+create table notice_inf (
+  id int(11) not null auto_increment,
+  title varchar(50) not null,
+  content varchar(300) not null,
+  create_date datetime not null default current_timestamp,
+  name_publish  varchar(20) not null,
+  primary key (id),
+  key fk_notice_user (name_publish),
+  constraint fk_notice_user foreign key (name_publish) references user_inf(username)
+) engine=innodb auto_increment=19 default charset=utf8;
