@@ -1,16 +1,16 @@
 package com.xzm.lpr.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xzm.lpr.domain.Notice;
 import com.xzm.lpr.domain.User;
@@ -18,118 +18,102 @@ import com.xzm.lpr.service.LprService;
 import com.xzm.lpr.util.common.LprConstants;
 import com.xzm.lpr.util.tag.PageModel;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 
 
 @Controller
 public class NoticeController {
 
-	/**
-	 * 自动注入UserService
-	 * */
 	@Autowired
 	@Qualifier("lprService")
 	private LprService lprService;
 	
-	/**
-	 * 处理/login请求
-	 * */
-	@RequestMapping(value="/notice/selectNotice",produces={"text/html;charset=UTF-8"})
-	 public String selectNotice(Model model,Integer pageIndex,
-			 @ModelAttribute Notice notice){
+	@RequestMapping(value="/notice/getNotice",produces={"text/html;charset=UTF-8"})
+	@ResponseBody
+	 public String getNotice(Integer page,Integer limit){
+		
+		System.out.println(page+"/"+limit);
 		PageModel pageModel = new PageModel();
-		if(pageIndex != null){
-			pageModel.setPageIndex(pageIndex);
+		if(page != null){
+			pageModel.setPageIndex(page);
 		}
-		/** 查询用户信息     */
-		List<Notice> notices = lprService.findNotice(notice, pageModel);
-		model.addAttribute("notices", notices);
-		model.addAttribute("pageModel", pageModel);
-		return "notice/notice";
-		
-	}
-	
-	/**
-	 * 处理添加请求
-	 * @param Integer id  要显示的公告id
-	 * @param Model model
-	 * */
-	@RequestMapping(value="/notice/previewNotice")
-	 public String previewNotice(
-			 Integer id,Model model){
-		
-		Notice notice = lprService.findNoticeById(id);
-		
-		model.addAttribute("notice", notice);
-		// 返回
-		return "notice/previewNotice";
-	}
-	
-	/**
-	 * 处理删除公告请求
-	 * @param String ids 需要删除的id字符串
-	 * @param ModelAndView mv
-	 * */
-	@RequestMapping(value="/notice/removeNotice")
-	 public ModelAndView removeNotice(String ids,ModelAndView mv){
-		// 分解id字符串
-		String[] idArray = ids.split(",");
-		for(String id : idArray){
-			// 根据id删除公告
-			lprService.removeNoticeById(Integer.parseInt(id));
+		if(page != null){
+			pageModel.setPageSize(limit);
 		}
-		// 设置客户端跳转到查询请求
-		mv.setViewName("redirect:/notice/selectNotice");
-		// 返回ModelAndView
-		return mv;
+
+		List<Notice> notices = lprService.findNotice(pageModel);
+		
+		JSONObject jsonmain = new JSONObject();
+		jsonmain.put("code", "200");
+		jsonmain.put("msg", "none");
+		jsonmain.put("count",pageModel.getRecordCount());
+		JSONArray jsonarray = new JSONArray();
+		JSONObject jsonobj = new JSONObject();
+		for (int i = 0; i < notices.size(); i++) {
+			Notice notice = (Notice)notices.get(i);
+			jsonobj.put("id", notice.getId());
+			jsonobj.put("title", notice.getTitle());
+			jsonobj.put("content", notice.getContent());
+			jsonobj.put("create_date", notice.getCreate_date());
+			jsonobj.put("name_publish", notice.getName_publish());			
+			jsonarray.add(jsonobj);
+		}
+		
+		jsonmain.put("data", jsonarray);		
+		return jsonmain.toString();
+	
 	}
 	
-	/**
-	 * 处理添加请求
-	 * @param String flag 标记， 1表示跳转到添加页面，2表示执行添加操作
-	 * @param Notice notice  要添加的公告对象
-	 * @param ModelAndView mv
-	 * */
-	@RequestMapping(value="/notice/addNotice")
-	 public ModelAndView addNotice(
-			 String flag,
-			 @ModelAttribute Notice notice,
-			 ModelAndView mv,
-			 HttpSession session){
-		if(flag.equals("1")){
-			mv.setViewName("notice/showAddNotice");
+	@RequestMapping(value="/notice/removeNotice",produces={"text/html;charset=UTF-8"})
+	@ResponseBody
+	 public String removeNotice(String id){
+		Integer i = lprService.removeNoticeById(Integer.parseInt(id));
+		JSONObject jsonmain = new JSONObject();
+		if(i != 0){
+			jsonmain.put("msg", "OK");
 		}else{
-			User user = (User) session.getAttribute(LprConstants.USER_SESSION);
-			notice.setUser(user);
-			lprService.addNotice(notice);
-			mv.setViewName("redirect:/notice/selectNotice");
+			jsonmain.put("msg", "ERROR");
 		}
-		// 返回
-		return mv;
+		return jsonmain.toString();
 	}
 	
-	/**
-	 * 处理添加请求
-	 * @param String flag 标记， 1表示跳转到修改页面，2表示执行修改操作
-	 * @param Notice notice  要添加的公告对象
-	 * @param ModelAndView mv
-	 * */
-	@RequestMapping(value="/notice/updateNotice")
-	 public ModelAndView updateNotice(
-			 String flag,
-			 @ModelAttribute Notice notice,
-			 ModelAndView mv,
-			 HttpSession session){
-		if(flag.equals("1")){
-			Notice target = lprService.findNoticeById(notice.getId());
-			mv.addObject("notice",target);
-			mv.setViewName("notice/showUpdateNotice");
+	@RequestMapping(value="/notice/addNotice",produces={"text/html;charset=UTF-8"})
+	@ResponseBody
+	 public String addNotice(HttpSession session,@RequestParam Map<String,String> map){
+		String title=map.get("title");
+		String content=map.get("content");
+		User user=(User)session.getAttribute(LprConstants.USER_SESSION);
+		String name_publish=user.getLoginname();
+		Integer i = lprService.addNotice(new Notice(title,content,name_publish));
+		System.out.println("i="+i);
+		JSONObject jsonmain = new JSONObject();
+		if(i != 0){
+			jsonmain.put("msg", "OK");
 		}else{
-			lprService.modifyNotice(notice);
-			mv.setViewName("redirect:/notice/selectNotice");
+			jsonmain.put("msg", "ERROR");
 		}
-		// 返回
-		return mv;
+		return jsonmain.toString();		
 	}
 	
+	@RequestMapping(value="/notice/updateNotice",produces={"text/html;charset=UTF-8"})
+	@ResponseBody
+	 public String updateNotice(HttpSession session,@RequestParam Map<String,String> map){
+		String title=map.get("title");
+		String content=map.get("content");
+		User user=(User)session.getAttribute(LprConstants.USER_SESSION);
+		String name_publish=user.getLoginname();
+		
+		Integer i = lprService.addNotice(new Notice(title,content,name_publish));
+		
+		JSONObject jsonmain = new JSONObject();
+		if(i != 0){
+			jsonmain.put("msg", "OK");
+		}else{
+			jsonmain.put("msg", "ERROR");
+		}
+		return jsonmain.toString();	
+	}
 	
 }

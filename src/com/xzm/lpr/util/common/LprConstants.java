@@ -10,12 +10,10 @@ public class LprConstants {
 	public static final String NOTICETABLE = "notice_inf";
 	public static final String CARREGISTTABLE = "carregist_inf";
 	
-	// 登录
 	public static final String LOGIN = "loginform";
-	// 用户的session对象
+	
 	public static final String USER_SESSION = "user_session";
 	
-	// 默认每页12条数据
 	public static int PAGE_DEFAULT_SIZE = 12;
 	
 	

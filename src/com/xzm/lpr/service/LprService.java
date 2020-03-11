@@ -14,28 +14,27 @@ public interface LprService {
 
 	User login(String loginname,String password);
 	List<User> findUser(PageModel pageModel);
-	void removeUserByLogin(String loginname);
-	Integer modifyUser(User user);
+	Integer removeUserByLogin(String loginname);
+	Integer updateUser(User user);
 	Integer addUser(User user);
 	
 	List<TraRecord> findTraRecord(PageModel pageModel);
 	Integer removeTraRecordById(int id);
-	Integer modifyTraRecord(TraRecord traRecord);
+	Integer updateTraRecord(TraRecord traRecord);
 	
 	List<ParkLot> findParkLot();
-	Integer modifyParkLot(ParkLot parkLot);
+	Integer updateParkLot(ParkLot parkLot);
 
 	List<ParkSpace> findParkSpace(PageModel pageModel);
 	Integer removeParkSpaceById(int id);
 	List<ParkSpace> findParkSpace();
-	Integer modifyParkSpace(ParkSpace parkSpace);
+	Integer updateParkSpace(ParkSpace parkSpace);
 	
 	List<Notice> findNotice(Notice notice,PageModel pageModel);
 	Notice findNoticeById(Integer id);
-	public void removeNoticeById(Integer id);
-	void addNotice(Notice notice);
-	void modifyNotice(Notice notice);
-	
-	
-	
+	Integer removeNoticeById(Integer id);
+	Integer addNotice(Notice notice);
+	Integer updateNotice(Notice notice);
+	List<Notice> findNotice(PageModel pageModel);
+		
 }

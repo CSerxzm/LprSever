@@ -2,7 +2,6 @@ package com.xzm.lpr.controller;
 
 import java.io.File;
 import java.net.URLEncoder;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,9 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,26 +24,20 @@ import net.sf.json.JSONObject;
 @Controller
 public class FileUploadController{
 	
-	// 上传文件会自动绑定到MultipartFile中
-	 @PostMapping(value="/upload")
-	 @ResponseBody//json交互注解
+	 @PostMapping(value="/upload",produces={"text/html;charset=UTF-8"})
+	 @ResponseBody
 	 public String upload(HttpServletRequest request,
 			MultipartFile file) throws Exception{
-	    // 如果文件不为空，写入上传路径
+		 
 		 JSONObject jsonmain = new JSONObject();
-
 		if(!file.isEmpty()){
-			// 上传文件路径
-			String path = request.getServletContext().getRealPath(
-	                "/images");
-			// 上传文件名
+			String path = request.getServletContext().getRealPath("/images");
 			String filename = file.getOriginalFilename();
+
 		    File filepath = new File(path,filename);
-			// 判断路径是否存在，如果不存在就创建一个
 	        if (!filepath.getParentFile().exists()) { 
 	        	filepath.getParentFile().mkdirs();
 	        }
-	        // 将上传文件保存到一个目标文件当中
 			file.transferTo(new File(path+File.separator+ filename));
 			
 			String number = LicensePlate.getlicensePlate(path+File.separator+ filename);
@@ -62,7 +53,7 @@ public class FileUploadController{
 		 
 	 }
 	 
-	 @GetMapping(value="/download")
+	 @GetMapping(value="/download",produces={"text/html;charset=UTF-8"})
 	 public ResponseEntity<byte[]> download(HttpServletRequest request,
 			 @RequestParam("filename") String filename,
 			 @RequestHeader("User-Agent") String userAgent

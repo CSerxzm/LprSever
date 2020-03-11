@@ -10,24 +10,13 @@
 <link rel="bookmark"href="img/favicon.ico" />
 <style type="text/css">
 .bg {
-	background: #F2F2F2;
-    /* 加载背景图 */
     background: url("img/logbg1.jpg") no-repeat;
-    /* 背景图垂直、水平均居中 */
     background-position: center center;
-    /* 当内容高度大于图片高度时，背景图像的位置相对于viewport固定 */
     background-attachment: fixed;
-    /* 让背景图基于容器大小伸缩 */
     background-size: 100% 100%;
     width:100%;
     height:100%;
 }
-
-.warp {
-	max-width: 600px;
-	margin: 10px auto;
-}
-
 .window {
 	width: 400px;
 	position: absolute;
@@ -38,7 +27,6 @@
 	display: block;
 	z-index: 2000;
 	background: #fff;
-	padding: 20 0;
 }
 </style>
 <title>请登录系统-车辆管理系统</title>
@@ -70,16 +58,16 @@ function DoMsgLogin(){
         <div class="layui-card">
             <div class="layui-card-header">请登录系统</div>
             <div class="layui-card-body">
-                <form class="layui-form layui-form-pane" id="formLogin" action="/login" method="post">
+                <form class="layui-form layui-form-pane">
                     <div class="layui-form-item">
                         <label class="layui-form-label"><i class="layui-icon layui-icon-username">&nbsp;</i>用户名</label>
                         <div class="layui-input-block">
-                            <input type="text" name="loginname" required lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input"></div>
+                            <input type="text" name="loginname" required lay-verify="required" placeholder="请输入用户名" class="layui-input"></div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label"><i class="layui-icon layui-icon-password">&nbsp;</i>密&nbsp;&nbsp;码</label>
                         <div class="layui-input-block">
-                            <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input"></div>
+                            <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" class="layui-input"></div>
                     </div>
                     <div class="layui-form-item">
                         <div class="layui-input-block">
@@ -94,26 +82,21 @@ function DoMsgLogin(){
         <div class="layui-card">
             <div class="layui-card-header">注册用户</div>
             <div class="layui-card-body">
-                <form class="layui-form layui-form-pane" lay-filter="regForm" id="regForm">
+                <form class="layui-form layui-form-pane">
                     <div class="layui-form-item">
                         <label class="layui-form-label"><i class="layui-icon layui-icon-username">&nbsp;</i>登录名</label>
                         <div class="layui-input-block">
-                            <input type="text" name="loginname" required lay-verify="required|username" placeholder="请输入登录名" autocomplete="off" class="layui-input"></div>
+                            <input type="text" name="loginname" required lay-verify="required|username" placeholder="请输入登录名" class="layui-input"></div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label"><i class="layui-icon layui-icon-password">&nbsp;</i>密&nbsp;&nbsp;码</label>
                         <div class="layui-input-block">
-                            <input type="password" name="password" required lay-verify="required|password" placeholder="请输入密码" autocomplete="off" class="layui-input"></div>
+                            <input type="password" name="password" required lay-verify="required|password" placeholder="请输入密码" class="layui-input"></div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label"><i class="layui-icon layui-icon-password">&nbsp;</i>名字</label>
+                        <label class="layui-form-label">电话号码</label>
                         <div class="layui-input-block">
-                            <input type="text" name="username" placeholder="请输入名字" autocomplete="off" class="layui-input"></div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label"><i class="layui-icon layui-icon-password">&nbsp;</i>电话号码</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="telephone" placeholder="请输入电话号码" autocomplete="off" class="layui-input"></div>
+                            <input type="text" name="telephone" required placeholder="请输入电话号码" class="layui-input"></div>
                     </div>
                                        
                     <div class="layui-form-item">

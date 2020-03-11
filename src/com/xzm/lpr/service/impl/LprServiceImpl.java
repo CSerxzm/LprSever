@@ -66,13 +66,13 @@ public class LprServiceImpl implements LprService{
 	}
 	
 	@Override
-	public void removeUserByLogin(String loginname){
-		userDao.deleteByLogin(loginname);
+	public Integer removeUserByLogin(String loginname){
+		return userDao.deleteByLogin(loginname);
 		
 	}
 	
 	@Override
-	public Integer modifyUser(User user) {
+	public Integer updateUser(User user) {
 		return userDao.update(user);
 		
 	}
@@ -85,10 +85,9 @@ public class LprServiceImpl implements LprService{
 
 	@Transactional(readOnly=true)
 	@Override
-	public List<Notice> findNotice(Notice notice, PageModel pageModel) {
+	public List<Notice> findNotice(PageModel pageModel) {
 		/** 当前需要分页的总数据条数  */
 		Map<String,Object> params = new HashMap<>();
-		params.put("notice", notice);
 		int recordCount = noticeDao.count(params);
 		pageModel.setRecordCount(recordCount);
 		
@@ -102,44 +101,25 @@ public class LprServiceImpl implements LprService{
 		return notices;
 	}
 
-	/**
-	 * HrmService接口findNoticeById方法实现
-	 * @see { HrmService }
-	 * */
 	@Transactional(readOnly=true)
 	@Override
 	public Notice findNoticeById(Integer id) {
-		
 		return noticeDao.selectById(id);
 	}
 
-	/**
-	 * HrmService接口removeNoticeById方法实现
-	 * @see { HrmService }
-	 * */
 	@Override
-	public void removeNoticeById(Integer id) {
-		noticeDao.deleteById(id);
-		
+	public Integer removeNoticeById(Integer id) {
+		return noticeDao.deleteById(id);	
 	}
 	
-	/**
-	 * HrmService接口addNotice方法实现
-	 * @see { HrmService }
-	 * */
 	@Override
-	public void addNotice(Notice notice) {
-		noticeDao.save(notice);
-		
+	public Integer addNotice(Notice notice) {
+		return noticeDao.save(notice);
 	}
 	
-	/**
-	 * HrmService接口modifyNotice方法实现
-	 * @see { HrmService }
-	 * */
 	@Override
-	public void modifyNotice(Notice notice) {
-		noticeDao.update(notice);
+	public Integer updateNotice(Notice notice) {
+		return noticeDao.update(notice);
 		
 	}
 
@@ -163,7 +143,7 @@ public class LprServiceImpl implements LprService{
 	}
 
 	@Override
-	public Integer modifyTraRecord(TraRecord traRecord) {
+	public Integer updateTraRecord(TraRecord traRecord) {
 		return traRecordDao.update(traRecord);
 	}
 
@@ -175,7 +155,7 @@ public class LprServiceImpl implements LprService{
 	}
 
 	@Override
-	public Integer modifyParkLot(ParkLot parkLot) {
+	public Integer updateParkLot(ParkLot parkLot) {
 		// TODO Auto-generated method stub
 		return parkLotDao.update(parkLot);
 	}
@@ -188,7 +168,7 @@ public class LprServiceImpl implements LprService{
 	}
 
 	@Override
-	public Integer modifyParkSpace(ParkSpace parkSpace) {
+	public Integer updateParkSpace(ParkSpace parkSpace) {
 		return parkSpaceDao.update(parkSpace);
 	}
 
@@ -209,6 +189,12 @@ public class LprServiceImpl implements LprService{
 	public Integer removeParkSpaceById(int id) {
 		// TODO Auto-generated method stub
 		return parkSpaceDao.deleteById(id);
+	}
+
+	@Override
+	public List<Notice> findNotice(Notice notice, PageModel pageModel) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -1,17 +1,12 @@
 package com.xzm.lpr.provider;
 
 import static com.xzm.lpr.util.common.LprConstants.PARKLOTTABLE;
-
 import java.util.Map;
 import org.apache.ibatis.jdbc.SQL;
-
-import com.xzm.lpr.domain.Notice;
 import com.xzm.lpr.domain.ParkLot;
-import com.xzm.lpr.domain.TraRecord;
-import com.xzm.lpr.domain.User;
 
 public class ParkLotDynaSqlProvider {
-	// 分页动态查询
+	
 	public String selectWhitParam(Map<String, Object> params){
 		String sql =  new SQL(){
 			{
@@ -23,7 +18,6 @@ public class ParkLotDynaSqlProvider {
 		return sql;
 	}
 	
-	// 动态查询总数量
 	public String count(Map<String, Object> params){
 		return new SQL(){
 			{
@@ -33,9 +27,7 @@ public class ParkLotDynaSqlProvider {
 		}.toString();
 	}
 	
-	// 动态更新
-	public String updateParkLot(ParkLot parkLot){
-			
+	public String updateParkLot(ParkLot parkLot){	
 		return new SQL(){
 			{
 				UPDATE(PARKLOTTABLE);
@@ -53,6 +45,9 @@ public class ParkLotDynaSqlProvider {
 				}
 				if(parkLot.getFixationnum()!= null){
 					SET(" fixationnum = #{fixationnum} ");
+				}
+				if(parkLot.getActivitycost_per()!= null){
+					SET(" activitycost_per = #{activitycost_per} ");
 				}
 				WHERE(" id = #{id} ");
 			}

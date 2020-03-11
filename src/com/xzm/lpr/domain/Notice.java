@@ -6,17 +6,30 @@ public class Notice implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	private Integer id;		// 编号
-	private String title;   // 标题
-	private String content; // 内容
-	private String createDate;  // 发布日期
-	private User user;		// 发布人
-	// 无参数构造器
+	private Integer id;	
+	private String title;
+	private String content;
+	private String create_date;
+	private String name_publish;
+
 	public Notice() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	// setter和getter方法
+	
+	public Notice(String title,String content,String create_date,String name_publish) {
+		this.title=title;
+		this.content=content;
+		this.create_date=create_date;
+		this.name_publish=name_publish;
+	}
+	
+	public Notice(String title,String content,String name_publish) {
+		this.title=title;
+		this.content=content;
+		this.name_publish=name_publish;
+	}
+
 	public void setId(Integer id){
 		this.id = id;
 	}
@@ -35,24 +48,20 @@ public class Notice implements Serializable{
 	public String getContent(){
 		return this.content;
 	}
-	public void setCreateDate(String createDate){
-		this.createDate = createDate;
+	public void setCreate_date(String create_date){
+		this.create_date = create_date;
 	}
-	public String getCreateDate(){
-		return this.createDate.split("[.]")[0];
-	}
-	public User getUser() {
-		return user;
-	}
-	public void setUser(User user) {
-		this.user = user;
-	}
-	@Override
-	public String toString() {
-		return "Notice [id=" + id + ", title=" + title + ", content=" + content
-				+ ", createDate=" + createDate + ", user=" + user + "]";
+	public String getCreate_date(){
+		if(create_date==null)
+			return create_date;
+		return this.create_date.split("[.]")[0];
 	}
 	
-	
+	public String getName_publish() {
+		return name_publish;
+	}
 
+	public void setName_publish(String name_publish) {
+		this.name_publish = name_publish;
+	}
 }

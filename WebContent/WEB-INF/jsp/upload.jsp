@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="layui/css/layui.css" media="all">
 <script src="layui/layui.js"></script>
 </head>
-<%@include file="./taglib.jsp" %>
 <body>
 <div  style="max-width:1350px;margin:0 auto;">
 	<div class="layui-card">

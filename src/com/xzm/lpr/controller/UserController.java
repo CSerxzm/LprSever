@@ -1,8 +1,5 @@
 package com.xzm.lpr.controller;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -11,8 +8,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,9 +21,6 @@ import com.xzm.lpr.util.tag.PageModel;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-/**
- * 处理用户请求控制器
- * */
 @Controller
 public class UserController {
 	
@@ -64,7 +56,7 @@ public class UserController {
 		if(page != null){
 			pageModel.setPageSize(limit);
 		}
-		/** 查询用户信息     */
+		
 		List<User> users = lprService.findUser(pageModel);
 		
 		JSONObject jsonmain = new JSONObject();
@@ -77,7 +69,8 @@ public class UserController {
 			User user = (User)users.get(i);
 			jsonobj.put("loginname", user.getLoginname());
 			jsonobj.put("password", user.getPassword());
-			jsonobj.put("username", user.getUsername());
+			jsonobj.put("parkspace_id", user.getParkspace_id());
+			jsonobj.put("licenseplate", user.getLicenseplate());
 			jsonobj.put("telephone", user.getTelephone());
 			jsonobj.put("createdate", user.getCreateDate());
 			jsonobj.put("authority", user.getAuthority());
@@ -94,8 +87,6 @@ public class UserController {
 	@ResponseBody
 	public String removeUser(String loginname){
 		
-		System.out.println(loginname);
-		
 		lprService.removeUserByLogin(loginname);
 		JSONObject jsonmain = new JSONObject();
 		jsonmain.put("code", "200");
@@ -109,9 +100,11 @@ public class UserController {
 	public String registerUser(@RequestParam Map<String,String> map){
 		String loginname=map.get("loginname");
 		String password=map.get("password");
-		String username=map.get("username");
 		String telephone=map.get("telephone");
-		User user = new User(loginname,password,username,telephone);
+		System.out.println("loginname"+loginname);
+		
+		User user = new User(loginname,password,telephone);
+		
 		int i=lprService.addUser(user);
 		JSONObject jsonmain = new JSONObject();
 		if(i != 0){
@@ -126,17 +119,47 @@ public class UserController {
 	@ResponseBody
 	public String updateUser(@RequestParam Map<String,String> map){
 		
-		User user=null;	
+		Integer parkspace_id=null;
 		String loginname=map.get("loginname");
 		String password=map.get("password");
-		String username=map.get("username");
+		if(!map.get("parkspace_id").equals("")) {
+			parkspace_id=Integer.valueOf(map.get("parkspace_id"));
+		}
+		String licenseplate=map.get("licenseplate");
 		String telephone=map.get("telephone");
 		String createdate=map.get("createdate");
 		String authority=map.get("authority");
 		
-		user = new User(loginname,password,username,telephone,createdate,authority);
+		User user = new User(loginname,password,parkspace_id,licenseplate,telephone,createdate,authority);
 		
-		int i=lprService.modifyUser(user);
+		int i=lprService.updateUser(user);
+		JSONObject jsonmain = new JSONObject();
+		if(i != 0){
+			jsonmain.put("msg", "OK");
+		}else{
+			jsonmain.put("msg", "ERROR");
+		}
+		return jsonmain.toString();
+	}
+	
+	@RequestMapping(value="/user/addUser",produces={"text/html;charset=UTF-8"})
+	@ResponseBody
+	public String addUser(@RequestParam Map<String,String> map){
+		
+		Integer parkspace_id=null;
+		String loginname=map.get("loginname");
+		String password=map.get("password");
+		if(!map.get("parkspace_id").equals("")) {
+			parkspace_id=Integer.valueOf(map.get("parkspace_id"));
+		}
+		String licenseplate=map.get("licenseplate");
+		String telephone=map.get("telephone");
+		String createdate=map.get("createdate");
+		String authority=map.get("authority");
+		
+		User user = new User(loginname,password,parkspace_id,licenseplate,telephone,createdate,authority);
+		
+		int i=lprService.addUser(user);
 		JSONObject jsonmain = new JSONObject();
 		if(i != 0){
 			jsonmain.put("msg", "OK");
@@ -150,9 +173,8 @@ public class UserController {
 	 public ModelAndView logout(
 			 ModelAndView mv,
 			 HttpSession session) {
-		// 注销session
+		
 		session.invalidate();
-		// 跳转到登录页面
 		mv.setViewName("redirect:/loginform");
 		return mv;
 	}

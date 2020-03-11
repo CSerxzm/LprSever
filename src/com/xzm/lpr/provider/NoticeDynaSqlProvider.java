@@ -7,15 +7,8 @@ import org.apache.ibatis.jdbc.SQL;
 
 import com.xzm.lpr.domain.Notice;
 
-
-/**   
- * @Description: 公告动态SQL语句提供类
- * <br>网站：<a href="http://www.fkit.org">疯狂Java</a> 
- * @author 肖文吉	36750064@qq.com   
- * @version V1.0   
- */
 public class NoticeDynaSqlProvider {
-	// 分页动态查询
+
 	public String selectWhitParam(Map<String, Object> params){
 		String sql =  new SQL(){
 			{
@@ -69,6 +62,12 @@ public class NoticeDynaSqlProvider {
 				if(notice.getContent() != null && !notice.getContent().equals("")){
 					VALUES("content", "#{content}");
 				}
+				if(notice.getCreate_date() != null && !notice.getCreate_date().equals("")){
+					VALUES("create_date", "#{create_date}");
+				}
+				if(notice.getName_publish() != null && !notice.getName_publish().equals("")){
+					VALUES("name_publish", "#{name_publish}");
+				}
 			}
 		}.toString();
 	}
@@ -83,6 +82,12 @@ public class NoticeDynaSqlProvider {
 				}
 				if(notice.getContent() != null && !notice.getContent().equals("")){
 					SET(" content = #{content} ");
+				}
+				if(notice.getCreate_date() != null && !notice.getCreate_date().equals("")){
+					SET(" create_date = #{create_date} ");
+				}
+				if(notice.getName_publish() != null && !notice.getName_publish().equals("")){
+					SET(" name_publish = #{name_publish} ");
 				}
 				WHERE(" id = #{id} ");
 			}

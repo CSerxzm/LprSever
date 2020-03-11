@@ -15,26 +15,19 @@ public class ParkLot implements Serializable {
 	private Integer activitynum_leave;
 	private Integer fixationnum_leave;
 	private Integer activitycost_per;
-	
-	public Integer getActivitycost_per() {
-		return activitycost_per;
-	}
-
-	public void setActivitycost_per(Integer activitycost_per) {
-		this.activitycost_per = activitycost_per;
-	}
 
 	public ParkLot() {
 		super();
 	}
 	
-	public ParkLot(Integer id,String name,String address,String telephone,Integer activitynum,Integer fixationnum) {
+	public ParkLot(Integer id,String name,String address,String telephone,Integer activitynum,Integer fixationnum,Integer activitycost_per) {
 		this.id=id;
 		this.name=name;
 		this.address=address;
 		this.telephone=telephone;
 		this.activitynum=activitynum;
 		this.fixationnum=fixationnum;
+		this.activitycost_per=activitycost_per;
 	}
 
 	public Integer getId() {
@@ -99,6 +92,14 @@ public class ParkLot implements Serializable {
 
 	public void setFixationnum_leave(Integer fixationnum_leave) {
 		this.fixationnum_leave = fixationnum_leave;
+	}
+	
+	public Integer getActivitycost_per() {
+		return activitycost_per;
+	}
+
+	public void setActivitycost_per(Integer activitycost_per) {
+		this.activitycost_per = activitycost_per;
 	}
 	
 }

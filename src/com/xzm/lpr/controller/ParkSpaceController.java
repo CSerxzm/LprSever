@@ -1,36 +1,22 @@
 package com.xzm.lpr.controller;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.xzm.lpr.domain.ParkLot;
 import com.xzm.lpr.domain.ParkSpace;
-import com.xzm.lpr.domain.User;
 import com.xzm.lpr.service.LprService;
-import com.xzm.lpr.util.common.LprConstants;
 import com.xzm.lpr.util.tag.PageModel;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-/**
- * 处理用户请求控制器
- * */
 @Controller
 public class ParkSpaceController {
 	
@@ -63,12 +49,10 @@ public class ParkSpaceController {
 			ParkSpace parkSpace = (ParkSpace)parkSpaces.get(i);
 			jsonobj.put("id", parkSpace.getId());
 			jsonobj.put("name", parkSpace.getName());
-			jsonobj.put("ownner", parkSpace.getOwnner());
+			jsonobj.put("idle", parkSpace.getIdle());
 			jsonobj.put("hire_start_date", parkSpace.getHire_start_date());
 			jsonobj.put("hire_stop_date", parkSpace.getHire_stop_date());
 			jsonobj.put("rentornot", parkSpace.getRentornot());
-			jsonobj.put("rent_start_date", parkSpace.getRent_start_date());
-			jsonobj.put("rent_stop_date", parkSpace.getRent_stop_date());
 			jsonarray.add(jsonobj);
 		}
 		
@@ -99,17 +83,14 @@ public class ParkSpaceController {
 		
 		Integer id=Integer.valueOf(map.get("id"));
 		String name=map.get("name");
-		String address=map.get("address");
-		String ownner=map.get("ownner");
+		String idle=map.get("idle");
 		String hire_start_date=map.get("hire_start_date");
 		String hire_stop_date=map.get("hire_stop_date");
 		String rentornot=map.get("rentornot");
-		String rent_start_date=map.get("rent_start_date");
-		String rent_stop_date=map.get("rent_stop_date");
 		
-		ParkSpace parkSpace = new ParkSpace(id,name,ownner,hire_start_date,hire_stop_date,rentornot,rent_start_date,rent_stop_date);
+		ParkSpace parkSpace = new ParkSpace(id,name,idle,hire_start_date,hire_stop_date,rentornot);
 		
-		int i=lprService.modifyParkSpace(parkSpace);
+		int i=lprService.updateParkSpace(parkSpace);
 		JSONObject jsonmain = new JSONObject();
 		if(i != 0){
 			jsonmain.put("msg", "OK");

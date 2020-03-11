@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="layui/css/layui.css" media="all">
  <script src="layui/layui.js"></script>
 </head>
-<%@include file="./taglib.jsp" %>
 <body>
 <div  style="max-width:1350px;margin:0 auto;">
 	<div class="layui-card">
@@ -61,9 +60,11 @@
 		    ,title: '通行日志表'
 		    ,cols: [[
 		      {field:'id', title:'标识', fixed: 'left', sort: true}
+		      ,{field:'space_id', title:'停车位'}
 		      ,{field:'licenseplate', title:'牌照'}
 		      ,{field:'date_in', title:'驶入时间'}
 		      ,{field:'date_out', title:'驶出时间'}
+		      ,{field:'cost', title:'费用'}
 		      ,{fixed: 'right', align:'center', width:200, toolbar: '#barDemo'}
 		    ]]
 		  	,limit: 10
@@ -104,9 +105,11 @@
 			//表单初始赋值
 			form.val('trarecordForm', {
 				"id":data.id
-			  ,"licenseplate": data.licenseplate
-			  ,"date_in": data.date_in
-			  ,"date_out": data.date_out
+				,"space_id": data.space_id
+				,"licenseplate": data.licenseplate
+				,"date_in": data.date_in
+				,"date_out": data.date_out
+				,"cost": data.cost
 			});
 			
 	    	layer.open({
@@ -152,7 +155,7 @@
 		    		
 		    	  }
 	    		  ,type: 1
-	    		  ,area: ['400px', '455px']
+	    		  ,area: ['400px', '400px']
 	    		  ,content: $('#noDisplayFormAdd')
 	    		  ,end: function(index, layero){ 
 	    				// 清空表单
@@ -171,11 +174,12 @@
 		 <div class="layui-card">
             <div class="layui-card-body">
                 <form class="layui-form layui-form-pane" lay-filter="trarecordForm" id="trarecordForm">
+                    <input type="hidden" name="id" class="layui-input">
                     <div class="layui-form-item">
-                        <label class="layui-form-label"><i class="layui-icon">&nbsp;</i>标识</label>
+                        <label class="layui-form-label"><i class="layui-icon">&nbsp;</i>停车位</label>
                         <div class="layui-input-block">
-                            <input type="text" name="id" placeholder="请输入id" autocomplete="off" class="layui-input"></div>
-                    </div>
+                            <input type="text" name="space_id" placeholder="请输入space_id" autocomplete="off" class="layui-input"></div>
+                    </div>                    
                     <div class="layui-form-item">
                         <label class="layui-form-label"><i class="layui-icon">&nbsp;</i>牌照</label>
                         <div class="layui-input-block">
@@ -191,6 +195,11 @@
                         <div class="layui-input-block">
                             <input type="text" name="date_out" placeholder="请输入驶出时间" autocomplete="off" class="layui-input"></div>
                     </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"><i class="layui-icon">&nbsp;</i>费用</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="cost" placeholder="请输入费用" autocomplete="off" class="layui-input"></div>
+                    </div>                    
                 </form>
             </div>
         </div>

@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="layui/css/layui.css" media="all">
  <script src="layui/layui.js"></script>
 </head>
-<%@include file="./taglib.jsp" %>
 <body>
 <div  style="max-width:1350px;margin:0 auto;">
 	<div class="layui-card">
@@ -60,14 +59,12 @@
 		    ,toolbar: "true"
 		    ,title: '车位表'
 		    ,cols: [[
-		      {field:'id', title:'标识', fixed: 'left', sort: true,width:80}
-		      ,{field:'name', title:'车位名称',width:120}
-		      ,{field:'ownner', title:'所有者',width:80}
+		      {field:'id', title:'标识', fixed: 'left', sort: true}
+		      ,{field:'name', title:'车位名称'}
+		      ,{field:'idle', title:'空闲'}
 		      ,{field:'hire_start_date', title:'租赁开始时间'}
 		      ,{field:'hire_stop_date', title:'租赁结束时间'}
-		      ,{field:'rentornot', title:'外租',width:80,sort: true}
-		      ,{field:'rent_start_date', title:'外租开始时间'}
-		      ,{field:'rent_stop_date', title:'外租结束时间'}
+		      ,{field:'rentornot', title:'外租',sort: true}
 		      ,{fixed: 'right', align:'center', width:200, toolbar: '#barDemo'}
 		    ]]
 		  	,limit: 10
@@ -84,7 +81,7 @@
 	    ,layEvent = obj.event
 	    ,$ = layui.jquery;
 	  	if(layEvent === 'del'){
-	  		layer.confirm('真的删除记录：'+data.id+'?', function(index){
+	  		layer.confirm('真的删除停车位：'+data.id+'?', function(index){
 		  	  	$.ajax({
 		  	  		url: '/LprSever/parkspace/removeParkSpace?id='+data.id,
 		  		    type: 'GET',
@@ -109,16 +106,14 @@
 			form.val('parkspaceForm', {
 				"id":data.id
 			  ,"name": data.name
-			  ,"ownner": data.ownner
+			  ,"idle": data.idle
 			  ,"hire_start_date": data.hire_start_date
 			  ,"hire_stop_date": data.hire_stop_date
 			  ,"rentornot": data.rentornot			  
-			  ,"rent_start_date": data.rent_start_date
-			  ,"rent_stop_date": data.hire_stop_date			  
 			});
 			
 	    	layer.open({
-	    		  title: '编辑：'+ data.id
+	    		  title: '编辑停车位：'+ data.id
 		    	  ,btn: ['更改','取消']
 			      ,success: function (layero, index) {
 			    	    //添加form标识
@@ -160,7 +155,7 @@
 		    		
 		    	  }
 	    		  ,type: 1
-	    		  ,area: ['400px', '500px']
+	    		  ,area: ['400px', '350px']
 	    		  ,content: $('#noDisplayFormAdd')
 	    		  ,end: function(index, layero){ 
 	    				// 清空表单
@@ -186,9 +181,11 @@
                             <input type="text" name="name" placeholder="请输入车位名字" autocomplete="off" class="layui-input"></div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label"><i class="layui-icon">&nbsp;</i>所有者</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="ownner" placeholder="请输入所有者" autocomplete="off" class="layui-input"></div>
+                    	<label class="layui-form-label">是否空闲</label>
+                    	<div class="layui-input-block">
+	                    	<input name="idle" title="是" type="radio" value="是">
+	                    	<input name="idle" title="否" type="radio" value="否">
+                    	</div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label"><i class="layui-icon">&nbsp;</i>租赁开始</label>
@@ -206,17 +203,7 @@
 	                    	<input name="rentornot" title="是" type="radio" value="是">
 	                    	<input name="rentornot" title="否" type="radio" value="否">
                     	</div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label"><i class="layui-icon">&nbsp;</i>外租开始</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="rent_start_date" placeholder="请输入外租开始时间" autocomplete="off" class="layui-input"></div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label"><i class="layui-icon">&nbsp;</i>外租结束</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="rent_stop_date" placeholder="请输入外租结束时间" autocomplete="off" class="layui-input"></div>
-                    </div>                    
+                    </div>                   
                 </form>
             </div>
         </div>

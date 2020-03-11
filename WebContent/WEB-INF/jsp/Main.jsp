@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +17,6 @@
   <div class="layui-header">
     <div class="layui-logo" style="color:#FFF;"><i class="layui-icon layui-icon-home"></i>&nbsp;车辆管理系统</div>
     <%
-    	//获取url中的参数值
     	String pageName = "", parklot="",parkspace="",trarecord="",notice="",user="",upload="";
     	request.setCharacterEncoding("utf-8");
     	if (!request.getParameterMap().isEmpty()){
@@ -51,9 +49,11 @@
     </ul>
     <ul class="layui-nav layui-layout-right">
       <li class="layui-nav-item">
-          <i class="layui-icon layui-icon-username"></i>&nbsp;${sessionScope.username}
+			<i class="layui-icon layui-icon-username"></i>&nbsp;${sessionScope.username}
       </li>
-      <li class="layui-nav-item"><a href="/LprSever/logout">退出<span class="layui-badge-dot"></span></a></li>
+      <li class="layui-nav-item">
+			<a href="/LprSever/logout">退出<span class="layui-badge-dot"></span></a>
+      </li>
     </ul>
   </div>
   
@@ -64,7 +64,7 @@
   </div>
   <script>
 	layui.use('element', function(){
-	  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+	  var element = layui.element;
 	  
 	});
 </script>
