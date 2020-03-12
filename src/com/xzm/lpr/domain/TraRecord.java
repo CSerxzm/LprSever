@@ -25,6 +25,14 @@ public class TraRecord implements Serializable{
 		this.date_out = date_out;
 		this.cost=cost;
 	}
+	
+	public TraRecord(Integer space_id,String licenseplate,String date_in,String date_out,Integer cost) {
+		this.space_id=space_id;
+		this.licenseplate = licenseplate;
+		this.date_in = date_in;
+		this.date_out = date_out;
+		this.cost=cost;
+	}
 
 	public Integer getId() {
 		return id;

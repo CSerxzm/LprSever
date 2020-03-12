@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,14 +38,13 @@
 	<div class="layui-card">
     <table class="layui-hide" id="newsTable" lay-filter="newsTable"></table>
 	<script>
-	//创建一个表格
+
 	layui.use(['layer', 'form', 'table', 'element'], function(){
 	  var layer = layui.layer
 	  ,form = layui.form
 	  ,table = layui.table //表格
 	  ,element = layui.element; //元素操作
 
-	  
 	  form.on('submit(demo1)', function(data){
 	    		table.reload('newsTable', {
 	    			url:'/LprSever/notice/getNotice'
@@ -78,7 +76,6 @@
 		    }
 	  });
 	  	  
-	  //头工具栏事件
 	  table.on('toolbar(newsTable)', function(obj){
 	    var checkStatus = table.checkStatus(obj.config.id);
 	    switch(obj.event){
@@ -88,7 +85,6 @@
 	    };
 	  }); 
 	  
-	  //监听行工具事件
 	  table.on('tool(newsTable)', function(obj){
 	    var data = obj.data
 	    ,layEvent = obj.event
@@ -101,7 +97,7 @@
 		  		    async: false,
 		  		    dataType: 'json',
 		  		    success: function (data) {
-			  		    obj.del(); //删除对应行（tr）的DOM结构
+			  		    obj.del();
 			  		    layer.close(index);
 			  	        layer.msg("删除成功", {time:3000});
 		  		    },
@@ -112,7 +108,7 @@
 	  	     });
 	  	}
 	  	else if(layEvent === 'edit'){
-	  		
+	  		window.location.href = '/LprSever/notice/toupdateNotice?id='+data.id;
 	  	}
 	  }); 
 	  

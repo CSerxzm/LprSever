@@ -100,4 +100,26 @@ public class ParkSpaceController {
 		return jsonmain.toString();
 	}
 	
+	@RequestMapping(value="/parkspace/addParkSpace",produces={"text/html;charset=UTF-8"})
+	@ResponseBody
+	public String addParkLot(@RequestParam Map<String,String> map){
+		
+		String name=map.get("name");
+		String idle=map.get("idle");
+		String hire_start_date=map.get("hire_start_date");
+		String hire_stop_date=map.get("hire_stop_date");
+		String rentornot=map.get("rentornot");
+		
+		ParkSpace parkSpace = new ParkSpace(name,idle,hire_start_date,hire_stop_date,rentornot);
+		
+		int i=lprService.addParkSpace(parkSpace);
+		JSONObject jsonmain = new JSONObject();
+		if(i != 0){
+			jsonmain.put("msg", "OK");
+		}else{
+			jsonmain.put("msg", "ERROR");
+		}
+		return jsonmain.toString();
+	}
+	
 }

@@ -29,7 +29,14 @@ public class Notice implements Serializable{
 		this.content=content;
 		this.name_publish=name_publish;
 	}
-
+	
+	public Notice(Integer id,String title,String content,String name_publish) {
+		this.id=id;
+		this.title=title;
+		this.content=content;
+		this.name_publish=name_publish;
+	}
+	
 	public void setId(Integer id){
 		this.id = id;
 	}

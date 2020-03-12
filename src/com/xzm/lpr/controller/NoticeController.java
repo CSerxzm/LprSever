@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.xzm.lpr.domain.Notice;
 import com.xzm.lpr.domain.User;
@@ -87,6 +88,7 @@ public class NoticeController {
 		User user=(User)session.getAttribute(LprConstants.USER_SESSION);
 		String name_publish=user.getLoginname();
 		Integer i = lprService.addNotice(new Notice(title,content,name_publish));
+		
 		System.out.println("i="+i);
 		JSONObject jsonmain = new JSONObject();
 		if(i != 0){
@@ -102,11 +104,13 @@ public class NoticeController {
 	 public String updateNotice(HttpSession session,@RequestParam Map<String,String> map){
 		String title=map.get("title");
 		String content=map.get("content");
+		Integer id=Integer.valueOf(map.get("id"));
 		User user=(User)session.getAttribute(LprConstants.USER_SESSION);
 		String name_publish=user.getLoginname();
 		
-		Integer i = lprService.addNotice(new Notice(title,content,name_publish));
+		Integer i = lprService.updateNotice(new Notice(id,title,content,name_publish));
 		
+		System.out.println("i="+i);
 		JSONObject jsonmain = new JSONObject();
 		if(i != 0){
 			jsonmain.put("msg", "OK");
@@ -114,6 +118,15 @@ public class NoticeController {
 			jsonmain.put("msg", "ERROR");
 		}
 		return jsonmain.toString();	
+	}
+	
+	@RequestMapping(value="/notice/toupdateNotice",produces={"text/html;charset=UTF-8"})	
+	 public ModelAndView toUpdateNotice(ModelAndView mv,Integer id){
+		System.out.println("id="+id);
+		Notice notice = lprService.findNoticeById(id);
+		mv.addObject("notice",notice);
+		mv.setViewName("noticeupdate");
+		return mv;
 	}
 	
 }

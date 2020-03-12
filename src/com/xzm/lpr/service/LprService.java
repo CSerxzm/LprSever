@@ -11,30 +11,31 @@ import com.xzm.lpr.util.tag.PageModel;
 
 public interface LprService {
 
-
+	Integer addUser(User user);
+	Integer removeUserByLogin(String loginname);
 	User login(String loginname,String password);
 	List<User> findUser(PageModel pageModel);
-	Integer removeUserByLogin(String loginname);
 	Integer updateUser(User user);
-	Integer addUser(User user);
-	
-	List<TraRecord> findTraRecord(PageModel pageModel);
+
+	Integer addTraRecord(TraRecord traRecord);
 	Integer removeTraRecordById(int id);
+	List<TraRecord> findTraRecord(PageModel pageModel);
 	Integer updateTraRecord(TraRecord traRecord);
 	
 	List<ParkLot> findParkLot();
 	Integer updateParkLot(ParkLot parkLot);
 
-	List<ParkSpace> findParkSpace(PageModel pageModel);
+	Integer addParkSpace(ParkSpace parkSpace);
 	Integer removeParkSpaceById(int id);
+	List<ParkSpace> findParkSpace(PageModel pageModel);
 	List<ParkSpace> findParkSpace();
 	Integer updateParkSpace(ParkSpace parkSpace);
-	
+
+	Integer addNotice(Notice notice);
+	Integer removeNoticeById(Integer id);
 	List<Notice> findNotice(Notice notice,PageModel pageModel);
 	Notice findNoticeById(Integer id);
-	Integer removeNoticeById(Integer id);
-	Integer addNotice(Notice notice);
-	Integer updateNotice(Notice notice);
 	List<Notice> findNotice(PageModel pageModel);
+	Integer updateNotice(Notice notice);
 		
 }

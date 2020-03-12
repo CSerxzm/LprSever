@@ -38,19 +38,17 @@
 
 <script>
 	layui.use(['layer','form','element'], function(){
-		  var form = layui.form;
+		var form = layui.form;
 		var element = layui.element;
 		var layer = layui.layer;
 		var $ = layui.jquery;
   
 		form.on('submit(addnotice)', function(data){
-	
 			  var formObject = {};
 			  var formArray =$('#addnotice').serializeArray();
 			  $.each(formArray,function(i,item){
 				  formObject[item.name] = item.value;
 				  });
-			  
 			  $.ajax({
 			      url: '/LprSever/notice/addNotice',
 			      type: 'POST',
@@ -64,16 +62,13 @@
 			    	  }else{
 			    		  layer.msg("发表失败", {time:3000});
 			    	  }
-			    	  
 			      },
 			      error: function () {
 			          layer.msg("服务器错误", {time:3000});
 			      }
 			  });
-			  
 		  	return false;
-		  	
-		  });
+		});
 		
  });
 </script>

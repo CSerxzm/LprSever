@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +9,7 @@
 <link rel="bookmark"href="img/favicon.ico" />
 <style type="text/css">
 .bg {
-    background: url("img/logbg1.jpg") no-repeat;
+    background: url("img/bg.jpg") no-repeat;
     background-position: center center;
     background-attachment: fixed;
     background-size: 100% 100%;
@@ -86,7 +85,7 @@ function DoMsgLogin(){
                     <div class="layui-form-item">
                         <label class="layui-form-label"><i class="layui-icon layui-icon-username">&nbsp;</i>登录名</label>
                         <div class="layui-input-block">
-                            <input type="text" name="loginname" required lay-verify="required|username" placeholder="请输入登录名" class="layui-input"></div>
+                            <input type="text" name="loginname" required lay-verify="required|loginname" placeholder="请输入登录名" class="layui-input"></div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label"><i class="layui-icon layui-icon-password">&nbsp;</i>密&nbsp;&nbsp;码</label>
@@ -175,7 +174,7 @@ layui.use(['layer','form','element'], function(){
 	  });
 	  //表单验证
 	  form.verify({
-		  username: function(value){ 
+		  loginname: function(value){ 
 		    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
 		      return '用户名不能有特殊字符';
 		    }

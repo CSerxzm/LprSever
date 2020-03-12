@@ -187,7 +187,6 @@ public class LprServiceImpl implements LprService{
 
 	@Override
 	public Integer removeParkSpaceById(int id) {
-		// TODO Auto-generated method stub
 		return parkSpaceDao.deleteById(id);
 	}
 
@@ -195,6 +194,16 @@ public class LprServiceImpl implements LprService{
 	public List<Notice> findNotice(Notice notice, PageModel pageModel) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Integer addTraRecord(TraRecord traRecord) {
+		return traRecordDao.save(traRecord);
+	}
+
+	@Override
+	public Integer addParkSpace(ParkSpace parkSpace) {
+		return parkSpaceDao.save(parkSpace);
 	}
 
 }

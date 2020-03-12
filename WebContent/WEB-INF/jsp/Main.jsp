@@ -9,8 +9,8 @@
   <title>车辆管理系统 </title>
   <link rel="stylesheet" href="layui/css/layui.css" media="all">
   <script src="layui/layui.js"></script>
-  <link rel="shortcut icon" href="img/favicon.ico" />
-  <link rel="bookmark"href="img/favicon.ico" />
+  <link rel="shortcut icon" href="img/stu.ico" />
+  <link rel="bookmark"href="img/stu.ico" />
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -35,8 +35,8 @@
     			user=" layui-this";
     	}
     	else{
-    		pageName = "trarecord";
-    		trarecord=" layui-this";
+    		pageName = "parklot";
+    		parklot=" layui-this";
     	}
     %>
     <ul class="layui-nav layui-layout-left">
@@ -56,18 +56,16 @@
       </li>
     </ul>
   </div>
-  
-  
-  <div class="layui-body" style="left:0px;">
-    <!-- 内容主体区域 -->
-    <iframe src="./<%=pageName%>" frameborder="0" width="100%" height="100%" id="contentIframe"></iframe>
+
+  <div class="layui-body" style="left:0px;overflow: hidden;">
+    <iframe src="./<%=pageName%>" style="overflow:hidden;width:100%;height:100%;"></iframe>
   </div>
   <script>
 	layui.use('element', function(){
 	  var element = layui.element;
 	  
 	});
-</script>
+  </script>
   <div class="layui-footer" style="left:0px;text-align:center;">
     ©HFUT - 车辆管理系统 2020
   </div>

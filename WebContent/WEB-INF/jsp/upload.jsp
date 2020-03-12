@@ -40,15 +40,14 @@
 layui.use('upload', function(){
   var $ = layui.jquery
   ,upload = layui.upload;
-  
-  //普通图片上传
+
   var uploadInst = upload.render({
      elem: '#file'
     ,url: '/LprSever/upload'
     ,before: function(obj){
-      //预读本地文件示例，不支持ie8
+
       obj.preview(function(index, file, result){
-        $('#demo1').attr('src', result); //图片链接（base64）
+        $('#demo1').attr('src', result);
       });
     }
     ,done: function(data){
@@ -57,7 +56,6 @@ layui.use('upload', function(){
     	demoText.html(data.number);
         return layer.msg('上传成功');
       }
-      //上传成功
     }
     ,error: function(){
       var demoText = $('#demoText');

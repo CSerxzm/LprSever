@@ -99,4 +99,31 @@ public class TraRecordController {
 		}
 		return jsonmain.toString();
 	}
+	
+	@RequestMapping(value="/trarecord/addTraRecord",produces={"text/html;charset=UTF-8"})
+	@ResponseBody
+	public String addTraRecord(@RequestParam Map<String,String> map){
+		
+		Integer space_id =Integer.valueOf(map.get("space_id"));
+		String licenseplate=map.get("licenseplate");
+		String date_in=map.get("date_in");
+		String date_out=map.get("date_out");
+		String cost_str = map.get("cost");
+		Integer cost=null;
+		if(!cost_str.equals("")){
+			cost=Integer.valueOf(cost_str);			
+		}
+
+		TraRecord traRecord = new TraRecord(space_id,licenseplate,date_in,date_out,cost);
+		
+		Integer i = lprService.addTraRecord(traRecord);
+		System.out.println("i="+i);
+		JSONObject jsonmain = new JSONObject();
+		if(i!=0) {
+			jsonmain.put("code", "200");
+			jsonmain.put("msg", "none");
+		}
+		return jsonmain.toString();
+	}
+	
 }

@@ -44,7 +44,6 @@
     <table class="layui-hide" id="userTable" lay-filter="userTable"></table>
     
 	<script>
-
 	layui.use(['layer', 'form', 'table','laydate','element'], function(){
 	  var layer = layui.layer
 	  ,form = layui.form
@@ -162,10 +161,8 @@
 	  	     });
 	  	}
 	  	else if(layEvent === 'edit'){
-	  		
 			$("#addUserForm")[0].reset();
 			form.render(null, 'addUserForm');
-			
 			//表单初始赋值
 			form.val('addUserForm', {
 			  "loginname": data.loginname
@@ -176,7 +173,6 @@
 			  ,"createdate": data.createdate
 			  ,"authority": data.authority
 			});
-			
 	    	layer.open({
 	    		  title: '编辑：'+ data.loginname
 		    	  ,btn: ['更改','取消']

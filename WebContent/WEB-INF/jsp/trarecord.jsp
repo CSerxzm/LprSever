@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,11 +8,16 @@
 </head>
 <body>
 <div  style="max-width:1350px;margin:0 auto;">
-	<div class="layui-card">
+
 	<script type="text/html" id="barDemo">
-	 <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>修改</a>
-     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+		<a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>修改</a>
+		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
 	</script>
+	<script type="text/html" id="barHeadDemo">
+		<a class="layui-btn layui-btn-primary layui-btn-sm" lay-event="add"><i class="layui-icon layui-icon-add-1"></i>添加通行记录</a>
+	</script>
+	
+	<div class="layui-card">	
 	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
 	<legend>搜索</legend>
 	</fieldset>  
@@ -56,7 +60,7 @@
 		    elem: '#trarecordTable'
 		    ,cellMinWidth: 120
 		    ,url:'/LprSever/trarecord/getTraRecord'
-		    ,toolbar: "true"
+			,toolbar: '#barHeadDemo'
 		    ,title: '通行日志表'
 		    ,cols: [[
 		      {field:'id', title:'标识', fixed: 'left', sort: true}
@@ -74,8 +78,60 @@
 		      statusCode: 200
 		    }
 	  });
-	  
-	  //监听行工具事件
+
+	  table.on('toolbar(trarecordTable)', function(obj){
+		    var data = obj.data
+		    ,layEvent = obj.event
+		    ,$ = layui.jquery;
+		    
+		    switch(layEvent){
+		      case 'add':
+					$("#trarecordForm")[0].reset();
+					form.render(null, 'trarecordForm');
+			    	layer.open({
+			    		  title: '添加通行记录'
+				    	  ,btn: ['添加','取消']
+					      ,success: function (layero, index) {
+				                layero.addClass('layui-form');
+				                layero.find('.layui-layer-btn0').attr('lay-filter', 'formContent').attr('lay-submit', '');
+				                form.render(); 
+				          }
+				    	  ,yes: function(index, layero){
+				    		  //监听提交按钮
+				    		  form.on('submit(formContent)', function (data) {
+				    			  
+					    		  var formObject = {};
+					    		  var formArray =$('#layui-layer'+index).find('form').serializeArray();
+					    		  $.each(formArray,function(i,item){
+					    			  formObject[item.name] = item.value;
+					    			  });
+
+					    		  $.ajax({
+						              url: '/LprSever/trarecord/addTraRecord',
+						              type: 'POST',
+						              data: formObject,
+						              async: false,
+						              dataType: 'json',
+						              success: function (data) {
+					                      layer.msg("添加成功", {time:3000});
+						    			  table.reload('trarecordTable', {
+						    			  });
+								    	  layer.closeAll();
+						              },
+						              error: function () {
+					                      layer.msg("添加失败", {time:3000});
+						              }
+						          });
+			                  });
+				    	  }
+			    		  ,type: 1
+			    		  ,area: ['550px', '450px']
+			    		  ,content: $('#noDisplayFormAdd')  
+			    		}); 	    	
+		      break;
+		    };
+	  });	  
+
 	  table.on('tool(trarecordTable)', function(obj){
 	    var data = obj.data
 	    ,layEvent = obj.event
@@ -99,10 +155,9 @@
 	  	     });
 	  	}
 	  	else if(layEvent === 'edit'){
-	  		
 			$("#trarecordForm")[0].reset();
 			form.render(null, 'trarecordForm');
-			//表单初始赋值
+			
 			form.val('trarecordForm', {
 				"id":data.id
 				,"space_id": data.space_id
@@ -111,7 +166,6 @@
 				,"date_out": data.date_out
 				,"cost": data.cost
 			});
-			
 	    	layer.open({
 	    		  title: '编辑：'+ data.loginname
 		    	  ,btn: ['更改','取消']
@@ -151,17 +205,9 @@
 				          });
 	                  });
 		    	  }
-		    	  ,btn2: function(index, layero){
-		    		
-		    	  }
 	    		  ,type: 1
-	    		  ,area: ['400px', '400px']
-	    		  ,content: $('#noDisplayFormAdd')
-	    		  ,end: function(index, layero){ 
-	    				// 清空表单
-	    				$("#trarecordForm")[0].reset();
-	    				form.render(null, 'trarecordForm');
-	    			}   
+	    		  ,area: ['400px', '385px']
+	    		  ,content: $('#noDisplayFormAdd')  
 	    		}); 	    	
 	  	}
 	  });
