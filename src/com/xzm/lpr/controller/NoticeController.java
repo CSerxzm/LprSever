@@ -125,7 +125,7 @@ public class NoticeController {
 		System.out.println("id="+id);
 		Notice notice = lprService.findNoticeById(id);
 		mv.addObject("notice",notice);
-		mv.setViewName("noticeupdate");
+		mv.setViewName("admin/noticeupdate");
 		return mv;
 	}
 	

@@ -51,11 +51,17 @@ public class LprServiceImpl implements LprService{
 
 	@Transactional(readOnly=true)
 	@Override
-	public List<User> findUser(PageModel pageModel) {
+	public List<User> findUser(User user,PageModel pageModel) {
 		/** 当前需要分页的总数据条数  */
 		Map<String,Object> params = new HashMap<>();
 		int recordCount = userDao.count(params);
-		pageModel.setRecordCount(recordCount);
+		if(pageModel!=null) {
+			pageModel.setRecordCount(recordCount);			
+		}
+		if(user!=null)
+		{
+			params.put("user", user);
+		}
 		if(recordCount > 0){
 	        /** 开始分页查询数据：查询第几页的数据 */
 		    params.put("pageModel", pageModel);
@@ -89,7 +95,8 @@ public class LprServiceImpl implements LprService{
 		/** 当前需要分页的总数据条数  */
 		Map<String,Object> params = new HashMap<>();
 		int recordCount = noticeDao.count(params);
-		pageModel.setRecordCount(recordCount);
+		if(pageModel!=null)
+			pageModel.setRecordCount(recordCount);
 		
 		if(recordCount > 0){
 	        /** 开始分页查询数据：查询第几页的数据 */
@@ -124,11 +131,17 @@ public class LprServiceImpl implements LprService{
 	}
 
 	@Override
-	public List<TraRecord> findTraRecord(PageModel pageModel) {
+	public List<TraRecord> findTraRecord(User user,PageModel pageModel) {
 		// TODO Auto-generated method stub
 		Map<String,Object> params = new HashMap<>();
 		int recordCount = traRecordDao.count(params);
 		pageModel.setRecordCount(recordCount);
+		
+		if(!user.getAuthority().equals("系统管理员")) {
+			params.put("user", user);
+			System.out.println(user.getLicenseplate());
+		}
+		
 		if(recordCount > 0){
 	        /** 开始分页查询数据：查询第几页的数据 */
 		    params.put("pageModel", pageModel);
@@ -161,20 +174,16 @@ public class LprServiceImpl implements LprService{
 	}
 
 	@Override
-	public List<ParkSpace> findParkSpace() {
-		Map<String,Object> params = new HashMap<>();
-		List<ParkSpace> parkSpaces = parkSpaceDao.selectByPage(params);
-		return parkSpaces;
-	}
-
-	@Override
 	public Integer updateParkSpace(ParkSpace parkSpace) {
 		return parkSpaceDao.update(parkSpace);
 	}
 
 	@Override
-	public List<ParkSpace> findParkSpace(PageModel pageModel) {
+	public List<ParkSpace> findParkSpace(User user,String operate,PageModel pageModel) {
 		Map<String,Object> params = new HashMap<>();
+		
+		params.put("user", user);
+		params.put("operate", operate);
 		int recordCount = parkSpaceDao.count(params);
 		pageModel.setRecordCount(recordCount);
 		if(recordCount > 0){

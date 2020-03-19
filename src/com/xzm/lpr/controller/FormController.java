@@ -17,6 +17,17 @@ public class FormController{
 	 public String loginForm(@PathVariable String formName,HttpServletRequest request){
 		return formName;
 	}
-
+	
+	@RequestMapping(value="/admin/{formName}")
+	 public String adminForm(@PathVariable String formName,HttpServletRequest request){
+		System.out.println("formName="+formName);
+		return "/admin/"+formName;
+	}
+	
+	@RequestMapping(value="/user/{formName}")
+	 public String userForm(@PathVariable String formName,HttpServletRequest request){
+		System.out.println("formName="+formName);
+		return "/user/"+formName;
+	}
 }
 

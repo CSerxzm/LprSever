@@ -4,6 +4,7 @@ import static com.xzm.lpr.util.common.LprConstants.TRARECORDTABLE;
 import java.util.Map;
 import org.apache.ibatis.jdbc.SQL;
 import com.xzm.lpr.domain.TraRecord;
+import com.xzm.lpr.domain.User;
 
 public class TraRecordDynaSqlProvider {
 
@@ -12,6 +13,15 @@ public class TraRecordDynaSqlProvider {
 			{
 				SELECT("*");
 				FROM(TRARECORDTABLE);
+				if(params.get("user") != null){
+					User user = (User)params.get("user");
+					if(user.getLicenseplate() != null && !user.getLicenseplate().equals("")){
+						WHERE("  licenseplate LIKE CONCAT ('%',#{user.licenseplate},'%') ");
+					}
+					if(user.getParkspace_id() != null && !user.getParkspace_id().equals("")){
+						WHERE("  space_id = #{user.parkspace_id} ");
+					}
+				}
 			}
 		}.toString();
 		
@@ -27,6 +37,16 @@ public class TraRecordDynaSqlProvider {
 			{
 				SELECT("count(*)");
 				FROM(TRARECORDTABLE);
+				if(params.get("user") != null){
+					User user = (User)params.get("user");
+					System.out.println("sql"+user.getLicenseplate());
+					if(user.getLicenseplate() != null && !user.getLicenseplate().equals("")){
+						WHERE("  licenseplate LIKE CONCAT ('%',#{user.licenseplate},'%') ");
+					}
+					if(user.getParkspace_id() != null && !user.getParkspace_id().equals("")){
+						WHERE("  space_id = #{user.parkspace_id}");
+					}
+				}
 			}
 		}.toString();
 	}

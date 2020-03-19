@@ -11,7 +11,7 @@ import com.xzm.lpr.util.common.LprConstants;
 
 public class AuthorizedInterceptor  implements HandlerInterceptor {
 
-	private static final String[] IGNORE_URI = {"/loginform", "/login","/upload","/404.html"};
+	private static final String[] IGNORE_URI = {"/login","/upload","/404.html","/index"};
 	 
 	@Override
 	public void afterCompletion(HttpServletRequest request,
@@ -33,6 +33,9 @@ public class AuthorizedInterceptor  implements HandlerInterceptor {
 		boolean flag = false; 
 		/** 获得请求的ServletPath */
 		String servletPath = request.getServletPath();
+		
+		System.out.println(servletPath);
+		
 		/**  判断请求是否需要拦截 */
         for (String s : IGNORE_URI) {
             if (servletPath.contains(s)) {

@@ -4,8 +4,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link rel="stylesheet" href="layui/css/layui.css" media="all">
-<script src="layui/layui.js"></script>
+<link rel="stylesheet" href="/LprSever/layui/css/layui.css" media="all">
+<script src="/LprSever/layui/layui.js"></script>
 </head>
 <body>
 <div  style="max-width:1350px;margin:0 auto;">

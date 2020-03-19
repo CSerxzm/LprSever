@@ -1,0 +1,27 @@
+/*地址,电话,价格等标签间距设置*/
+.item{
+	padding:10px;
+	font-size:20px;
+}
+
+/*价格加粗*/
+#activitycost_per{
+	font-weight:bold;
+}
+
+/*图片等比例缩放,居中*/
+img{
+    max-width: 100%;
+    max-height: 100%;
+    width:auto;
+    height:auto;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate3d(-50%,-50%,0);
+    -webkit-transform: translate3d(-50%,-50%,0);
+}
+
+#test1 div div {
+	background:#f2f2f2;
+}

@@ -8,6 +8,7 @@ public class ParkSpace implements Serializable  {
 	
 	private Integer id;
 	private String name;
+	private String state;
 	private String idle;
 	private String hire_start_date;
 	private String hire_stop_date;
@@ -17,17 +18,19 @@ public class ParkSpace implements Serializable  {
 		super();
 	}
 	
-	public ParkSpace(Integer id,String name,String idle,String hire_start_date,String hire_stop_date,String rentornot) {
+	public ParkSpace(Integer id,String name,String state,String idle,String hire_start_date,String hire_stop_date,String rentornot) {
 		this.id=id;
 		this.name=name;
+		this.state=state;
 		this.idle=idle;
 		this.hire_start_date=hire_start_date;
 		this.hire_stop_date=hire_stop_date;
 		this.rentornot=rentornot;
 	}
 	
-	public ParkSpace(String name,String idle,String hire_start_date,String hire_stop_date,String rentornot) {
+	public ParkSpace(String name,String state,String idle,String hire_start_date,String hire_stop_date,String rentornot) {
 		this.name=name;
+		this.state=state;
 		this.idle=idle;
 		this.hire_start_date=hire_start_date;
 		this.hire_stop_date=hire_stop_date;
@@ -48,6 +51,14 @@ public class ParkSpace implements Serializable  {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 
 	public String getIdle() {

@@ -3,6 +3,8 @@ package com.xzm.lpr.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xzm.lpr.domain.TraRecord;
+import com.xzm.lpr.domain.User;
 import com.xzm.lpr.service.LprService;
+import com.xzm.lpr.util.common.LprConstants;
 import com.xzm.lpr.util.tag.PageModel;
 
 import net.sf.json.JSONArray;
@@ -26,9 +30,10 @@ public class TraRecordController {
 	
 	@RequestMapping(value="/trarecord/getTraRecord",produces={"text/html;charset=UTF-8"})
 	@ResponseBody
-	 public String getTraRecord(Integer page,Integer limit){
+	 public String getTraRecord(HttpSession session,Integer page,Integer limit){
+
+		User user=(User) session.getAttribute(LprConstants.USER_SESSION);
 		
-		System.out.println(page+"/"+limit);
 		PageModel pageModel = new PageModel();
 		if(page != null){
 			pageModel.setPageIndex(page);
@@ -37,7 +42,7 @@ public class TraRecordController {
 			pageModel.setPageSize(limit);
 		}
 
-		List<TraRecord> trarecords = lprService.findTraRecord(pageModel);
+		List<TraRecord> trarecords = lprService.findTraRecord(user,pageModel);
 		
 		JSONObject jsonmain = new JSONObject();
 		jsonmain.put("code", "200");

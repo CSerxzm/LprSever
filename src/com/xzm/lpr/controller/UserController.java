@@ -37,7 +37,10 @@ public class UserController {
 		JSONObject jsonmain = new JSONObject();
 		if(user != null){
 			session.setAttribute(LprConstants.USER_SESSION,user);
-			jsonmain.put("msg", "OK");
+			if(user.getAuthority().equals("用户"))
+				jsonmain.put("msg", "OK_user");
+			else
+				jsonmain.put("msg", "OK_admin");
 		}else{
 			jsonmain.put("msg", "ERROR");
 		}
@@ -57,7 +60,7 @@ public class UserController {
 			pageModel.setPageSize(limit);
 		}
 		
-		List<User> users = lprService.findUser(pageModel);
+		List<User> users = lprService.findUser(null,pageModel);
 		
 		JSONObject jsonmain = new JSONObject();
 		jsonmain.put("code", "200");
@@ -75,6 +78,37 @@ public class UserController {
 			jsonobj.put("createdate", user.getCreateDate());
 			jsonobj.put("authority", user.getAuthority());
 			System.out.println(user.getCreateDate());
+			jsonarray.add(jsonobj);
+		}
+		
+		jsonmain.put("data", jsonarray);		
+		return jsonmain.toString();
+		
+	}
+	
+	@RequestMapping(value="/user/getUserOne",produces={"text/html;charset=UTF-8"})
+	@ResponseBody
+	public String getUserOne(HttpSession session){
+		
+		User user = (User) session.getAttribute(LprConstants.USER_SESSION);
+		
+		List<User> users = lprService.findUser(user,null);
+		
+		JSONObject jsonmain = new JSONObject();
+		jsonmain.put("code", "200");
+		jsonmain.put("msg", "none");
+		JSONArray jsonarray = new JSONArray();
+		JSONObject jsonobj = new JSONObject();
+		for (int i = 0; i < users.size(); i++) {
+			User user_temp = (User)users.get(i);
+			jsonobj.put("loginname", user_temp.getLoginname());
+			jsonobj.put("password", user_temp.getPassword());
+			jsonobj.put("parkspace_id", user_temp.getParkspace_id());
+			jsonobj.put("licenseplate", user_temp.getLicenseplate());
+			jsonobj.put("telephone", user_temp.getTelephone());
+			jsonobj.put("createdate", user_temp.getCreateDate());
+			jsonobj.put("authority", user_temp.getAuthority());
+			System.out.println(user_temp.getCreateDate());
 			jsonarray.add(jsonobj);
 		}
 		
@@ -117,7 +151,7 @@ public class UserController {
 	
 	@RequestMapping(value="/user/updateUser",produces={"text/html;charset=UTF-8"})
 	@ResponseBody
-	public String updateUser(@RequestParam Map<String,String> map){
+	public String updateUser(HttpSession session,@RequestParam Map<String,String> map){
 		
 		Integer parkspace_id=null;
 		String loginname=map.get("loginname");
@@ -130,7 +164,10 @@ public class UserController {
 		String createdate=map.get("createdate");
 		String authority=map.get("authority");
 		
-		User user = new User(loginname,password,parkspace_id,licenseplate,telephone,createdate,authority);
+		User user = new User(loginname,password,parkspace_id,licenseplate,telephone,createdate,authority);		
+		if(authority.equals("用户")) {
+			session.setAttribute(LprConstants.USER_SESSION,user);
+		}
 		
 		int i=lprService.updateUser(user);
 		JSONObject jsonmain = new JSONObject();
@@ -175,7 +212,7 @@ public class UserController {
 			 HttpSession session) {
 		
 		session.invalidate();
-		mv.setViewName("redirect:/loginform");
+		mv.setViewName("redirect:/index");
 		return mv;
 	}
 	

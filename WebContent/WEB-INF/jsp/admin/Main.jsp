@@ -7,10 +7,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>车辆管理系统 </title>
-  <link rel="stylesheet" href="layui/css/layui.css" media="all">
-  <script src="layui/layui.js"></script>
-  <link rel="shortcut icon" href="img/stu.ico" />
-  <link rel="bookmark"href="img/stu.ico" />
+  <link rel="stylesheet" href="/LprSever/layui/css/layui.css" media="all">
+  <script src="/LprSever/layui/layui.js"></script>
+  <link rel="shortcut icon" href="/LprSever/img/stu.ico" />
+  <link rel="bookmark"href="/LprSever/img/stu.ico" />
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">

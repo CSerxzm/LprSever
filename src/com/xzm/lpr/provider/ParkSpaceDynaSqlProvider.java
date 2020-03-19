@@ -3,7 +3,10 @@ package com.xzm.lpr.provider;
 import static com.xzm.lpr.util.common.LprConstants.PARKSPACETABLE;
 import java.util.Map;
 import org.apache.ibatis.jdbc.SQL;
+
+import com.xzm.lpr.domain.Notice;
 import com.xzm.lpr.domain.ParkSpace;
+import com.xzm.lpr.domain.User;
 
 public class ParkSpaceDynaSqlProvider {
 
@@ -12,6 +15,12 @@ public class ParkSpaceDynaSqlProvider {
 			{
 				SELECT("*");
 				FROM(PARKSPACETABLE);
+				if(params.get("operate") != null){
+					String operate = (String)params.get("operate");
+					if(operate.equals("order")){
+						WHERE("  idle='是'  or (idle='否'  and rentornot='是')  ");
+					}
+				}
 			}
 		}.toString();
 		
@@ -27,6 +36,12 @@ public class ParkSpaceDynaSqlProvider {
 			{
 				SELECT("count(*)");
 				FROM(PARKSPACETABLE);
+				if(params.get("operate") != null){
+					String operate = (String)params.get("operate");
+					if(operate.equals("order")){
+						WHERE("  idle='是'  or (idle='否'  and rentornot='是')  ");
+					}
+				}
 			}
 		}.toString();
 	}	
@@ -40,6 +55,9 @@ public class ParkSpaceDynaSqlProvider {
 				}
 				if(parkSpace.getName() != null && !parkSpace.getName().equals("")){
 					VALUES("name", "#{name}");
+				}
+				if(parkSpace.getState() != null && !parkSpace.getState().equals("")){
+					VALUES("state", "#{state}");
 				}
 				if(parkSpace.getIdle() != null && !parkSpace.getIdle().equals("")){
 					VALUES("idle", "#{idle}");
@@ -63,6 +81,9 @@ public class ParkSpaceDynaSqlProvider {
 				UPDATE(PARKSPACETABLE);
 				if(parkSpace.getName() != null){
 					SET(" name = #{name} ");
+				}
+				if(parkSpace.getState() != null){
+					SET(" state = #{state} ");
 				}
 				if(parkSpace.getIdle()!= null){
 					SET(" idle = #{idle} ");

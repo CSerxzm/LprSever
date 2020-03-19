@@ -26,6 +26,8 @@ public class NoticeDynaSqlProvider {
 			}
 		}.toString();
 		
+		sql+=" ORDER BY create_date DESC" ;
+		
 		if(params.get("pageModel") != null){
 			sql += " limit #{pageModel.firstLimitParam} , #{pageModel.pageSize}  ";
 		}

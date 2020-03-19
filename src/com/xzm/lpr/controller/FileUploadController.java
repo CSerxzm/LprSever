@@ -42,6 +42,10 @@ public class FileUploadController{
 			
 			String number = LicensePlate.getlicensePlate(path+File.separator+ filename);
 			
+			/*用字母表示第一个汉字,兼容单片机。
+			 *    等待实现
+			 */
+			
 			System.out.println("上传文件路径：" + (path+File.separator+ filename));
 			System.out.println(number);
 			jsonmain.put("code", "200");

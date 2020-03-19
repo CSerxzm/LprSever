@@ -3,8 +3,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link rel="stylesheet" href="layui/css/layui.css" media="all">
- <script src="layui/layui.js"></script>
+<link rel="stylesheet" href="/LprSever/layui/css/layui.css" media="all">
+ <script src="/LprSever/layui/layui.js"></script>
 </head>
 <body>
 <div  style="max-width:1350px;margin:0 auto;">
@@ -14,13 +14,13 @@
 		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
 	</script>
 	<script type="text/html" id="barHeadDemo">
-		<a class="layui-btn layui-btn-primary layui-btn-sm" lay-event="add"><i class="layui-icon layui-icon-add-1"></i>添加通行记录</a>
+		<a class="layui-btn layui-btn-primary layui-btn-sm" lay-event="add"><i class="layui-icon layui-icon-add-1"></i>添加停车位</a>
 	</script>
 	
-	<div class="layui-card">	
+	<div class="layui-card">
 	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
 	<legend>搜索</legend>
-	</fieldset>  
+	</fieldset>
 	<div class="layui-card">
 		<div class="layui-card-body">
 			<form class="layui-form layui-form-pane" lay-filter="example">
@@ -39,7 +39,7 @@
 			</form>
 		</div>
 	</div>
-    <table class="layui-hide" id="trarecordTable" lay-filter="trarecordTable"></table>
+    <table class="layui-hide" id="parkspaceTable" lay-filter="parkspaceTable"></table>
 	<script>
 	//创建一个表格
 	layui.use(['layer', 'form', 'table', 'element'], function(){
@@ -49,26 +49,27 @@
 	  ,element = layui.element; //元素操作
 	  
 	  form.on('submit(demo1)', function(data){
-	    		table.reload('trarecordTable', {
-	    			url:'/LprSever/trarecord/getTraRecord'
+	    		table.reload('parkspaceTable', {
+	    			url:'/LprSever/parkspace/getParkSpace'
 	      			,where: data.field
 				  });
 	    	    return false;  //不跳转
 	  });
 	  
 	  table.render({
-		    elem: '#trarecordTable'
-		    ,cellMinWidth: 120
-		    ,url:'/LprSever/trarecord/getTraRecord'
-			,toolbar: '#barHeadDemo'
-		    ,title: '通行日志表'
+		    elem: '#parkspaceTable'
+		    ,cellMinWidth: 80
+		    ,url:'/LprSever/parkspace/getParkSpace'
+		    ,toolbar: '#barHeadDemo'
+		    ,title: '车位表'
 		    ,cols: [[
 		      {field:'id', title:'标识', fixed: 'left', sort: true}
-		      ,{field:'space_id', title:'停车位'}
-		      ,{field:'licenseplate', title:'牌照'}
-		      ,{field:'date_in', title:'驶入时间'}
-		      ,{field:'date_out', title:'驶出时间'}
-		      ,{field:'cost', title:'费用'}
+		      ,{field:'name', title:'车位名称'}
+		      ,{field:'state', title:'状态'}
+		      ,{field:'idle', title:'空闲'}
+		      ,{field:'hire_start_date', title:'租赁开始时间'}
+		      ,{field:'hire_stop_date', title:'租赁结束时间'}
+		      ,{field:'rentornot', title:'外租',sort: true}
 		      ,{fixed: 'right', align:'center', width:200, toolbar: '#barDemo'}
 		    ]]
 		  	,limit: 10
@@ -79,17 +80,18 @@
 		    }
 	  });
 
-	  table.on('toolbar(trarecordTable)', function(obj){
+	  //头工具栏事件
+	  table.on('toolbar(parkspaceTable)', function(obj){
 		    var data = obj.data
 		    ,layEvent = obj.event
 		    ,$ = layui.jquery;
 		    
 		    switch(layEvent){
 		      case 'add':
-					$("#trarecordForm")[0].reset();
-					form.render(null, 'trarecordForm');
+					$("#parkspaceForm")[0].reset();
+					form.render(null, 'parkspaceForm');
 			    	layer.open({
-			    		  title: '添加通行记录'
+			    		  title: '添加停车位'
 				    	  ,btn: ['添加','取消']
 					      ,success: function (layero, index) {
 				                layero.addClass('layui-form');
@@ -107,14 +109,14 @@
 					    			  });
 
 					    		  $.ajax({
-						              url: '/LprSever/trarecord/addTraRecord',
+						              url: '/LprSever/parkspace/addParkSpace',
 						              type: 'POST',
 						              data: formObject,
 						              async: false,
 						              dataType: 'json',
 						              success: function (data) {
 					                      layer.msg("添加成功", {time:3000});
-						    			  table.reload('trarecordTable', {
+						    			  table.reload('parkspaceTable', {
 						    			  });
 								    	  layer.closeAll();
 						              },
@@ -131,15 +133,17 @@
 		      break;
 		    };
 	  });	  
-
-	  table.on('tool(trarecordTable)', function(obj){
+	  
+	  //监听行工具事件
+	  table.on('tool(parkspaceTable)', function(obj){
 	    var data = obj.data
 	    ,layEvent = obj.event
 	    ,$ = layui.jquery;
+	    
 	  	if(layEvent === 'del'){
-	  		layer.confirm('真的删除记录：'+data.id+'?', function(index){
+	  		layer.confirm('真的删除停车位：'+data.id+'?', function(index){
 		  	  	$.ajax({
-		  	  		url: '/LprSever/trarecord/removeTraRecord?id='+data.id,
+		  	  		url: '/LprSever/parkspace/removeParkSpace?id='+data.id,
 		  		    type: 'GET',
 		  		    async: false,
 		  		    dataType: 'json',
@@ -154,20 +158,21 @@
 		  		 });
 	  	     });
 	  	}
-	  	else if(layEvent === 'edit'){
-			$("#trarecordForm")[0].reset();
-			form.render(null, 'trarecordForm');
-			
-			form.val('trarecordForm', {
+	  	else if(layEvent === 'edit'){	  		
+			$("#parkspaceForm")[0].reset();
+			form.render(null, 'parkspaceForm');
+			form.val('parkspaceForm', {
 				"id":data.id
-				,"space_id": data.space_id
-				,"licenseplate": data.licenseplate
-				,"date_in": data.date_in
-				,"date_out": data.date_out
-				,"cost": data.cost
+			  ,"name": data.name
+			  ,"state":data.state
+			  ,"idle": data.idle
+			  ,"hire_start_date": data.hire_start_date
+			  ,"hire_stop_date": data.hire_stop_date
+			  ,"rentornot": data.rentornot			  
 			});
+			
 	    	layer.open({
-	    		  title: '编辑：'+ data.loginname
+	    		  title: '编辑停车位：'+ data.id
 		    	  ,btn: ['更改','取消']
 			      ,success: function (layero, index) {
 			    	    //添加form标识
@@ -177,25 +182,21 @@
 		                form.render(); 
 		          }
 		    	  ,yes: function(index, layero){
-		    		  //监听提交按钮
 		    		  form.on('submit(formContent)', function (data) {
-			    		  //转为json字符串
 			    		  var formObject = {};
 			    		  var formArray =$('#layui-layer'+index).find('form').serializeArray();
 			    		  $.each(formArray,function(i,item){
 			    			  formObject[item.name] = item.value;
 			    			  });
-			    		  console.log(formObject);
-			    		  //请求服务器
 			    		  $.ajax({
-				              url: '/LprSever/trarecord/updateTraRecord',
+				              url: '/LprSever/parkspace/updateParkSpace',
 				              type: 'POST',
 				              data: formObject,
 				              async: false,
 				              dataType: 'json',
 				              success: function (data) {
 			                      layer.msg("修改成功", {time:3000});
-				    			  table.reload('trarecordTable', {
+				    			  table.reload('parkspaceTable', {
 				    			  });
 						    	  layer.closeAll();
 				              },
@@ -206,8 +207,8 @@
 	                  });
 		    	  }
 	    		  ,type: 1
-	    		  ,area: ['400px', '385px']
-	    		  ,content: $('#noDisplayFormAdd')  
+	    		  ,area: ['400px', '350px']
+	    		  ,content: $('#noDisplayFormAdd')
 	    		}); 	    	
 	  	}
 	  });
@@ -219,33 +220,44 @@
 	<div id="noDisplayFormAdd" style="display:none;">
 		 <div class="layui-card">
             <div class="layui-card-body">
-                <form class="layui-form layui-form-pane" lay-filter="trarecordForm" id="trarecordForm">
-                    <input type="hidden" name="id" class="layui-input">
+                <form class="layui-form layui-form-pane" lay-filter="parkspaceForm" id="parkspaceForm">
+                    <input type="hidden" name="id" placeholder="请输入车位名字" autocomplete="off" class="layui-input">
                     <div class="layui-form-item">
-                        <label class="layui-form-label"><i class="layui-icon">&nbsp;</i>停车位</label>
+                        <label class="layui-form-label"><i class="layui-icon">&nbsp;</i>车位名称</label>
                         <div class="layui-input-block">
-                            <input type="text" name="space_id" placeholder="请输入space_id" autocomplete="off" class="layui-input"></div>
-                    </div>                    
-                    <div class="layui-form-item">
-                        <label class="layui-form-label"><i class="layui-icon">&nbsp;</i>牌照</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="licenseplate" placeholder="请输入牌照" autocomplete="off" class="layui-input"></div>
+                            <input type="text" name="name" placeholder="请输入车位名字" autocomplete="off" class="layui-input"></div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label"><i class="layui-icon">&nbsp;</i>驶入时间</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="date_in" placeholder="请输入驶入时间" autocomplete="off" class="layui-input"></div>
+                    	<label class="layui-form-label">当前是否有车</label>
+                    	<div class="layui-input-block">
+	                    	<input name="state" title="是" type="radio" value="是">
+	                    	<input name="state" title="否" type="radio" value="否">
+                    	</div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label"><i class="layui-icon">&nbsp;</i>驶出时间</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="date_out" placeholder="请输入驶出时间" autocomplete="off" class="layui-input"></div>
+                    	<label class="layui-form-label">是否空闲</label>
+                    	<div class="layui-input-block">
+	                    	<input name="idle" title="是" type="radio" value="是">
+	                    	<input name="idle" title="否" type="radio" value="否">
+                    	</div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label"><i class="layui-icon">&nbsp;</i>费用</label>
+                        <label class="layui-form-label"><i class="layui-icon">&nbsp;</i>租赁开始</label>
                         <div class="layui-input-block">
-                            <input type="text" name="cost" placeholder="请输入费用" autocomplete="off" class="layui-input"></div>
-                    </div>                    
+                            <input type="text" name="hire_start_date" placeholder="请输入租赁开始时间" autocomplete="off" class="layui-input"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"><i class="layui-icon">&nbsp;</i>租赁结束</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="hire_stop_date" placeholder="请输入租赁结束时间" autocomplete="off" class="layui-input"></div>
+                    </div>
+                    <div class="layui-form-item">
+                    	<label class="layui-form-label">是否外借</label>
+                    	<div class="layui-input-block">
+	                    	<input name="rentornot" title="是" type="radio" value="是">
+	                    	<input name="rentornot" title="否" type="radio" value="否">
+                    	</div>
+                    </div>                   
                 </form>
             </div>
         </div>

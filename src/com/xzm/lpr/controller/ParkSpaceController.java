@@ -3,6 +3,8 @@ package com.xzm.lpr.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xzm.lpr.domain.ParkSpace;
+import com.xzm.lpr.domain.User;
 import com.xzm.lpr.service.LprService;
+import com.xzm.lpr.util.common.LprConstants;
 import com.xzm.lpr.util.tag.PageModel;
 
 import net.sf.json.JSONArray;
@@ -26,9 +30,8 @@ public class ParkSpaceController {
 			
 	@RequestMapping(value="/parkspace/getParkSpace",produces={"text/html;charset=UTF-8"})
 	@ResponseBody
-	 public String getParkLot(Integer page,Integer limit){
+	 public String getParkLot(HttpSession session,String operate,Integer page,Integer limit){
 		
-		System.out.println(page+"/"+limit);
 		PageModel pageModel = new PageModel();
 		if(page != null){
 			pageModel.setPageIndex(page);
@@ -36,8 +39,12 @@ public class ParkSpaceController {
 		if(page != null){
 			pageModel.setPageSize(limit);
 		}
-
-		List<ParkSpace> parkSpaces = lprService.findParkSpace(pageModel);
+		
+		System.out.println("operate="+operate);
+		
+		User user=(User) session.getAttribute(LprConstants.USER_SESSION);
+		
+		List<ParkSpace> parkSpaces = lprService.findParkSpace(user,operate,pageModel);
 		
 		JSONObject jsonmain = new JSONObject();
 		jsonmain.put("code", "200");
@@ -49,6 +56,7 @@ public class ParkSpaceController {
 			ParkSpace parkSpace = (ParkSpace)parkSpaces.get(i);
 			jsonobj.put("id", parkSpace.getId());
 			jsonobj.put("name", parkSpace.getName());
+			jsonobj.put("state", parkSpace.getState());
 			jsonobj.put("idle", parkSpace.getIdle());
 			jsonobj.put("hire_start_date", parkSpace.getHire_start_date());
 			jsonobj.put("hire_stop_date", parkSpace.getHire_stop_date());
@@ -83,12 +91,13 @@ public class ParkSpaceController {
 		
 		Integer id=Integer.valueOf(map.get("id"));
 		String name=map.get("name");
+		String state=map.get("state");
 		String idle=map.get("idle");
 		String hire_start_date=map.get("hire_start_date");
 		String hire_stop_date=map.get("hire_stop_date");
 		String rentornot=map.get("rentornot");
 		
-		ParkSpace parkSpace = new ParkSpace(id,name,idle,hire_start_date,hire_stop_date,rentornot);
+		ParkSpace parkSpace = new ParkSpace(id,name,state,idle,hire_start_date,hire_stop_date,rentornot);
 		
 		int i=lprService.updateParkSpace(parkSpace);
 		JSONObject jsonmain = new JSONObject();
@@ -106,11 +115,12 @@ public class ParkSpaceController {
 		
 		String name=map.get("name");
 		String idle=map.get("idle");
+		String state=map.get("state");
 		String hire_start_date=map.get("hire_start_date");
 		String hire_stop_date=map.get("hire_stop_date");
 		String rentornot=map.get("rentornot");
 		
-		ParkSpace parkSpace = new ParkSpace(name,idle,hire_start_date,hire_stop_date,rentornot);
+		ParkSpace parkSpace = new ParkSpace(name,state,idle,hire_start_date,hire_stop_date,rentornot);
 		
 		int i=lprService.addParkSpace(parkSpace);
 		JSONObject jsonmain = new JSONObject();
@@ -121,5 +131,24 @@ public class ParkSpaceController {
 		}
 		return jsonmain.toString();
 	}
+	
+	@RequestMapping(value="/parkspace/orderParkSpace",produces={"text/html;charset=UTF-8"})
+	@ResponseBody
+	public String orderParkLot(@RequestParam Map<String,String> map){
+		
+		Integer id=Integer.valueOf(map.get("id"));
+		
+		ParkSpace parkSpace = new ParkSpace(id,null,"是",null,null,null,null);
+		
+		int i=lprService.updateParkSpace(parkSpace);
+		JSONObject jsonmain = new JSONObject();
+		if(i != 0){
+			jsonmain.put("msg", "OK");
+		}else{
+			jsonmain.put("msg", "ERROR");
+		}
+		return jsonmain.toString();
+	}	
+	
 	
 }

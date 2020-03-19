@@ -14,6 +14,15 @@ public class UserDynaSqlProvider {
 			{
 				SELECT("*");
 				FROM(USERTABLE);
+				if(params.get("user") != null){
+					User user = (User)params.get("user");
+					if(user.getLoginname() != null && !user.getLoginname().equals("")){
+						WHERE("  loginname LIKE CONCAT ('%',#{user.loginname},'%') ");
+					}
+					if(user.getPassword() != null && !user.getPassword().equals("")){
+						WHERE("  password LIKE CONCAT ('%',#{user.password},'%') ");
+					}
+				}
 			}
 		}.toString();
 		
@@ -25,12 +34,27 @@ public class UserDynaSqlProvider {
 	}	
 
 	public String count(Map<String, Object> params){
-		return new SQL(){
+		String sql = new SQL(){
 			{
 				SELECT("count(*)");
 				FROM(USERTABLE);
+				if(params.get("user") != null){
+					User user = (User)params.get("user");
+					if(user.getLoginname() != null && !user.getLoginname().equals("")){
+						WHERE("  loginname LIKE CONCAT ('%',#{user.loginname},'%') ");
+					}
+					if(user.getPassword() != null && !user.getPassword().equals("")){
+						WHERE("  password LIKE CONCAT ('%',#{user.password},'%') ");
+					}
+				}
 			}
 		}.toString();
+		
+		if(params.get("pageModel") != null){
+			sql += " limit #{pageModel.firstLimitParam} , #{pageModel.pageSize}  ";
+		}
+		
+		return sql;
 	}	
 	
 	public String insertUser(User user){
