@@ -30,7 +30,7 @@ public class ParkSpaceController {
 			
 	@RequestMapping(value="/parkspace/getParkSpace",produces={"text/html;charset=UTF-8"})
 	@ResponseBody
-	 public String getParkLot(HttpSession session,String operate,Integer page,Integer limit){
+	 public String getParkSpace(HttpSession session,String operate,Integer page,Integer limit){
 		
 		PageModel pageModel = new PageModel();
 		if(page != null){
@@ -40,15 +40,11 @@ public class ParkSpaceController {
 			pageModel.setPageSize(limit);
 		}
 		
-		System.out.println("operate="+operate);
-		
 		User user=(User) session.getAttribute(LprConstants.USER_SESSION);
 		
 		List<ParkSpace> parkSpaces = lprService.findParkSpace(user,operate,pageModel);
 		
 		JSONObject jsonmain = new JSONObject();
-		jsonmain.put("code", "200");
-		jsonmain.put("msg", "none");
 		jsonmain.put("count",pageModel.getRecordCount());
 		JSONArray jsonarray = new JSONArray();
 		JSONObject jsonobj = new JSONObject();
@@ -64,7 +60,8 @@ public class ParkSpaceController {
 			jsonarray.add(jsonobj);
 		}
 		
-		jsonmain.put("data", jsonarray);		
+		jsonmain.put("data", jsonarray);
+		jsonmain.put("code", 200);
 		return jsonmain.toString();
 		
 	}
@@ -73,21 +70,18 @@ public class ParkSpaceController {
 	@ResponseBody
 	public String removeParkSpace(int id){
 		
-		System.out.println("id="+id);
-		
 		Integer i=lprService.removeParkSpaceById(id);
 
 		JSONObject jsonmain = new JSONObject();
-		if(i!=null) {
-			jsonmain.put("code", "200");
-			jsonmain.put("msg", "none");			
+		if( i!=null ) {
+			jsonmain.put("msg", "删除成功");			
 		}
 		return jsonmain.toString();
 	}
 	
 	@RequestMapping(value="/parkspace/updateParkSpace",produces={"text/html;charset=UTF-8"})
 	@ResponseBody
-	public String updateParkLot(@RequestParam Map<String,String> map){
+	public String updateParkSpace(@RequestParam Map<String,String> map){
 		
 		Integer id=Integer.valueOf(map.get("id"));
 		String name=map.get("name");
@@ -99,19 +93,19 @@ public class ParkSpaceController {
 		
 		ParkSpace parkSpace = new ParkSpace(id,name,state,idle,hire_start_date,hire_stop_date,rentornot);
 		
-		int i=lprService.updateParkSpace(parkSpace);
+		Integer i=lprService.updateParkSpace(parkSpace);
 		JSONObject jsonmain = new JSONObject();
-		if(i != 0){
-			jsonmain.put("msg", "OK");
+		if(i != null){
+			jsonmain.put("msg", "更新成功");
 		}else{
-			jsonmain.put("msg", "ERROR");
+			jsonmain.put("msg", "更新失败");
 		}
 		return jsonmain.toString();
 	}
 	
 	@RequestMapping(value="/parkspace/addParkSpace",produces={"text/html;charset=UTF-8"})
 	@ResponseBody
-	public String addParkLot(@RequestParam Map<String,String> map){
+	public String addParkSpace(@RequestParam Map<String,String> map){
 		
 		String name=map.get("name");
 		String idle=map.get("idle");
@@ -122,33 +116,66 @@ public class ParkSpaceController {
 		
 		ParkSpace parkSpace = new ParkSpace(name,state,idle,hire_start_date,hire_stop_date,rentornot);
 		
-		int i=lprService.addParkSpace(parkSpace);
+		Integer i=lprService.addParkSpace(parkSpace);
 		JSONObject jsonmain = new JSONObject();
-		if(i != 0){
-			jsonmain.put("msg", "OK");
+		if(i != null){
+			jsonmain.put("msg", "添加成功");
 		}else{
-			jsonmain.put("msg", "ERROR");
+			jsonmain.put("msg", "添加失败");
 		}
 		return jsonmain.toString();
 	}
 	
+	/*
+	 用户预约
+	 */
 	@RequestMapping(value="/parkspace/orderParkSpace",produces={"text/html;charset=UTF-8"})
 	@ResponseBody
-	public String orderParkLot(@RequestParam Map<String,String> map){
+	public String orderParkSpace(@RequestParam Map<String,String> map){
 		
 		Integer id=Integer.valueOf(map.get("id"));
 		
 		ParkSpace parkSpace = new ParkSpace(id,null,"是",null,null,null,null);
 		
-		int i=lprService.updateParkSpace(parkSpace);
+		Integer i=lprService.updateParkSpace(parkSpace);
 		JSONObject jsonmain = new JSONObject();
-		if(i != 0){
-			jsonmain.put("msg", "OK");
+		if(i != null){
+			jsonmain.put("msg", "预约成功");
 		}else{
-			jsonmain.put("msg", "ERROR");
+			jsonmain.put("msg", "预约失败");
 		}
 		return jsonmain.toString();
-	}	
+	}
 	
-	
+	/*
+	 用户租赁
+	 */
+	@RequestMapping(value="/parkspace/rentParkSpace",produces={"text/html;charset=UTF-8"})
+	@ResponseBody
+	public String rentParkLot(HttpSession session,@RequestParam Map<String,String> map){
+		
+		User user=(User) session.getAttribute(LprConstants.USER_SESSION);
+		
+		Integer id=Integer.valueOf(map.get("id"));
+		String name = (String) map.get("name");
+		String hire_start_date = (String) map.get("hire_start_date");
+		String hire_stop_date = (String) map.get("hire_stop_date");
+		Integer paynumber=Integer.valueOf(map.get("paynumber"));
+		
+		ParkSpace parkSpace = new ParkSpace(id,name,"否",hire_start_date,hire_stop_date);
+		
+		user.setParkspace_id(id);
+		user.setWallet(paynumber);
+		
+		Integer i=lprService.rentParkSpace(parkSpace,user);
+		JSONObject jsonmain = new JSONObject();
+		if(i != null && i==2 ){
+			jsonmain.put("msg", "你已经租赁停车位");
+		}else if(i != null && i==1 ) {
+			jsonmain.put("msg", "租赁成功");
+		}else{
+			jsonmain.put("msg", "租赁失败");
+		}
+		return jsonmain.toString();
+	}
 }

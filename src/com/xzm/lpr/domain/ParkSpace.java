@@ -28,6 +28,14 @@ public class ParkSpace implements Serializable  {
 		this.rentornot=rentornot;
 	}
 	
+	public ParkSpace(Integer id,String name,String idle,String hire_start_date,String hire_stop_date) {
+		this.id=id;
+		this.name=name;
+		this.idle=idle;
+		this.hire_start_date=hire_start_date;
+		this.hire_stop_date=hire_stop_date;
+	}
+	
 	public ParkSpace(String name,String state,String idle,String hire_start_date,String hire_stop_date,String rentornot) {
 		this.name=name;
 		this.state=state;

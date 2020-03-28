@@ -8,10 +8,7 @@
 </head>
 <body>
 <div  style="max-width:1350x;margin:0 auto;">
-	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
-	<legend>停车场——详细信息</legend>
-	</fieldset> 
-	<div class="layui-card" style="max-width:1000px;margin:0 auto;"> 
+	<div class="layui-card" style="max-width:1000px;margin:10px auto;"> 
 		<div class="layui-card-body">
 			<form class="layui-form layui-form-pane" lay-filter="parklotForm" id="parklotForm">
                     <div class="layui-form-item">
@@ -32,7 +29,7 @@
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">联系电话</label>
-                        <div class="layui-input-block">
+                        <div class="layui-input-inline">
                             <input type="number" name="telephone" autocomplete="off" class="layui-input"></div>
                     </div>
                     <div class="layui-form-item">
@@ -54,7 +51,29 @@
                         <div class="layui-input-inline">
                             <input type="number" name="activitycost_per" placeholder="$" autocomplete="off" class="layui-input"></div>
                    		 <div class="layui-form-mid">元</div>
-                    </div>                                   
+                    </div>
+                    <div class="layui-form-item">
+                    	<div class="layui-inline">
+	                        <label class="layui-form-label">按一月收费</label>
+	                    	<div class="layui-input-inline">
+	                            <input type="text" name="monthcost" autocomplete="off" class="layui-input"></div>
+	                        
+	                        <label class="layui-form-label">按季度收费</label>
+                        	<div class="layui-input-inline">
+                            	<input type="text" name="quartercost" autocomplete="off" class="layui-input"></div>
+                    	</div>
+                    </div>
+                    <div class="layui-form-item">
+                    	<div class="layui-inline">
+	                        <label class="layui-form-label">按半年收费</label>
+	                    	<div class="layui-input-inline">
+	                            <input type="text" name="halfyearcost" autocomplete="off" class="layui-input"></div>
+	                        
+	                        <label class="layui-form-label">按一年收费</label>
+                        	<div class="layui-input-inline">
+                            	<input type="text" name="yearcost" autocomplete="off" class="layui-input"></div>
+                    	</div>
+                    </div>                                  
                     <div class="layui-form-item">
 	                    <div class="layui-inline">
 						      <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="demo1">确认修改</button>
@@ -88,6 +107,10 @@
 				,"activitynum_leave":"剩余停车位"+datalist.activitynum_leave+"个"
 				,"fixationnum_leave":"剩余停车位"+datalist.fixationnum_leave+"个"
 				,"activitycost_per":datalist.activitycost_per
+				,"monthcost":datalist.monthcost
+				,"quartercost":datalist.quartercost
+				,"halfyearcost":datalist.halfyearcost
+				,"yearcost":datalist.yearcost
 			});
 		  },
 		  error: function () {
@@ -103,12 +126,7 @@
 			    async: false,
 			    dataType: 'json',
 			    success: function (data) {
-			    	 if(data.msg==='OK'){
-				         layer.msg("修改成功", {time:3000});
-			    	 }else{
-			    		 layer.msg("修改错误", {time:3000});
-			    	 }
-			    	  
+				     layer.msg(data.msg, {time:3000});
 			     },
 			     error: function () {
 			         layer.msg("服务器错误", {time:3000});

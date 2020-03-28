@@ -17,10 +17,10 @@ public class UserDynaSqlProvider {
 				if(params.get("user") != null){
 					User user = (User)params.get("user");
 					if(user.getLoginname() != null && !user.getLoginname().equals("")){
-						WHERE("  loginname LIKE CONCAT ('%',#{user.loginname},'%') ");
+						WHERE("  loginname = #{user.loginname} ");
 					}
 					if(user.getPassword() != null && !user.getPassword().equals("")){
-						WHERE("  password LIKE CONCAT ('%',#{user.password},'%') ");
+						WHERE("  password = #{user.password} ");
 					}
 				}
 			}
@@ -41,10 +41,10 @@ public class UserDynaSqlProvider {
 				if(params.get("user") != null){
 					User user = (User)params.get("user");
 					if(user.getLoginname() != null && !user.getLoginname().equals("")){
-						WHERE("  loginname LIKE CONCAT ('%',#{user.loginname},'%') ");
+						WHERE("  loginname = #{user.loginname} ");
 					}
 					if(user.getPassword() != null && !user.getPassword().equals("")){
-						WHERE("  password LIKE CONCAT ('%',#{user.password},'%') ");
+						WHERE("  password = #{user.password} ");
 					}
 				}
 			}
@@ -79,6 +79,9 @@ public class UserDynaSqlProvider {
 				if(user.getAuthority() != null && !user.getAuthority().equals("")){
 					VALUES("authority", "#{authority}");
 				}
+				if(user.getWallet() != null && !user.getWallet().equals("")){
+					VALUES("wallet", "#{wallet}");
+				}
 			}
 		}.toString();
 	}
@@ -106,6 +109,9 @@ public class UserDynaSqlProvider {
 				if(user.getAuthority()!= null){
 					SET(" authority = #{authority} ");
 				}
+				if(user.getWallet()!= null){
+					SET(" wallet = #{wallet} ");
+				}				
 				WHERE(" loginname = #{loginname} ");
 			}
 		}.toString();

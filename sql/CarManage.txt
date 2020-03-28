@@ -13,10 +13,15 @@ create table parklot_inf (
   activitynum_leave int(11) default 50 comment '剩余活动车位数',
   fixationnum_leave int(11) default 50 comment '剩余固定车位数', 
   activitycost_per int(11) default 5 comment '活动车位元每时',  
+  monthcost int(11) default 0 comment '月租赁收费',
+  quartercost int(11) default 0 comment '季度租赁收费',
+  halfyearcost int(11) default 0 comment '半年租赁收费',
+  yearcost int(11) default 0 comment '年租赁收费',
   primary key (id)
 ) engine=innodb auto_increment=10 default charset=utf8;
 
-insert into parklot_inf(id,name,address,telephone,activitynum,fixationnum,activitynum_leave,fixationnum_leave,activitycost_per) values(0,'神风停车场','安徽省合肥市包河区合肥工业大学','15284875380',20,50,20,30,3);
+insert into parklot_inf(id,name,address,telephone,activitynum,fixationnum,activitynum_leave,fixationnum_leave,activitycost_per,monthcost,quartercost
+,halfyearcost,yearcost) values(0,'神风停车场','安徽省合肥市包河区合肥工业大学','15284875380',20,50,20,30,3,800,2600,5200,10300);
 
 
 #创建停车位表parkspace_inf
@@ -26,8 +31,8 @@ create table parkspace_inf(
   state enum('是','否') default '否' comment '当前停车场状态，是，有车在此位置；否，则反之',
   idle enum('是','否') default '是' comment '车位闲置,否,即是有用户长期租用,是则反之',
   rentornot enum("是","否") default '否' comment '车辆是否外租', 
-  hire_start_date datetime default current_timestamp comment '租赁开始时间',
-  hire_stop_date datetime default current_timestamp comment '租赁结束时间',
+  hire_start_date datetime default null comment '租赁开始时间',
+  hire_stop_date datetime default null comment '租赁结束时间',
   primary key (id)
 ) engine=innodb auto_increment=10 default charset=utf8;
 
@@ -47,25 +52,30 @@ create table user_inf (
   telephone varchar(11) not null comment '电话号码',
   createdate datetime not null default current_timestamp comment '注册时间',
   authority enum('系统管理员','停车场管理员','用户'),
+  wallet int(11) default 0 comment '用户零钱，钱用户扣费，租赁',
   primary key (loginname),
   constraint fk_parkspace_user foreign key (parkspace_id) references parkspace_inf(id)
 ) engine=innodb auto_increment=2 default charset=utf8;
 
-insert into user_inf(loginname,password,telephone,authority,parkspace_id,licenseplate) values('user1','password','15284875380','用户',1,'川A00909'),
-('user2','password','15284875382','用户',2,'川HA3456'),('user3','password','15284875383','用户',3,'川HA3457');
+insert into user_inf(loginname,password,telephone,authority,parkspace_id,licenseplate,wallet) values('user1','password','15284875380','用户',1,'川A00909',50000),
+('user2','password','15284875382','用户',2,'川HA3456',0),('user3','password','15284875383','用户',3,'川HA3457',0);
 insert into user_inf(loginname,password,telephone,authority) values('root','password','15284875380','系统管理员'),
 ('admin','password','15284875381','停车场管理员');
 
 
-#创建费用表chargeuser_inf
-create table chargeuser_inf(
+#创建用户费用表walletrecord_inf，租赁用户缴费记录
+create table walletrecord_inf(
   id int(11) not null auto_increment comment '标识',
   date_pay datetime not null default current_timestamp comment '交易时间',
   name varchar(18) comment '缴费用户名',
-  cost int(11) default 0 comment '费用(正为收入，负为支出,负表示用户所得)',
+  operation enum('充值','收入','支出'),
+  cost int(11) default 0 comment '费用',
   primary key (id),
   constraint fk_parkspace_chargeuser foreign key (name) references user_inf(loginname)
 ) engine=innodb auto_increment=2 default charset=utf8;
+
+insert into walletrecord_inf(id,name,operation,cost) values(0,'user1','充值',50000);
+
 
 #创建通行日志表trarecord_inf
 create table trarecord_inf(
@@ -73,8 +83,8 @@ create table trarecord_inf(
   space_id int(11) comment '停车位标识',
   licenseplate varchar(18) not null,
   date_in datetime not null default current_timestamp,
-  date_out datetime not null default current_timestamp,
-  cost int(11) default 0 comment '默认费用',
+  date_out datetime  default null,
+  cost int(11) default 0 comment '默认费用，租赁用户收费为0，其余为按时收费',
   primary key (id),
   constraint fk_parkspace_trarecord foreign key (space_id) references parkspace_inf(id)
 ) engine=innodb auto_increment=2 default charset=utf8;

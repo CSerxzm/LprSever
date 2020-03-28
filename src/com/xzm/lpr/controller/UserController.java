@@ -42,7 +42,7 @@ public class UserController {
 			else
 				jsonmain.put("msg", "OK_admin");
 		}else{
-			jsonmain.put("msg", "ERROR");
+			jsonmain.put("msg", "登陆失败");
 		}
 		return jsonmain.toString();
 	}
@@ -51,7 +51,6 @@ public class UserController {
 	@ResponseBody
 	 public String getUser(Integer page,Integer limit){
 		
-		System.out.println(page+"/"+limit);
 		PageModel pageModel = new PageModel();
 		if(page != null){
 			pageModel.setPageIndex(page);
@@ -63,8 +62,6 @@ public class UserController {
 		List<User> users = lprService.findUser(null,pageModel);
 		
 		JSONObject jsonmain = new JSONObject();
-		jsonmain.put("code", "200");
-		jsonmain.put("msg", "none");
 		jsonmain.put("count",pageModel.getRecordCount());
 		JSONArray jsonarray = new JSONArray();
 		JSONObject jsonobj = new JSONObject();
@@ -77,11 +74,12 @@ public class UserController {
 			jsonobj.put("telephone", user.getTelephone());
 			jsonobj.put("createdate", user.getCreateDate());
 			jsonobj.put("authority", user.getAuthority());
-			System.out.println(user.getCreateDate());
+			jsonobj.put("wallet", user.getWallet());
 			jsonarray.add(jsonobj);
 		}
 		
-		jsonmain.put("data", jsonarray);		
+		jsonmain.put("data", jsonarray);
+		jsonmain.put("code", 200);
 		return jsonmain.toString();
 		
 	}
@@ -95,8 +93,6 @@ public class UserController {
 		List<User> users = lprService.findUser(user,null);
 		
 		JSONObject jsonmain = new JSONObject();
-		jsonmain.put("code", "200");
-		jsonmain.put("msg", "none");
 		JSONArray jsonarray = new JSONArray();
 		JSONObject jsonobj = new JSONObject();
 		for (int i = 0; i < users.size(); i++) {
@@ -108,7 +104,7 @@ public class UserController {
 			jsonobj.put("telephone", user_temp.getTelephone());
 			jsonobj.put("createdate", user_temp.getCreateDate());
 			jsonobj.put("authority", user_temp.getAuthority());
-			System.out.println(user_temp.getCreateDate());
+			jsonobj.put("wallet", user_temp.getWallet());
 			jsonarray.add(jsonobj);
 		}
 		
@@ -121,11 +117,13 @@ public class UserController {
 	@ResponseBody
 	public String removeUser(String loginname){
 		
-		lprService.removeUserByLogin(loginname);
+		Integer i = lprService.removeUserByLogin(loginname);
 		JSONObject jsonmain = new JSONObject();
-		jsonmain.put("code", "200");
-		jsonmain.put("msg", "none");
-		
+		if( i!=null ) {
+			jsonmain.put("msg", "删除成功");
+		}else{
+			jsonmain.put("msg", "删除失败");
+		}
 		return jsonmain.toString();
 	}
 	
@@ -139,12 +137,12 @@ public class UserController {
 		
 		User user = new User(loginname,password,telephone);
 		
-		int i=lprService.addUser(user);
+		Integer i=lprService.addUser(user);
 		JSONObject jsonmain = new JSONObject();
-		if(i != 0){
+		if(i != null){
 			jsonmain.put("msg", "OK");
 		}else{
-			jsonmain.put("msg", "ERROR");
+			jsonmain.put("msg", "Dupe");//用户名重复
 		}
 		return jsonmain.toString();
 	}
@@ -169,12 +167,12 @@ public class UserController {
 			session.setAttribute(LprConstants.USER_SESSION,user);
 		}
 		
-		int i=lprService.updateUser(user);
+		Integer i=lprService.updateUser(user);
 		JSONObject jsonmain = new JSONObject();
-		if(i != 0){
-			jsonmain.put("msg", "OK");
+		if(i != null){
+			jsonmain.put("msg", "更新成功");
 		}else{
-			jsonmain.put("msg", "ERROR");
+			jsonmain.put("msg", "更新失败");
 		}
 		return jsonmain.toString();
 	}
@@ -196,12 +194,12 @@ public class UserController {
 		
 		User user = new User(loginname,password,parkspace_id,licenseplate,telephone,createdate,authority);
 		
-		int i=lprService.addUser(user);
+		Integer i=lprService.addUser(user);
 		JSONObject jsonmain = new JSONObject();
-		if(i != 0){
-			jsonmain.put("msg", "OK");
+		if(i != null){
+			jsonmain.put("msg", "添加成功");
 		}else{
-			jsonmain.put("msg", "ERROR");
+			jsonmain.put("msg", "添加失败");
 		}
 		return jsonmain.toString();
 	}

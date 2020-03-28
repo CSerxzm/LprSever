@@ -8,19 +8,16 @@
 </head>
 <body>
 <div  style="max-width:1350px;margin:0 auto;">
-    <script type="text/html" id="barDemo">
-	{{# if(d.state=="否" ){ }}
-		<a class="layui-btn layui-btn-xs" lay-event="order"><i class="layui-icon layui-icon-add-1"></i>预约</a>
-	{{# } if(d.state=="是" ){ }}
-		<a class="layui-btn layui-btn-xs layui-btn-disabled" lay-event="order"><i class="layui-icon layui-icon-add-1"></i>已被占用</a>
-	{{# } }}
+
+	<script type="text/html" id="barDemo">
+		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
 	</script>
 	
-	<div class="layui-card">
+	<div class="layui-card">	
 	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
-	<legend>停车位预约</legend>
+	<legend>费用记录</legend>
 	</fieldset>
-    <table class="layui-hide" id="parkspaceTable" lay-filter="parkspaceTable"></table>
+    <table class="layui-hide" id="walletrecordTable" lay-filter="walletrecordTable"></table>
 	<script>
 	//创建一个表格
 	layui.use(['layer', 'form', 'table', 'element'], function(){
@@ -30,25 +27,25 @@
 	  ,element = layui.element; //元素操作
 	  
 	  form.on('submit(demo1)', function(data){
-	    		table.reload('parkspaceTable', {
-	    			url:'/LprSever/parkspace/getParkSpace?operate=order'
+	    		table.reload('walletrecordTable', {
+	    			url:'/LprSever/walletrecord/getWalletRecord'
 	      			,where: data.field
 				  });
 	    	    return false;  //不跳转
 	  });
 	  
 	  table.render({
-		    elem: '#parkspaceTable'
-		    ,cellMinWidth: 80
-		    ,url:'/LprSever/parkspace/getParkSpace?operate=order'
-		    ,toolbar: '#barHeadDemo'
-		    ,title: '车位表'
+		    elem: '#walletrecordTable'
+		    ,cellMinWidth: 120
+		    ,url:'/LprSever/walletrecord/getWalletRecord'
+			,toolbar: true
+		    ,title: '费用日志表'
 		    ,cols: [[
 		      {field:'id', title:'标识', fixed: 'left', sort: true}
-		      ,{field:'name', title:'车位名称'}
-		      ,{field:'idle', title:'是否被租赁'}
-		      ,{field:'rentornot', title:'用户是否外租'}
-		      ,{field:'state', title:'车位状态',sort: true}
+		      ,{field:'date_pay', title:'支付时间'}
+		      ,{field:'name', title:'缴费用户'}
+		      ,{field:'operation', title:'详细操作'}
+		      ,{field:'cost', title:'费用'}
 		      ,{fixed: 'right', align:'center', width:200, toolbar: '#barDemo'}
 		    ]]
 		  	,limit: 10
@@ -58,24 +55,22 @@
 		      statusCode: 200
 		    }
 	  });
-
-	  //监听行工具事件
-	  table.on('tool(parkspaceTable)', function(obj){
+ 
+	  table.on('tool(walletrecordTable)', function(obj){
 	    var data = obj.data
 	    ,layEvent = obj.event
 	    ,$ = layui.jquery;
-	    
-	  	if(layEvent === 'order'){
-	  		layer.confirm('真的预定停车位：'+data.id+'?停车费用从此刻开始算起。', function(index){
+	  	if(layEvent === 'del'){
+	  		layer.confirm('真的删除记录：'+data.id+'?', function(index){
 		  	  	$.ajax({
-		  	  		url: '/LprSever/parkspace/orderParkSpace?id='+data.id,
+		  	  		url: '/LprSever/walletrecord/removeWalletRecord?id='+data.id,
 		  		    type: 'GET',
 		  		    async: false,
 		  		    dataType: 'json',
 		  		    success: function (data) {
+			  		    obj.del(); //删除对应行（tr）的DOM结构
+			  		    layer.close(index);
 			  	        layer.msg(data.msg, {time:3000});
-		    			table.reload('parkspaceTable', {
-		    			});
 		  		    },
 		  		    error: function () {
 		  		    	layer.msg("服务器错误", {time:3000});
@@ -83,7 +78,6 @@
 		  		 });
 	  	     });
 	  	}
-	  	
 	  });
 	});
 	</script>

@@ -52,6 +52,7 @@
       <el-ignored>false</el-ignored>
       <!-- 能在页面使用java脚本 -->
       <scripting-invalid>false</scripting-invalid>
+      <include-prelude>/WEB-INF/jsp/taglib.jsp</include-prelude>
     </jsp-property-group>
   </jsp-config>
   

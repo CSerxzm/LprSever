@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import com.xzm.lpr.domain.User;
 import com.xzm.lpr.provider.UserDynaSqlProvider;
@@ -35,4 +36,25 @@ public interface UserDao {
 	
 	@UpdateProvider(type=UserDynaSqlProvider.class,method="updateUser")
 	Integer update(User user);	
+	
+	/*
+	 *      钱包操作
+	 */
+	@Update("update "+USERTABLE+" set  wallet = wallet + #{money} where loginname = #{loginname}")
+	Integer addWallet(
+			@Param("loginname") String loginname,
+			@Param("money") Integer money);
+	
+	@Update("update "+USERTABLE+" set  wallet = wallet - #{money} where loginname = #{loginname}")
+	Integer subWallet(
+			@Param("loginname") String loginname,
+			@Param("money") Integer money);
+	
+	@Select("select wallet from "+USERTABLE+" where loginname = #{loginname}")
+	Integer getWallet(
+			@Param("loginname") String loginname);
+	
+	@Select("select parkspace_id from "+USERTABLE+" where loginname = #{loginname}")
+	Integer getParkspace_id(
+			@Param("loginname") String loginname);
 }

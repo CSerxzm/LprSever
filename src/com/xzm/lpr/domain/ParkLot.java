@@ -15,12 +15,17 @@ public class ParkLot implements Serializable {
 	private Integer activitynum_leave;
 	private Integer fixationnum_leave;
 	private Integer activitycost_per;
+	private Integer monthcost;
+	private Integer quartercost;
+	private Integer halfyearcost;
+	private Integer yearcost;
 
 	public ParkLot() {
 		super();
 	}
 	
-	public ParkLot(Integer id,String name,String address,String telephone,Integer activitynum,Integer fixationnum,Integer activitycost_per) {
+	public ParkLot(Integer id,String name,String address,String telephone,Integer activitynum,Integer fixationnum
+			,Integer activitycost_per,Integer monthcost,Integer quartercost,Integer halfyearcost,Integer yearcost) {
 		this.id=id;
 		this.name=name;
 		this.address=address;
@@ -28,6 +33,10 @@ public class ParkLot implements Serializable {
 		this.activitynum=activitynum;
 		this.fixationnum=fixationnum;
 		this.activitycost_per=activitycost_per;
+		this.monthcost=monthcost;
+		this.quartercost=quartercost;
+		this.halfyearcost=halfyearcost;
+		this.yearcost=yearcost;
 	}
 
 	public Integer getId() {
@@ -100,6 +109,38 @@ public class ParkLot implements Serializable {
 
 	public void setActivitycost_per(Integer activitycost_per) {
 		this.activitycost_per = activitycost_per;
+	}
+
+	public Integer getMonthcost() {
+		return monthcost;
+	}
+
+	public void setMonthcost(Integer monthcost) {
+		this.monthcost = monthcost;
+	}
+
+	public Integer getQuartercost() {
+		return quartercost;
+	}
+
+	public void setQuartercost(Integer quartercost) {
+		this.quartercost = quartercost;
+	}
+
+	public Integer getHalfyearcost() {
+		return halfyearcost;
+	}
+
+	public void setHalfyearcost(Integer halfyearcost) {
+		this.halfyearcost = halfyearcost;
+	}
+
+	public Integer getYearcost() {
+		return yearcost;
+	}
+
+	public void setYearcost(Integer yearcost) {
+		this.yearcost = yearcost;
 	}
 	
 }

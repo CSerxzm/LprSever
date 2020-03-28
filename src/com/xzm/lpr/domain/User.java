@@ -13,7 +13,8 @@ public class User implements Serializable {
 	private String telephone;
 	private String createDate;
 	
-	private String authority;	
+	private String authority;
+	private Integer wallet;
 
 	public User() {
 		super();
@@ -83,4 +84,13 @@ public class User implements Serializable {
 	public void setLicenseplate(String licenseplate) {
 		this.licenseplate = licenseplate;
 	}
+
+	public Integer getWallet() {
+		return wallet;
+	}
+
+	public void setWallet(Integer wallet) {
+		this.wallet = wallet;
+	}
+	
 }

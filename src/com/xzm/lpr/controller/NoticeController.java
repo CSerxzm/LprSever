@@ -47,8 +47,6 @@ public class NoticeController {
 		List<Notice> notices = lprService.findNotice(pageModel);
 		
 		JSONObject jsonmain = new JSONObject();
-		jsonmain.put("code", "200");
-		jsonmain.put("msg", "none");
 		jsonmain.put("count",pageModel.getRecordCount());
 		JSONArray jsonarray = new JSONArray();
 		JSONObject jsonobj = new JSONObject();
@@ -62,7 +60,8 @@ public class NoticeController {
 			jsonarray.add(jsonobj);
 		}
 		
-		jsonmain.put("data", jsonarray);		
+		jsonmain.put("data", jsonarray);
+		jsonmain.put("code", 200);
 		return jsonmain.toString();
 	
 	}
@@ -72,10 +71,10 @@ public class NoticeController {
 	 public String removeNotice(String id){
 		Integer i = lprService.removeNoticeById(Integer.parseInt(id));
 		JSONObject jsonmain = new JSONObject();
-		if(i != 0){
-			jsonmain.put("msg", "OK");
+		if(i != null){
+			jsonmain.put("msg", "删除成功");
 		}else{
-			jsonmain.put("msg", "ERROR");
+			jsonmain.put("msg", "删除失败");
 		}
 		return jsonmain.toString();
 	}
@@ -89,12 +88,11 @@ public class NoticeController {
 		String name_publish=user.getLoginname();
 		Integer i = lprService.addNotice(new Notice(title,content,name_publish));
 		
-		System.out.println("i="+i);
 		JSONObject jsonmain = new JSONObject();
-		if(i != 0){
-			jsonmain.put("msg", "OK");
+		if(i != null){
+			jsonmain.put("msg", "添加成功");
 		}else{
-			jsonmain.put("msg", "ERROR");
+			jsonmain.put("msg", "添加失败");
 		}
 		return jsonmain.toString();		
 	}
@@ -109,23 +107,29 @@ public class NoticeController {
 		String name_publish=user.getLoginname();
 		
 		Integer i = lprService.updateNotice(new Notice(id,title,content,name_publish));
-		
-		System.out.println("i="+i);
+
 		JSONObject jsonmain = new JSONObject();
-		if(i != 0){
-			jsonmain.put("msg", "OK");
+		if(i != null){
+			jsonmain.put("msg", "更新成功");
 		}else{
-			jsonmain.put("msg", "ERROR");
+			jsonmain.put("msg", "更新失败");
 		}
 		return jsonmain.toString();	
 	}
 	
 	@RequestMapping(value="/notice/toupdateNotice",produces={"text/html;charset=UTF-8"})	
 	 public ModelAndView toUpdateNotice(ModelAndView mv,Integer id){
-		System.out.println("id="+id);
 		Notice notice = lprService.findNoticeById(id);
 		mv.addObject("notice",notice);
 		mv.setViewName("admin/noticeupdate");
+		return mv;
+	}
+	
+	@RequestMapping(value="/notice/getNoticeShow",produces={"text/html;charset=UTF-8"})	
+	 public ModelAndView getNoticeShow(ModelAndView mv,Integer id){
+		Notice notice = lprService.findNoticeById(id);
+		mv.addObject("notice",notice);
+		mv.setViewName("admin/noticeshow");
 		return mv;
 	}
 	

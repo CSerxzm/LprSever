@@ -19,7 +19,7 @@
 	
 	<div class="layui-card">
 	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
-	<legend>停车位管理界面</legend>
+	<legend>停车位管理</legend>
 	</fieldset>
     <table class="layui-hide" id="parkspaceTable" lay-filter="parkspaceTable"></table>
 	<script>
@@ -28,7 +28,11 @@
 	  var layer = layui.layer
 	  ,form = layui.form
 	  ,table = layui.table //表格
-	  ,element = layui.element; //元素操作
+	  ,element = layui.element//元素操作
+	  ,$ = layui.jquery;
+	  
+	  var array;
+	  var array_month=[1,3,6,12];
 	  
 	  form.on('submit(demo1)', function(data){
 	    		table.reload('parkspaceTable', {
@@ -46,9 +50,11 @@
 		    ,title: '车位表'
 		    ,cols: [[
 		      {field:'id', title:'标识', fixed: 'left',sort: true}
-		      ,{field:'name', title:'车位名称'}
-		      ,{field:'idle', title:'空闲',sort: true}
+		      ,{field:'name', title:'车位别名'}
 		      ,{field:'state', title:'车位状态'}
+		      ,{field:'idle', title:'空闲',sort: true,templet:function(d){
+		             return d.idle=='否'?'已租赁':'可租赁';
+	            }}
 		      ,{fixed: 'right', align:'center', width:200, toolbar: '#barDemo'}
 		    ]]
 		  	,limit: 10
@@ -58,36 +64,43 @@
 		      statusCode: 200
 		    }
 	  }); 
-	  	  
+	    
+	  
 	  //监听行工具事件
 	  table.on('tool(parkspaceTable)', function(obj){
 	    var data = obj.data
 	    ,layEvent = obj.event
 	    ,$ = layui.jquery;
 	    
-		var activitycost_per;
 		$.ajax({
-			url: '/LprSever/index/getindex',
+			url: '/LprSever/index/getindex_info',
 			type: 'GET',
 			async: false,
 			dataType: 'json',
 			success: function (data) {
 				var datalist=data.data[0];
-				activitycost_per=datalist.activitycost_per;
+				array = new Array(datalist.monthcost,datalist.quartercost,datalist.halfyearcost,datalist.yearcost);
 			}
 		});
-	    
+		 
 	  	if(layEvent === 'rent'){  		
 			$("#parkspaceForm")[0].reset();
 			form.render(null, 'parkspaceForm');
-			form.val('parkspaceForm', {
-				"id":data.id
-			  ,"name": data.name
-			  ,
+
+			var now = getNowFormatDate();
+			
+			form.on('select(rentcycle)', function(data){
+				  $("#paynumber").attr("value",array[data.value]);
+				  console.log(addMonth(now,array_month[data.value]));
+				  $("#hire_stop_date").attr("value",addMonth(now,array_month[data.value]));
 			});
 			
-			console.log("activitycost_per="+activitycost_per);
-			
+			form.val('parkspaceForm', {
+				"id":data.id
+				,"hire_start_date":now
+				,"name": data.name
+			});
+
 	    	layer.open({
 	    		  title: '租赁停车位：'+ data.id
 		    	  ,btn: ['租赁','取消']
@@ -97,15 +110,6 @@
 		                //将按钮重置为可提交按钮以触发表单验证
 		                layero.find('.layui-layer-btn0').attr('lay-filter', 'formContent').attr('lay-submit', '');
 						form.render();
-						
-		    			//监听下拉框
-		    			$("#rentcycle").change(function(){ 
-		    				alert($(this).children('option:selected').val()); 
-		    				var p_value=$(this).children('option:selected').val(); 
-		    				var paynumber = p_value*activitycost_per;
-		    				console.log("paynumber="+paynumber);
-		    			});
-
 		          }
 		    	  ,yes: function(index, layero){
 		    		  form.on('submit(formContent)', function (data) {
@@ -115,25 +119,25 @@
 			    			  formObject[item.name] = item.value;
 			    			  });
 			    		  $.ajax({
-				              url: '/LprSever/parkspace/updateParkSpace',
+				              url: '/LprSever/parkspace/rentParkSpace',
 				              type: 'POST',
 				              data: formObject,
 				              async: false,
 				              dataType: 'json',
 				              success: function (data) {
-			                      layer.msg("租赁成功", {time:3000});
+						    	  layer.closeAll();
 				    			  table.reload('parkspaceTable', {
 				    			  });
-						    	  layer.closeAll();
+						    	  layer.msg(data.msg, {time:1000});
 				              },
 				              error: function () {
-			                      layer.msg("租赁失败", {time:3000});
+			                      layer.msg("服务器错误", {time:3000});
 				              }
 				          });
 	                  });
 		    	  }
 	    		  ,type: 1
-	    		  ,area: ['400px', '350px']
+	    		  ,area: ['400px', '380px']
 	    		  ,content: $('#noDisplayFormAdd')
 	    		}); 	    	
 	  	}
@@ -161,18 +165,23 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">租赁周期</label>
 					    <div class="layui-input-block">
-					      <select name="rentcycle" id="rentcycle">
-					        <option value="1" selected>1个月</option>
-					        <option value="3">3个月</option>
-					        <option value="6">6个月</option>
-					        <option value="12">1年</option>
+					      <select name="rentcycle" id="rentcycle" lay-filter="rentcycle">
+					        <option value="0" selected>1个月</option>
+					        <option value="1">3个月</option>
+					        <option value="2">6个月</option>
+					        <option value="3">1年</option>
 					      </select>
 					    </div>
 					</div>
+					<div class="layui-form-item">
+                        <label class="layui-form-label">租赁结束</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="hire_stop_date" id="hire_stop_date" class="layui-input" readonly></div>
+                    </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">支付金额</label>
                         <div class="layui-input-block">
-                            <input type="name" name="paynumber" class="layui-input"></div>
+                            <input type="text" name="paynumber"  id="paynumber" class="layui-input" readonly></div>
                     </div>                  
                 </form>
             </div>

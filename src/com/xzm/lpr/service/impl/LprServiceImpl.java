@@ -16,11 +16,13 @@ import com.xzm.lpr.dao.ParkLotDao;
 import com.xzm.lpr.dao.ParkSpaceDao;
 import com.xzm.lpr.dao.TraRecordDao;
 import com.xzm.lpr.dao.UserDao;
+import com.xzm.lpr.dao.WalletRecordDao;
 import com.xzm.lpr.domain.Notice;
 import com.xzm.lpr.domain.ParkLot;
 import com.xzm.lpr.domain.ParkSpace;
 import com.xzm.lpr.domain.TraRecord;
 import com.xzm.lpr.domain.User;
+import com.xzm.lpr.domain.WalletRecord;
 import com.xzm.lpr.service.LprService;
 import com.xzm.lpr.util.tag.PageModel;
 
@@ -42,6 +44,10 @@ public class LprServiceImpl implements LprService{
 	
 	@Autowired
 	private NoticeDao noticeDao;
+	
+	
+	@Autowired
+	private WalletRecordDao walletRecordDao;	
 	
 	@Transactional(readOnly=true)
 	@Override
@@ -134,13 +140,14 @@ public class LprServiceImpl implements LprService{
 	public List<TraRecord> findTraRecord(User user,PageModel pageModel) {
 		// TODO Auto-generated method stub
 		Map<String,Object> params = new HashMap<>();
-		int recordCount = traRecordDao.count(params);
-		pageModel.setRecordCount(recordCount);
 		
-		if(!user.getAuthority().equals("系统管理员")) {
+		if(user.getAuthority()!=null&&!user.getAuthority().equals("系统管理员")) {
 			params.put("user", user);
 			System.out.println(user.getLicenseplate());
 		}
+		
+		int recordCount = traRecordDao.count(params);
+		pageModel.setRecordCount(recordCount);
 		
 		if(recordCount > 0){
 	        /** 开始分页查询数据：查询第几页的数据 */
@@ -213,6 +220,83 @@ public class LprServiceImpl implements LprService{
 	@Override
 	public Integer addParkSpace(ParkSpace parkSpace) {
 		return parkSpaceDao.save(parkSpace);
+	}
+
+	@Override
+	public Integer addWalletRecord(WalletRecord walletRecord) {
+		
+		String operation = walletRecord.getOperation();
+		String loginname = walletRecord.getName();
+		Integer cost = walletRecord.getCost();
+		
+		System.out.println(operation+"/"+loginname+"/"+cost);
+		
+		if(operation.equals("充值")||operation.equals("收入")) {
+			walletRecordDao.save(walletRecord);
+			return userDao.addWallet(loginname,cost);
+		}else {
+			Integer money = userDao.getWallet(loginname);
+			if (money>=cost) {
+				walletRecordDao.save(walletRecord);
+				return userDao.subWallet(loginname,cost);				
+			}else {
+				return null;
+			}
+
+		}
+	}
+
+	@Override
+	public List<WalletRecord> findWalletRecord(User user, PageModel pageModel) {
+		
+		Map<String,Object> params = new HashMap<>();
+		
+		if(user.getAuthority()!=null&&!user.getAuthority().equals("系统管理员")) {
+			params.put("user", user);
+			System.out.println(user.getLicenseplate());
+		}
+		
+		int recordCount = walletRecordDao.count(params);
+		pageModel.setRecordCount(recordCount);
+		
+		if(recordCount > 0){
+	        /** 开始分页查询数据：查询第几页的数据 */
+		    params.put("pageModel", pageModel);
+	    }
+		List<WalletRecord> walletRecord = walletRecordDao.selectByPage(params);
+		return walletRecord;
+	}
+
+	/*
+	 租赁停车场，对用户表、费用表、车位表进行改变。
+	 */
+	@Override
+	public Integer rentParkSpace(ParkSpace parkSpace, User user) {
+		
+		String loginname = user.getLoginname();
+		Integer wallet = userDao.getWallet(loginname);
+		Integer money = user.getWallet();
+		
+		/*
+		 * 判断是否已经租赁
+		 */
+		Integer parkspace_id = userDao.getParkspace_id(loginname);
+		if(parkspace_id != null) {
+			return 2;//表示已经有租赁
+		}
+		/*
+		 * 判断余额是否足够
+		 */
+		if(wallet>=money) {
+			wallet = wallet-money;
+			user.setWallet(wallet);
+			Integer i = parkSpaceDao.update(parkSpace);
+			Integer j = userDao.update(user);
+			WalletRecord walletRecord = new WalletRecord(loginname,"支出",money);
+			Integer k = walletRecordDao.save(walletRecord);
+			return (i&j&k);
+		}
+		return null;
 	}
 
 }

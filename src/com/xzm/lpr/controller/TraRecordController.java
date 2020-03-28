@@ -45,8 +45,6 @@ public class TraRecordController {
 		List<TraRecord> trarecords = lprService.findTraRecord(user,pageModel);
 		
 		JSONObject jsonmain = new JSONObject();
-		jsonmain.put("code", "200");
-		jsonmain.put("msg", "none");
 		jsonmain.put("count",pageModel.getRecordCount());
 		JSONArray jsonarray = new JSONArray();
 		JSONObject jsonobj = new JSONObject();
@@ -55,29 +53,27 @@ public class TraRecordController {
 			jsonobj.put("id", trarecord.getId());
 			jsonobj.put("space_id", trarecord.getSpace_id());
 			jsonobj.put("licenseplate", trarecord.getLicenseplate());
-			System.out.println(trarecord.getDate_in());
 			jsonobj.put("date_in", trarecord.getDate_in());
 			jsonobj.put("date_out", trarecord.getDate_out());
 			jsonobj.put("cost", trarecord.getCost());
 			jsonarray.add(jsonobj);
 		}
 		
-		jsonmain.put("data", jsonarray);		
+		jsonmain.put("data", jsonarray);
+		jsonmain.put("code", 200);
 		return jsonmain.toString();
 	}
 	
 	@RequestMapping(value="/trarecord/removeTraRecord",produces={"text/html;charset=UTF-8"})
 	@ResponseBody
 	public String removeTraRecord(int id){
-		
-		System.out.println("id="+id);
-		
+				
 		Integer i = lprService.removeTraRecordById(id);
-		System.out.println("i="+i);
 		JSONObject jsonmain = new JSONObject();
-		if(i!=0) {
-			jsonmain.put("code", "200");
-			jsonmain.put("msg", "none");
+		if( i!=null ) {
+			jsonmain.put("msg", "删除成功");
+		}else {
+			jsonmain.put("msg", "删除失败");
 		}
 		return jsonmain.toString();
 	}
@@ -96,11 +92,11 @@ public class TraRecordController {
 		TraRecord traRecord = new TraRecord(id,space_id,licenseplate,date_in,date_out,cost);
 		
 		Integer i = lprService.updateTraRecord(traRecord);
-		System.out.println("i="+i);
 		JSONObject jsonmain = new JSONObject();
-		if(i!=0) {
-			jsonmain.put("code", "200");
-			jsonmain.put("msg", "none");
+		if(i!=null) {
+			jsonmain.put("msg", "更新成功");
+		}else {
+			jsonmain.put("msg", "更新失败");
 		}
 		return jsonmain.toString();
 	}
@@ -122,11 +118,12 @@ public class TraRecordController {
 		TraRecord traRecord = new TraRecord(space_id,licenseplate,date_in,date_out,cost);
 		
 		Integer i = lprService.addTraRecord(traRecord);
-		System.out.println("i="+i);
+		
 		JSONObject jsonmain = new JSONObject();
-		if(i!=0) {
-			jsonmain.put("code", "200");
-			jsonmain.put("msg", "none");
+		if( i!=null ) {
+			jsonmain.put("msg", "添加成功");
+		}else {
+			jsonmain.put("msg", "添加失败");
 		}
 		return jsonmain.toString();
 	}

@@ -57,13 +57,8 @@
 			      async: false,
 			      dataType: 'json',
 			      success: function (data) {
-			    	  if(data.msg==='OK'){
-				          layer.msg("发表成功", {time:3000});
+				          layer.msg(data.msg, {time:3000});
 				          window.location.href="../notice";
-			    	  }else{
-			    		  layer.msg("发表失败", {time:3000});
-			    	  }
-			    	  
 			      },
 			      error: function () {
 			          layer.msg("服务器错误", {time:3000});

@@ -29,14 +29,11 @@ public class AuthorizedInterceptor  implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
 			Object handler) throws Exception {
-		/** 默认用户没有登录 */
-		boolean flag = false; 
-		/** 获得请求的ServletPath */
-		String servletPath = request.getServletPath();
 		
+		boolean flag = false; 
+		String servletPath = request.getServletPath();
 		System.out.println(servletPath);
 		
-		/**  判断请求是否需要拦截 */
         for (String s : IGNORE_URI) {
             if (servletPath.contains(s)) {
                 flag = true;

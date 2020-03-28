@@ -7,9 +7,13 @@ import com.xzm.lpr.domain.ParkLot;
 import com.xzm.lpr.domain.ParkSpace;
 import com.xzm.lpr.domain.TraRecord;
 import com.xzm.lpr.domain.User;
+import com.xzm.lpr.domain.WalletRecord;
 import com.xzm.lpr.util.tag.PageModel;
 
 public interface LprService {
+	
+	List<ParkLot> findParkLot();
+	Integer updateParkLot(ParkLot parkLot);
 
 	Integer addUser(User user);
 	Integer removeUserByLogin(String loginname);
@@ -21,14 +25,13 @@ public interface LprService {
 	Integer removeTraRecordById(int id);
 	List<TraRecord> findTraRecord(User user,PageModel pageModel);
 	Integer updateTraRecord(TraRecord traRecord);
-	
-	List<ParkLot> findParkLot();
-	Integer updateParkLot(ParkLot parkLot);
 
 	Integer addParkSpace(ParkSpace parkSpace);
 	Integer removeParkSpaceById(int id);
 	List<ParkSpace> findParkSpace(User user,String operate,PageModel pageModel);
 	Integer updateParkSpace(ParkSpace parkSpace);
+	
+	Integer rentParkSpace(ParkSpace parkSpace,User user);
 
 	Integer addNotice(Notice notice);
 	Integer removeNoticeById(Integer id);
@@ -36,5 +39,8 @@ public interface LprService {
 	Notice findNoticeById(Integer id);
 	List<Notice> findNotice(PageModel pageModel);
 	Integer updateNotice(Notice notice);
+	
+	Integer addWalletRecord(WalletRecord walletRecord);
+	List<WalletRecord> findWalletRecord(User user,PageModel pageModel);
 		
 }

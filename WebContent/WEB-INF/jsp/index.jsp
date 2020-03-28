@@ -14,11 +14,11 @@
 <div class="layui-layout layui-layout-admin">
 	<div class="layui-header">
 		<div class="layui-logo" style="color:#FFF;"><i class="layui-icon layui-icon-home"></i>&nbsp;停车场</div>
-		<ul class="layui-nav layui-layout-right">
-	      <li class="layui-nav-item" style="padding-right:5px">
+		<ul class="layui-nav layui-layout-right" style="margin-top:15px;">
+	      <li class="layui-nav-item" style="padding-right:10px;">
 				<button class="layui-btn layui-btn-sm" data-method="login">登录</button>
 	      </li>
-	      <li class="layui-nav-item">
+	      <li class="layui-nav-item" style="padding-right:10px;">
 				<button class="layui-btn layui-btn-sm" data-method="regist">注册</button>
 	      </li>
 	    </ul>
@@ -44,7 +44,7 @@
 			        <div class="item">剩余活动停车位：<label id="activitynum_leave"></label>个&nbsp;/&nbsp;<label id="activitynum"></label></div>
 			        <div class="item">剩余灵活停车位：<label id="fixationnum_leave"></label>个&nbsp;/&nbsp;<label id="fixationnum"></label></div>
 			        <div class="item">今日价格:&nbsp;<label id="activitycost_per"></label>&nbsp;元/单位小时。</div>
-		        </div>    
+		        </div> 
 		      </div>
 		    </div>
 		    <div class="layui-col-md6">
@@ -68,6 +68,7 @@
 	  var $ = layui.jquery;
 	  var carousel = layui.carousel;
 	  
+	  //轮播
 	  carousel.render({
 		    elem: '#test1'
 		    ,width: '100%' //设置容器宽度
@@ -108,7 +109,6 @@
 			    		    	  else{
 			    		    		  layer.msg("用户名或密码错误", {time:3000});
 			    		    	  }
-			    		    	  
 			    		      },
 			    		      error: function () {
 			    		          layer.msg("服务器错误", {time:3000});
@@ -147,8 +147,6 @@
 		    			    		  setTimeout("window.location.href='/LprSever/index';", 1000);
 		    			    	  }else if(data.msg==='Dupe'){
 		    			    		  layer.msg("用户名已存在", {time:3000});
-		    			    	  }else{
-		    			    		  layer.msg("服务器错误", {time:3000});
 		    			    	  }
 		    			      },
 		    			      error: function () {
@@ -171,7 +169,7 @@
 		  });
 	  
 	  $.ajax({
-		  url: '/LprSever/index/getindex',
+		  url: '/LprSever/index/getindex_info',
 		  type: 'GET',
 		  async: false,
 		  dataType: 'json',
@@ -185,13 +183,20 @@
 			  $("#activitynum").text(datalist.activitynum);
 			  $("#fixationnum").text(datalist.fixationnum);
 			  $("#activitycost_per").text(datalist.activitycost_per);
-			  console.log(datalist.activitynum+"wq"+datalist.fixationnum);
-			  
-			  var noticelist=data.data[1];
-			  console.log(noticelist.length);
+		  }
+		});
+	  
+	  
+	  $.ajax({
+		  url: '/LprSever/index/getindex_notice',
+		  type: 'GET',
+		  async: false,
+		  dataType: 'json',
+		  success: function (data) {
+			  var noticelist=data.data;
 			  for(var i = 0; i < noticelist.length; i++)
 			  {
-				  $("#notice").append('<div class="layui-card"><a href="http://www.baidu.com"><h3>&nbsp;&nbsp;'+noticelist[i].create_date+'</h3>'
+				  $("#notice").append('<div class="layui-card"><a href="/LprSever/notice/getNoticeShow?id='+noticelist[i].id+'"><h3>&nbsp;&nbsp;'+noticelist[i].create_date+'</h3>'
 				  +'<div class="layui-card-body">'+noticelist[i].title+'</div></a></div>');
 			  }
 			  

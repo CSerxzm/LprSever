@@ -22,17 +22,13 @@ public class IndexController {
 	@Qualifier("lprService")
 	private LprService lprService;
 		
-	@RequestMapping(value="/index/getindex",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/index/getindex_info",produces={"text/html;charset=UTF-8"})
 	@ResponseBody
-	public String Index(){
+	public String getIndex_info(){
 		
 		List<ParkLot> parkLots = lprService.findParkLot();
 		
-		List<Notice> notices = lprService.findNotice(null);
-		
 		JSONObject jsonmain = new JSONObject();
-		jsonmain.put("code", "200");
-		jsonmain.put("msg", "none");
 		JSONArray jsonarray = new JSONArray();
 		JSONObject jsonobj = new JSONObject();
 		for (int i = 0; i < parkLots.size(); i++) {
@@ -45,19 +41,34 @@ public class IndexController {
 			jsonobj.put("activitynum_leave", parkLot.getActivitynum_leave());
 			jsonobj.put("fixationnum_leave", parkLot.getFixationnum_leave());
 			jsonobj.put("activitycost_per", parkLot.getActivitycost_per());
+			jsonobj.put("monthcost", parkLot.getMonthcost());
+			jsonobj.put("quartercost", parkLot.getQuartercost());
+			jsonobj.put("halfyearcost", parkLot.getHalfyearcost());
+			jsonobj.put("yearcost", parkLot.getYearcost());
 			jsonarray.add(jsonobj);
 		}
+		jsonmain.put("data", jsonarray);
+		return jsonmain.toString();
+	}
+	
+	@RequestMapping(value="/index/getindex_notice",produces={"text/html;charset=UTF-8"})
+	@ResponseBody
+	public String getIndex_notice(){
+
+		List<Notice> notices = lprService.findNotice(null);
+		
+		JSONObject jsonmain = new JSONObject();
 		JSONObject jsonobj_notice = new JSONObject();
 		JSONArray jsonarray_notice = new JSONArray();
 		for (int i = 0; i < notices.size(); i++) {
 			Notice notice = (Notice)notices.get(i);
+			jsonobj_notice.put("id", notice.getId());
 			jsonobj_notice.put("title", notice.getTitle());
 			jsonobj_notice.put("content", notice.getContent());
 			jsonobj_notice.put("create_date", notice.getCreate_date());
 			jsonarray_notice.add(jsonobj_notice);
 		}
-		jsonarray.add(jsonarray_notice);
-		jsonmain.put("data", jsonarray);
+		jsonmain.put("data", jsonarray_notice);
 		return jsonmain.toString();
 	}
 

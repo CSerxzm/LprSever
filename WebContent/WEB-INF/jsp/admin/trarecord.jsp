@@ -113,13 +113,12 @@
 						              async: false,
 						              dataType: 'json',
 						              success: function (data) {
-					                      layer.msg("添加成功", {time:3000});
-						    			  table.reload('trarecordTable', {
-						    			  });
-								    	  layer.closeAll();
+						            	  layer.closeAll();
+						    			  table.reload('trarecordTable', {});
+						    			  layer.msg(data.msg, {time:3000});
 						              },
 						              error: function () {
-					                      layer.msg("添加失败", {time:3000});
+					                      layer.msg("服务器错误", {time:3000});
 						              }
 						          });
 			                  });
@@ -146,10 +145,10 @@
 		  		    success: function (data) {
 			  		    obj.del(); //删除对应行（tr）的DOM结构
 			  		    layer.close(index);
-			  	        layer.msg("删除成功", {time:3000});
+			  	        layer.msg(data.msg, {time:3000});
 		  		    },
 		  		    error: function () {
-		  		    	layer.msg("删除失败", {time:3000});
+		  		    	layer.msg("服务器错误", {time:3000});
 		  		    }
 		  		 });
 	  	     });
@@ -194,13 +193,12 @@
 				              async: false,
 				              dataType: 'json',
 				              success: function (data) {
-			                      layer.msg("修改成功", {time:3000});
-				    			  table.reload('trarecordTable', {
-				    			  });
-						    	  layer.closeAll();
+				            	  layer.closeAll();
+				    			  table.reload('trarecordTable', {});
+				    			  layer.msg(data.msg, {time:3000});
 				              },
 				              error: function () {
-			                      layer.msg("修改失败", {time:3000});
+			                      layer.msg("服务器错误", {time:3000});
 				              }
 				          });
 	                  });

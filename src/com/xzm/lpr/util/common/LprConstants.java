@@ -8,7 +8,7 @@ public class LprConstants {
 	public static final String PARKSPACETABLE = "parkspace_inf";
 	public static final String PARKLOTTABLE = "parklot_inf";
 	public static final String NOTICETABLE = "notice_inf";
-	public static final String CARREGISTTABLE = "carregist_inf";
+	public static final String WALLETRECORDTABLE= "walletrecord_inf";
 	
 	public static final String LOGIN = "index";
 	

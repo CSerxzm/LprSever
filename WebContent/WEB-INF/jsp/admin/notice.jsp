@@ -9,6 +9,7 @@
 <body>
 
     <script type="text/html" id="barDemo">
+	 <a class="layui-btn layui-btn-xs" lay-event="show"><i class="layui-icon layui-icon-file"></i>预览</a>
      <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
 	</script>
@@ -65,7 +66,7 @@
 		      ,{field:'content', title:'内容'}
 		      ,{field:'create_date', title:'发表时间'}
 		      ,{field:'name_publish', title:'发表者'}
-		      ,{fixed: 'right', align:'center', width:200, toolbar: '#barDemo'}
+		      ,{fixed: 'right', align:'center', width:300, toolbar: '#barDemo'}
 		    ]]
 			,even:true
 		  	,limit: 10
@@ -99,16 +100,19 @@
 		  		    success: function (data) {
 			  		    obj.del();
 			  		    layer.close(index);
-			  	        layer.msg("删除成功", {time:3000});
+			  	        layer.msg(data.msg, {time:3000});
 		  		    },
 		  		    error: function () {
-		  		    	layer.msg("删除失败", {time:3000});
+		  		    	layer.msg("服务器错误", {time:3000});
 		  		    }
 		  		 });
 	  	     });
 	  	}
 	  	else if(layEvent === 'edit'){
 	  		window.location.href = '/LprSever/notice/toupdateNotice?id='+data.id;
+	  	}
+	  	else if(layEvent === 'show'){
+	  		window.location.href = '/LprSever/notice/getNoticeShow?id='+data.id;
 	  	}
 	  }); 
 	  

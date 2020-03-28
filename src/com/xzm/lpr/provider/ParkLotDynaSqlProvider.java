@@ -49,6 +49,18 @@ public class ParkLotDynaSqlProvider {
 				if(parkLot.getActivitycost_per()!= null){
 					SET(" activitycost_per = #{activitycost_per} ");
 				}
+				if(parkLot.getMonthcost()!= null){
+					SET(" monthcost = #{monthcost} ");
+				}
+				if(parkLot.getQuartercost()!= null){
+					SET(" quartercost = #{quartercost} ");
+				}
+				if(parkLot.getHalfyearcost()!= null){
+					SET(" halfyearcost = #{halfyearcost} ");
+				}
+				if(parkLot.getYearcost()!= null){
+					SET(" yearcost = #{yearcost} ");
+				}
 				WHERE(" id = #{id} ");
 			}
 		}.toString();
