@@ -23,7 +23,7 @@ public class ParkLotController {
 	@Qualifier("lprService")
 	private LprService lprService;
 			
-	@RequestMapping(value="/parklot/getParkLot",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/parklot/getParkLot")
 	@ResponseBody
 	 public String getParkLot(){
 		
@@ -55,7 +55,7 @@ public class ParkLotController {
 		
 	}
 	
-	@RequestMapping(value="/parklot/updateParkLot",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/parklot/updateParkLot")
 	@ResponseBody
 	public String updateParkLot(@RequestParam Map<String,String> map){
 		

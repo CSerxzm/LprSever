@@ -47,7 +47,7 @@ public class UserController {
 		return jsonmain.toString();
 	}
 	
-	@RequestMapping(value="/user/getUser",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/user/getUser")
 	@ResponseBody
 	 public String getUser(Integer page,Integer limit){
 		
@@ -84,7 +84,7 @@ public class UserController {
 		
 	}
 	
-	@RequestMapping(value="/user/getUserOne",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/user/getUserOne")
 	@ResponseBody
 	public String getUserOne(HttpSession session){
 		
@@ -127,7 +127,7 @@ public class UserController {
 		return jsonmain.toString();
 	}
 	
-	@RequestMapping(value="/user/registerUser",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/user/registerUser")
 	@ResponseBody
 	public String registerUser(@RequestParam Map<String,String> map){
 		String loginname=map.get("loginname");
@@ -147,7 +147,7 @@ public class UserController {
 		return jsonmain.toString();
 	}
 	
-	@RequestMapping(value="/user/updateUser",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/user/updateUser")
 	@ResponseBody
 	public String updateUser(HttpSession session,@RequestParam Map<String,String> map){
 		
@@ -156,6 +156,8 @@ public class UserController {
 		String password=map.get("password");
 		if(!map.get("parkspace_id").equals("")) {
 			parkspace_id=Integer.valueOf(map.get("parkspace_id"));
+		}else {
+			parkspace_id=null;
 		}
 		String licenseplate=map.get("licenseplate");
 		String telephone=map.get("telephone");
@@ -177,7 +179,7 @@ public class UserController {
 		return jsonmain.toString();
 	}
 	
-	@RequestMapping(value="/user/addUser",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/user/addUser")
 	@ResponseBody
 	public String addUser(@RequestParam Map<String,String> map){
 		

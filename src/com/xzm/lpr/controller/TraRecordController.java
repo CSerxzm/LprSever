@@ -28,7 +28,7 @@ public class TraRecordController {
 	@Qualifier("lprService")
 	private LprService lprService;
 	
-	@RequestMapping(value="/trarecord/getTraRecord",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/trarecord/getTraRecord")
 	@ResponseBody
 	 public String getTraRecord(HttpSession session,Integer page,Integer limit){
 
@@ -64,7 +64,7 @@ public class TraRecordController {
 		return jsonmain.toString();
 	}
 	
-	@RequestMapping(value="/trarecord/removeTraRecord",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/trarecord/removeTraRecord")
 	@ResponseBody
 	public String removeTraRecord(int id){
 				
@@ -78,7 +78,7 @@ public class TraRecordController {
 		return jsonmain.toString();
 	}
 	
-	@RequestMapping(value="/trarecord/updateTraRecord",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/trarecord/updateTraRecord")
 	@ResponseBody
 	public String updateTraRecord(@RequestParam Map<String,String> map){
 		
@@ -101,7 +101,7 @@ public class TraRecordController {
 		return jsonmain.toString();
 	}
 	
-	@RequestMapping(value="/trarecord/addTraRecord",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/trarecord/addTraRecord")
 	@ResponseBody
 	public String addTraRecord(@RequestParam Map<String,String> map){
 		

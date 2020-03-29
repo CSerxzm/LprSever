@@ -31,7 +31,7 @@ public class NoticeController {
 	@Qualifier("lprService")
 	private LprService lprService;
 	
-	@RequestMapping(value="/notice/getNotice",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/notice/getNotice")
 	@ResponseBody
 	 public String getNotice(Integer page,Integer limit){
 		
@@ -66,7 +66,7 @@ public class NoticeController {
 	
 	}
 	
-	@RequestMapping(value="/notice/removeNotice",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/notice/removeNotice")
 	@ResponseBody
 	 public String removeNotice(String id){
 		Integer i = lprService.removeNoticeById(Integer.parseInt(id));
@@ -79,7 +79,7 @@ public class NoticeController {
 		return jsonmain.toString();
 	}
 	
-	@RequestMapping(value="/notice/addNotice",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/notice/addNotice")
 	@ResponseBody
 	 public String addNotice(HttpSession session,@RequestParam Map<String,String> map){
 		String title=map.get("title");
@@ -97,7 +97,7 @@ public class NoticeController {
 		return jsonmain.toString();		
 	}
 	
-	@RequestMapping(value="/notice/updateNotice",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/notice/updateNotice")
 	@ResponseBody
 	 public String updateNotice(HttpSession session,@RequestParam Map<String,String> map){
 		String title=map.get("title");
@@ -117,7 +117,7 @@ public class NoticeController {
 		return jsonmain.toString();	
 	}
 	
-	@RequestMapping(value="/notice/toupdateNotice",produces={"text/html;charset=UTF-8"})	
+	@RequestMapping(value="/notice/toupdateNotice")	
 	 public ModelAndView toUpdateNotice(ModelAndView mv,Integer id){
 		Notice notice = lprService.findNoticeById(id);
 		mv.addObject("notice",notice);
@@ -125,7 +125,7 @@ public class NoticeController {
 		return mv;
 	}
 	
-	@RequestMapping(value="/notice/getNoticeShow",produces={"text/html;charset=UTF-8"})	
+	@RequestMapping(value="/notice/getNoticeShow")	
 	 public ModelAndView getNoticeShow(ModelAndView mv,Integer id){
 		Notice notice = lprService.findNoticeById(id);
 		mv.addObject("notice",notice);

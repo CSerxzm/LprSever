@@ -28,7 +28,7 @@ public class ParkSpaceController {
 	@Qualifier("lprService")
 	private LprService lprService;
 			
-	@RequestMapping(value="/parkspace/getParkSpace",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/parkspace/getParkSpace")
 	@ResponseBody
 	 public String getParkSpace(HttpSession session,String operate,Integer page,Integer limit){
 		
@@ -79,7 +79,7 @@ public class ParkSpaceController {
 		return jsonmain.toString();
 	}
 	
-	@RequestMapping(value="/parkspace/updateParkSpace",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/parkspace/updateParkSpace")
 	@ResponseBody
 	public String updateParkSpace(@RequestParam Map<String,String> map){
 		
@@ -103,7 +103,7 @@ public class ParkSpaceController {
 		return jsonmain.toString();
 	}
 	
-	@RequestMapping(value="/parkspace/addParkSpace",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/parkspace/addParkSpace")
 	@ResponseBody
 	public String addParkSpace(@RequestParam Map<String,String> map){
 		
@@ -129,7 +129,7 @@ public class ParkSpaceController {
 	/*
 	 用户预约
 	 */
-	@RequestMapping(value="/parkspace/orderParkSpace",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/parkspace/orderParkSpace")
 	@ResponseBody
 	public String orderParkSpace(@RequestParam Map<String,String> map){
 		
@@ -150,7 +150,7 @@ public class ParkSpaceController {
 	/*
 	 用户租赁
 	 */
-	@RequestMapping(value="/parkspace/rentParkSpace",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/parkspace/rentParkSpace")
 	@ResponseBody
 	public String rentParkLot(HttpSession session,@RequestParam Map<String,String> map){
 		

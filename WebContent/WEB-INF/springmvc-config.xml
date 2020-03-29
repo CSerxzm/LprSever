@@ -14,8 +14,33 @@
         
     <!-- 自动扫描该包，SpringMVC会将包下用了@controller注解的类注册为Spring的controller -->
     <context:component-scan base-package="com.xzm.lpr.controller"/>
-    <!-- 设置默认配置方案 -->
-    <mvc:annotation-driven/>
+
+    <!-- 注解的适配器和映射器 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+        <!-- 解决返回的中文为乱码问题 -->      
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>
+                            text/plain;charset=UTF-8
+                        </value>
+                        <value>
+                            text/html;charset=UTF-8
+                        </value>
+
+                        <value>
+                            application/json;charset=UTF-8
+                        </value>
+                        <value>
+                            application/x-www-form-urlencoded;charset=UTF-8                     
+                        </value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    
     <!-- 使用默认的Servlet来响应静态文件 -->
     <mvc:default-servlet-handler/>
     

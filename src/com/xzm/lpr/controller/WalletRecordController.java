@@ -29,7 +29,7 @@ public class WalletRecordController {
 	@Qualifier("lprService")
 	private LprService lprService;
 	
-	@RequestMapping(value="/walletrecord/getWalletRecord",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/walletrecord/getWalletRecord")
 	@ResponseBody
 	 public String getWalletRecord(HttpSession session,Integer page,Integer limit){
 
@@ -66,7 +66,7 @@ public class WalletRecordController {
 		return jsonmain.toString();
 	}
 	
-	@RequestMapping(value="/walletrecord/charge",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/walletrecord/charge")
 	@ResponseBody
 	 public String charge(@RequestParam Map<String,String> map){
 

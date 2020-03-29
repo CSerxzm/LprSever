@@ -24,7 +24,7 @@ import net.sf.json.JSONObject;
 @Controller
 public class FileUploadController{
 	
-	 @PostMapping(value="/upload",produces={"text/html;charset=UTF-8"})
+	 @PostMapping(value="/upload")
 	 @ResponseBody
 	 public String upload(HttpServletRequest request,
 			MultipartFile file) throws Exception{
@@ -57,7 +57,7 @@ public class FileUploadController{
 		 
 	 }
 	 
-	 @GetMapping(value="/download",produces={"text/html;charset=UTF-8"})
+	 @GetMapping(value="/download")
 	 public ResponseEntity<byte[]> download(HttpServletRequest request,
 			 @RequestParam("filename") String filename,
 			 @RequestHeader("User-Agent") String userAgent

@@ -22,7 +22,7 @@ public class IndexController {
 	@Qualifier("lprService")
 	private LprService lprService;
 		
-	@RequestMapping(value="/index/getindex_info",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/index/getindex_info")
 	@ResponseBody
 	public String getIndex_info(){
 		
@@ -51,7 +51,7 @@ public class IndexController {
 		return jsonmain.toString();
 	}
 	
-	@RequestMapping(value="/index/getindex_notice",produces={"text/html;charset=UTF-8"})
+	@RequestMapping(value="/index/getindex_notice")
 	@ResponseBody
 	public String getIndex_notice(){
 

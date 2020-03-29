@@ -57,10 +57,9 @@
 			      async: false,
 			      dataType: 'json',
 			      success: function (data) {
-				          layer.msg(data.msg, {time:3000});
-				          window.location.href="../notice";
-			      },
-			      error: function () {
+				      layer.msg(data.msg, {time:3000});
+			      }
+			  	  ,error: function () {
 			          layer.msg("服务器错误", {time:3000});
 			      }
 			  });

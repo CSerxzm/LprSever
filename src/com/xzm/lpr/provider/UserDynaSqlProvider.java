@@ -67,6 +67,7 @@ public class UserDynaSqlProvider {
 				if(user.getPassword() != null && !user.getPassword().equals("")){
 					VALUES("password", "#{password}");
 				}
+				//用于取消绑定的停车位
 				if(user.getParkspace_id() != null && !user.getParkspace_id().equals("")){
 					VALUES("parkspace_id", "#{parkspace_id}");
 				}
