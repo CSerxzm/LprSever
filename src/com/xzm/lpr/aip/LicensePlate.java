@@ -1,6 +1,13 @@
 package com.xzm.lpr.aip;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 
 import org.json.JSONObject;
 
@@ -29,14 +36,63 @@ public class LicensePlate {
         }
         return null;
     }
+    /*
+     * 		字符串编码格式的转化
+     */
+    public static byte[] getUTF8BytesFromGBKString(String gbkStr) {  
+        int n = gbkStr.length();  
+        byte[] utfBytes = new byte[3 * n];  
+        int k = 0;  
+        for (int i = 0; i < n; i++) {  
+            int m = gbkStr.charAt(i);  
+            if (m < 128 && m >= 0) {  
+                utfBytes[k++] = (byte) m;  
+                continue;  
+            }  
+            utfBytes[k++] = (byte) (0xe0 | (m >> 12));  
+            utfBytes[k++] = (byte) (0x80 | ((m >> 6) & 0x3f));  
+            utfBytes[k++] = (byte) (0x80 | (m & 0x3f));  
+        }  
+        if (k < utfBytes.length) {  
+            byte[] tmp = new byte[k];  
+            System.arraycopy(utfBytes, 0, tmp, 0, k);  
+            return tmp;  
+        }  
+        return utfBytes;  
+    }
+
 
     public static String getlicensePlate(String filePath) {
+    	//百度api    
     	//return licensePlate(filePath);
-    	return "苏A0CP56";
+    	
+    	//自己程序解决部分
+		String exe = "python";
+		String command = "E:\\Python\\lpr\\lpr.py";
+		String[] cmdArr = new String[] {exe,command,filePath};
+		Process process;
+		try {
+			process = Runtime.getRuntime().exec(cmdArr);
+			process.waitFor();
+			if(process.exitValue()==0) {
+				BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream(), Charset.forName("GBK")));
+	            String line = null;
+	            line = in.readLine();
+	            in.close();	
+	            return new String(getUTF8BytesFromGBKString(line), "UTF-8");
+			}
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return "ERROR";
     }
-    
-    //public static void main(String[] args) {
-    //    System.out.println(licensePlate("E:\\ADesktop\\car.jpg"));
-    //}
-    
+/*   
+  用于系统端口测试 
+ *         
+    public static void main(String[] args) {
+        System.out.println(getlicensePlate("E:\\Python\\LP\\chepai\\1.jpg"));
+    }
+ */
+     
 }

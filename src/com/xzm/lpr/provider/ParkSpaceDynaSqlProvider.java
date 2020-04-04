@@ -88,10 +88,10 @@ public class ParkSpaceDynaSqlProvider {
 				if(parkSpace.getIdle()!= null){
 					SET(" idle = #{idle} ");
 				}
-				if(parkSpace.getHire_start_date()!= null){
+				if(parkSpace.getHire_start_date()!= null && !parkSpace.getHire_start_date().equals("")){
 					SET(" hire_start_date = #{hire_start_date} ");
 				}
-				if(parkSpace.getHire_stop_date()!= null){
+				if(parkSpace.getHire_stop_date()!= null && !parkSpace.getHire_stop_date().equals("")){
 					SET(" hire_stop_date = #{hire_stop_date} ");
 				}
 				if(parkSpace.getRentornot()!= null){

@@ -67,8 +67,7 @@ public class UserDynaSqlProvider {
 				if(user.getPassword() != null && !user.getPassword().equals("")){
 					VALUES("password", "#{password}");
 				}
-				//用于取消绑定的停车位
-				if(user.getParkspace_id() != null && !user.getParkspace_id().equals("")){
+				if(user.getParkspace_id() != null && !user.getParkspace_id().equals("") ){
 					VALUES("parkspace_id", "#{parkspace_id}");
 				}
 				if(user.getLicenseplate() != null && !user.getLicenseplate().equals("")){
@@ -95,7 +94,8 @@ public class UserDynaSqlProvider {
 				if(user.getPassword()!= null){
 					SET(" password = #{password} ");
 				}
-				if(user.getParkspace_id()!= null){
+				//用于取消绑定的停车位
+				if(user.getParkspace_id()!= null || user.getParkspace_id() == null){
 					SET(" parkspace_id = #{parkspace_id} ");
 				}
 				if(user.getLicenseplate()!= null){

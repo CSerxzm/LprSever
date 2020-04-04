@@ -62,11 +62,15 @@ public class TraRecordDynaSqlProvider {
 				if(traRecord.getLicenseplate()!= null){
 					SET(" licenseplate = #{licenseplate} ");
 				}
-				if(traRecord.getDate_in()!= null){
+				if(traRecord.getDate_in()!= null && !traRecord.getDate_in().equals("")){
 					SET(" date_in = #{date_in} ");
+				}else {
+					SET(" date_in = null ");
 				}
-				if(traRecord.getDate_out()!= null){
+				if(traRecord.getDate_out()!= null && !traRecord.getDate_in().equals("")){
 					SET(" date_out = #{date_out} ");
+				}else {
+					SET(" date_out = null ");
 				}
 				if(traRecord.getCost()!= null){
 					SET(" cost = #{cost} ");
