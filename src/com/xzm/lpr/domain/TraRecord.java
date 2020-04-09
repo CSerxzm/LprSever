@@ -77,7 +77,7 @@ public class TraRecord implements Serializable{
 	}
 
 	public String getDate_out() {
-		if(date_in==null)
+		if(date_out==null)
 			return date_out;
 		return date_out.split("[.]")[0];
 	}

@@ -141,7 +141,7 @@ public class LprServiceImpl implements LprService{
 		// TODO Auto-generated method stub
 		Map<String,Object> params = new HashMap<>();
 		
-		if(user.getAuthority()!=null&&!user.getAuthority().equals("系统管理员")) {
+		if(user!=null && user.getAuthority()!=null && user.getAuthority().equals("user") ) {
 			params.put("user", user);
 			System.out.println(user.getLicenseplate());
 		}
@@ -251,7 +251,7 @@ public class LprServiceImpl implements LprService{
 		
 		Map<String,Object> params = new HashMap<>();
 		
-		if(user.getAuthority()!=null&&!user.getAuthority().equals("系统管理员")) {
+		if(user!=null && user.getAuthority()!=null && user.getAuthority().equals("user") ) {
 			params.put("user", user);
 			System.out.println(user.getLicenseplate());
 		}

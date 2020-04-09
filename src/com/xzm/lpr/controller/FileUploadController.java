@@ -6,6 +6,8 @@ import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.BodyBuilder;
@@ -18,11 +20,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.xzm.lpr.aip.LicensePlate;
+import com.xzm.lpr.service.LprService;
 
 import net.sf.json.JSONObject;
 
 @Controller
 public class FileUploadController{
+	
+	 @Autowired
+	 @Qualifier("lprService")
+	 private LprService lprService;
 	
 	 @PostMapping(value="/upload")
 	 @ResponseBody
@@ -43,7 +50,11 @@ public class FileUploadController{
 			String number = LicensePlate.getlicensePlate(path+File.separator+ filename);
 			
 			/*用字母表示第一个汉字,兼容单片机。
-			 *    等待实现
+				等待实现
+			 */
+			
+			/*
+				实现逻辑功能
 			 */
 			
 			System.out.println("上传文件路径：" + (path+File.separator+ filename));

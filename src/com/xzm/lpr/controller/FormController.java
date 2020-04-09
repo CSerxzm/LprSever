@@ -23,6 +23,11 @@ public class FormController{
 		return "/admin/"+formName;
 	}
 	
+	@RequestMapping(value="/root/{formName}")
+	 public String rootForm(@PathVariable String formName,HttpServletRequest request){
+		return "/root/"+formName;
+	}
+	
 	@RequestMapping(value="/user/{formName}")
 	 public String userForm(@PathVariable String formName,HttpServletRequest request){
 		return "/user/"+formName;

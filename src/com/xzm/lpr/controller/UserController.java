@@ -37,8 +37,10 @@ public class UserController {
 		JSONObject jsonmain = new JSONObject();
 		if(user != null){
 			session.setAttribute(LprConstants.USER_SESSION,user);
-			if(user.getAuthority().equals("用户"))
+			if(user.getAuthority().equals("user"))
 				jsonmain.put("msg", "OK_user");
+			else if(user.getAuthority().equals("root"))
+				jsonmain.put("msg", "OK_root");
 			else
 				jsonmain.put("msg", "OK_admin");
 		}else{
@@ -165,7 +167,7 @@ public class UserController {
 		String authority=map.get("authority");
 		
 		User user = new User(loginname,password,parkspace_id,licenseplate,telephone,createdate,authority);		
-		if(authority.equals("用户")) {
+		if(authority.equals("user")) {
 			session.setAttribute(LprConstants.USER_SESSION,user);
 		}
 		

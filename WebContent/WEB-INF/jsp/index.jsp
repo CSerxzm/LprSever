@@ -106,6 +106,10 @@
 			    			          layer.msg("登录成功", {time:3000});
 			    		    		  setTimeout("window.location.href='/LprSever/admin/Main';", 1000);
 			    		    	  }
+			    		    	  else if(data.msg==='OK_root'){
+			    			          layer.msg("登录成功", {time:3000});
+			    		    		  setTimeout("window.location.href='/LprSever/root/Main';", 1000);
+			    		    	  }
 			    		    	  else{
 			    		    		  layer.msg("用户名或密码错误", {time:3000});
 			    		    	  }
