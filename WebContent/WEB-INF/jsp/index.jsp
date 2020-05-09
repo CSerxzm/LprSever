@@ -122,7 +122,7 @@
 	                  });
 		    	  }
 	    		  ,type: 1
-	    		  ,area: ['350px', '230px']
+	    		  ,area: ['400px', '230px']
 	    		  ,content: $('#noDisplayFormlogin')  
 	    		}); 	
 	    }
@@ -161,7 +161,7 @@
 	                  });
 		    	  }
 	    		  ,type: 1
-	    		  ,area: ['350px', '280px']
+	    		  ,area: ['400px', '350px']
 	    		  ,content: $('#noDisplayFormregist')  
 	    		});
 		}
@@ -206,6 +206,30 @@
 			  
 		  }
 		});
+	  
+	  
+	  //表单验证
+	  form.verify({
+		  loginname: function(value){ 
+		    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+		      return '用户名不能有特殊字符';
+		    }
+		    if(/(^\_)|(\__)|(\_+$)/.test(value)){
+		      return '用户名首尾不能出现下划线\'_\'';
+		    }
+		    if(/^\d+\d+\d$/.test(value)){
+		      return '用户名不能全为数字';
+		    }
+		  }
+		  ,password: [
+			  /^[\S]{6,12}$/
+		    ,'密码必须6到12位，且不能出现空格'
+		  ]
+		  ,telephone: [
+			  /^1\d{10}$/
+			    ,'请输入正确的手机号码'
+			  ] 
+		});
 	  		
 	 });
 </script>
@@ -218,12 +242,12 @@
                       <div class="layui-form-item">
                         <label class="layui-form-label"><i class="layui-icon layui-icon-username">&nbsp;</i>用户名</label>
                         <div class="layui-input-block">
-                            <input type="text" name="loginname" required lay-verify="required" placeholder="请输入用户名" class="layui-input"></div>
+                            <input type="text" name="loginname" lay-verify="required" placeholder="请输入用户名" class="layui-input"></div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label"><i class="layui-icon layui-icon-password">&nbsp;</i>密&nbsp;&nbsp;码</label>
                         <div class="layui-input-block">
-                            <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" class="layui-input"></div>
+                            <input type="password" name="password" lay-verify="required" placeholder="请输入密码" class="layui-input"></div>
                     </div>
                 </form>
             </div>
@@ -236,22 +260,26 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label"><i class="layui-icon layui-icon-username">&nbsp;</i>登录名</label>
                         <div class="layui-input-block">
-                            <input type="text" name="loginname" required lay-verify="required|loginname" placeholder="请输入登录名" class="layui-input"></div>
+                            <input type="text" name="loginname" lay-verify="required|loginname" placeholder="请输入登录名" class="layui-input"></div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label"><i class="layui-icon layui-icon-password">&nbsp;</i>密&nbsp;&nbsp;码</label>
                         <div class="layui-input-block">
-                            <input type="password" name="password" required lay-verify="required|password" placeholder="请输入密码" class="layui-input"></div>
+                            <input type="password" name="password" lay-verify="required|password" placeholder="请输入密码" class="layui-input"></div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">电话号码</label>
+                        <label class="layui-form-label"><i class="layui-icon layui-icon-password">&nbsp;</i>密&nbsp;&nbsp;码</label>
                         <div class="layui-input-block">
-                            <input type="text" name="telephone" required placeholder="请输入电话号码" class="layui-input"></div>
+                            <input type="password" name="password" lay-verify="required|password" placeholder="请再次输入密码" class="layui-input"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"><i class="layui-icon layui-icon-cellphone">&nbsp;</i>电话号码</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="telephone" lay-verify="required|telephone" placeholder="请输入手机号码" class="layui-input"></div>
                     </div>
                 </form>
             </div>
         </div>
 	</div>
-	
 </body>
 </html>

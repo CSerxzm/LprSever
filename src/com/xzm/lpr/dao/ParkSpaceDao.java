@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.UpdateProvider;
 
@@ -23,6 +24,9 @@ public interface ParkSpaceDao {
 	
 	@SelectProvider(type=ParkSpaceDynaSqlProvider.class,method="selectWhitParam")
 	List<ParkSpace> selectByPage(Map<String, Object> params);
+	
+	@Select(" select * from "+PARKSPACETABLE+" where state = '否' ")
+	List<ParkSpace> selectState();
 	
 	@SelectProvider(type=ParkSpaceDynaSqlProvider.class,method="count")
 	Integer count(Map<String, Object> params);

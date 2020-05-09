@@ -57,4 +57,12 @@ public interface UserDao {
 	@Select("select parkspace_id from "+USERTABLE+" where loginname = #{loginname}")
 	Integer getParkspace_id(
 			@Param("loginname") String loginname);
+	
+	/*
+	 * 通信记录操作
+	 */
+	@Select("select * from "+USERTABLE+" where licenseplate = #{licenseplate}")
+	User getUserByLicenseplate(
+			@Param("licenseplate") String licenseplate);
+	
 }

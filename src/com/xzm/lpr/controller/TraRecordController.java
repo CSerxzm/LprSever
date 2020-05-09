@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.xzm.lpr.domain.ParkSpace;
 import com.xzm.lpr.domain.TraRecord;
 import com.xzm.lpr.domain.User;
 import com.xzm.lpr.service.LprService;
@@ -124,6 +125,72 @@ public class TraRecordController {
 			jsonmain.put("msg", "添加成功");
 		}else {
 			jsonmain.put("msg", "添加失败");
+		}
+		return jsonmain.toString();
+	}
+	
+	//车辆驶入，添加通行记录
+	@RequestMapping(value="/trarecord/drivein")
+	@ResponseBody
+	public String driveIn(@RequestParam Map<String,String> map){
+		
+		String licenseplate=map.get("licenseplate");
+		String date_in=map.get("date_in");
+		
+		System.out.println("licenseplate="+licenseplate);
+		
+		JSONObject jsonmain = new JSONObject();
+		
+		//该车牌是否绑定用户
+		Integer parkspace_id = lprService.getParkSpace_idByLicenseplate(licenseplate);
+		
+		if(parkspace_id == null) {
+			//找停车位
+			ParkSpace parkSpace = lprService.getParkSpaceOne();
+			parkspace_id = parkSpace.getId();
+		}
+		
+		jsonmain.put("parkspace_id", parkspace_id);
+		TraRecord traRecord = new TraRecord(parkspace_id,licenseplate,date_in);
+		Integer i = lprService.addTraRecord(traRecord);
+		
+		if( i!=null ) {
+			jsonmain.put("msg", "分配成功");
+		}else {
+			jsonmain.put("msg", "分配失败");
+		}
+		return jsonmain.toString();
+	}
+	
+	/*
+	 * 车辆驶出，修改通行记录
+	 */
+	@RequestMapping(value="/trarecord/driveout")
+	@ResponseBody
+	public String driveOut(@RequestParam Map<String,String> map){
+		
+		String licenseplate=map.get("licenseplate");
+		String date_out=map.get("date_out");
+		
+		//查找记录
+		TraRecord traRecord = lprService.getTraRecordDate_out(licenseplate);
+		
+		Integer cost = 99;
+		traRecord.setDate_out(date_out);
+		traRecord.setCost(cost);//99为临时数值
+		
+		Integer i = lprService.updateTraRecord(traRecord);
+		
+		JSONObject jsonmain = new JSONObject();
+		
+		if( i!=null ) {
+			jsonmain.put("space_id", traRecord.getSpace_id());
+			jsonmain.put("licenseplate", traRecord.getLicenseplate());
+			jsonmain.put("date_in", traRecord.getDate_in());
+			jsonmain.put("msg", "更新成功");
+			jsonmain.put("cost", cost);
+		}else {
+			jsonmain.put("msg", "更新失败");
 		}
 		return jsonmain.toString();
 	}

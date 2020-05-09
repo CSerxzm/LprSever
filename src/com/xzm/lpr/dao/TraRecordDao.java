@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.UpdateProvider;
 
@@ -28,5 +29,8 @@ public interface TraRecordDao {
 
 	@UpdateProvider(type=TraRecordDynaSqlProvider.class,method="updateTraRecord")
 	Integer update(TraRecord traRecord);
+	
+	@Select(" select * from "+TRARECORDTABLE+" where licenseplate = #{licenseplate} and date_out is null; ")
+	TraRecord getTraRecordDate_out(String licenseplate);
 	
 }

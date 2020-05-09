@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -299,4 +300,42 @@ public class LprServiceImpl implements LprService{
 		return null;
 	}
 
+	/*
+	 * 通行记录操作
+	 */
+	@Override
+	public ParkSpace getParkSpaceOne() {
+		
+		List<ParkSpace> parkSpaces = parkSpaceDao.selectState();
+		if(parkSpaces.size()>0) {
+			return parkSpaces.get(0);
+		}
+		else
+			return null;
+	}
+
+	/*
+	 * 判断该车牌是否还有用户绑定，
+	 * 	若有绑定，返回停车场号，若没有绑定，返回空
+	 */
+	@Override
+	public Integer getParkSpace_idByLicenseplate(String licenseplate) {
+		// TODO Auto-generated method stub
+		User  user = userDao.getUserByLicenseplate(licenseplate);
+		if(user != null) {
+			Integer parkspace_id = user.getParkspace_id();
+			return parkspace_id;
+		}
+		return null;
+	}
+
+	/*
+	 * 查找停车时间的停车场通行记录，通过车牌号码进行查找，返回该记录。
+	 */
+	@Override
+	public TraRecord getTraRecordDate_out(String licenseplate) {
+		// TODO Auto-generated method stub
+		return traRecordDao.getTraRecordDate_out(licenseplate);
+	}
+	
 }

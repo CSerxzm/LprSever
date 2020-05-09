@@ -2,6 +2,7 @@ package com.xzm.lpr.controller;
 
 import java.io.File;
 import java.net.URLEncoder;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.xzm.lpr.aip.LicensePlate;
+import com.xzm.lpr.domain.ParkSpace;
 import com.xzm.lpr.service.LprService;
 
 import net.sf.json.JSONObject;
@@ -53,11 +55,7 @@ public class FileUploadController{
 				等待实现
 			 */
 			
-			/*
-				实现逻辑功能
-			 */
-			
-			System.out.println("上传文件路径：" + (path+File.separator+ filename));
+			System.out.println("upload上传文件路径：" + (path+File.separator+ filename));
 			System.out.println(number);
 			jsonmain.put("code", "200");
 			jsonmain.put("msg", "none");
