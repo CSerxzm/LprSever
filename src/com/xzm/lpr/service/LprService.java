@@ -16,23 +16,24 @@ public interface LprService {
 	
 	List<ParkLot> findParkLot();
 	Integer updateParkLot(ParkLot parkLot);
+	Integer getParkLotActivitycost_per();
 
 	Integer addUser(User user);
 	Integer removeUserByLogin(String loginname);
 	User login(String loginname,String password);
-	List<User> findUser(User user,PageModel pageModel);
+	List<User> findUser(User user,PageModel pageModel,String keyword);
 	Integer updateUser(User user);
 	Integer getParkSpace_idByLicenseplate(String licenseplate);
 
 	Integer addTraRecord(TraRecord traRecord);
 	Integer removeTraRecordById(int id);
-	List<TraRecord> findTraRecord(User user,PageModel pageModel);
+	List<TraRecord> findTraRecord(User user,PageModel pageModel,String keyword);
 	Integer updateTraRecord(TraRecord traRecord);
 	TraRecord getTraRecordDate_out(String licenseplate);
 
 	Integer addParkSpace(ParkSpace parkSpace);
 	Integer removeParkSpaceById(int id);
-	List<ParkSpace> findParkSpace(User user,String operate,PageModel pageModel);
+	List<ParkSpace> findParkSpace(User user,String operate,PageModel pageModel,String keyword);
 	Integer updateParkSpace(ParkSpace parkSpace);
 	ParkSpace getParkSpaceOne();
 	
@@ -40,12 +41,11 @@ public interface LprService {
 
 	Integer addNotice(Notice notice);
 	Integer removeNoticeById(Integer id);
-	List<Notice> findNotice(Notice notice,PageModel pageModel);
 	Notice findNoticeById(Integer id);
-	List<Notice> findNotice(PageModel pageModel);
+	List<Notice> findNotice(PageModel pageModel,String keyword);
 	Integer updateNotice(Notice notice);
 	
 	Integer addWalletRecord(WalletRecord walletRecord);
-	List<WalletRecord> findWalletRecord(User user,PageModel pageModel);
+	List<WalletRecord> findWalletRecord(User user,PageModel pageModel,String keyword);
 		
 }

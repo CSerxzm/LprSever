@@ -27,12 +27,15 @@
 				<div class="layui-inline" style="width: auto;">
 						<label class="layui-form-label">关键字</label>
 					    <div class="layui-input-block">
-					      <input type="text" name="dormitory" required  lay-verify="required" placeholder="请输入任意关键字" autocomplete="off" class="layui-input">
+					      <input type="text" name="keyword" required  lay-verify="required" placeholder="请输入关键字" autocomplete="off" class="layui-input">
 					    </div>
 				</div>
 				<div class="layui-inline">
 					<button class="layui-btn layui-btn-fluid" lay-submit lay-filter="demo1"><i class="layui-icon layui-icon-search"></i>搜索信息</button>
-				</div>		
+				</div>
+				<div class="layui-inline">
+					      <div class="layui-form-mid layui-word-aux">&nbsp;&nbsp;关键字可以是标题、内容和发表者。</div>
+				</div>	
 			</form>			
 		</div>
 	</div>

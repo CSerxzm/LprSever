@@ -28,62 +28,48 @@
 			    <div class="layui-col-lg6">
 			      	<div class="layui-card-body">
 						<div style="padding:10px;">
-							<label style="font-size:20px">驶入界面</label>						
+							<label style="font-size:20px">详情面板</label>						
 						</div>
 		                <form class="layui-form layui-form-pane" lay-filter="trarecordForm" id="trarecordForm">
 		                    <div class="layui-form-item">
 		                        <label class="layui-form-label">牌照</label>
 		                        <div class="layui-input-inline">
-		                            <input type="text" name="licenseplate" id="licenseplate_drivein" placeholder="识别车牌有误可手动修改" class="layui-input"></div>
-		                        <label class="layui-form-label">驶入时间</label>
-		                        <div class="layui-input-inline">
-		                            <input type="text" name="date_in" id="date_in_drivein" placeholder="请输入驶入时间" autocomplete="off" class="layui-input"></div>
+		                            <input type="text" name="licenseplate" id="licenseplate" required placeholder="车牌号码" class="layui-input"></div>
+		                    		<div class="layui-form-mid">若识别车牌号码错误，可手动修改。</div>
 		                    </div>
 		                    <div class="layui-form-item">
 		                        <label class="layui-form-label">停车位</label>
-		                        <div class="layui-input-block">
-		                            <input type="text" name="space_id" id="space_id_drivein" placeholder="分配的停车位标识" class="layui-input" readonly></div>
-		                    </div>
-		                    <div class="layui-form-item" style="align:center">               
-			                    <div class="layui-inline">
-								      <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="drivein">驶入</button>
-								</div>							
-		                    </div>	                                       
-		                </form>
-		                
-						<div style="padding:10px;">
-							<label style="font-size:20px">驶出界面</label>						
-						</div>
-		                <form class="layui-form layui-form-pane" lay-filter="trarecordForm" id="trarecordForm">
-		                    <div class="layui-form-item">
-		                        <label class="layui-form-label">牌照</label>
 		                        <div class="layui-input-inline">
-		                            <input type="text" name="licenseplate" id="licenseplate_driveout" placeholder="识别车牌有误可手动修改" class="layui-input"></div>
-		                        <label class="layui-form-label">停车位</label>
-		                        <div class="layui-input-inline">
-		                            <input type="text" name="space_id" id="space_id_driveout" placeholder="分配的停车位标识" class="layui-input" readonly></div>	                    
+		                            <input type="text" name="parkspace_id" id="parkspace_id" placeholder="分配的停车位标识" class="layui-input" readonly></div>
 		                    </div>
 		                    <div class="layui-form-item">
 		                    	<label class="layui-form-label">停车时间</label>
 								<div class="layui-input-inline" style="width: 240px;">
-								    <input type="text" name="date_in" id="date_in_driveout" autocomplete="off" class="layui-input">
+								    <input type="text" name="date_in" id="date_in" autocomplete="off" class="layui-input">
 								</div>
 								<div class="layui-form-mid">-</div>
 								<div class="layui-input-inline" style="width: 240px;">
-								    <input type="text" name="date_out" id="date_out_driveout" autocomplete="off" class="layui-input">
+								    <input type="text" name="date_out" id="date_out" autocomplete="off" class="layui-input">
 								</div>
 		                    </div>
 		                    <div class="layui-form-item">
-		                        <label class="layui-form-label">费用</label>
-		                        <div class="layui-input-block">
-		                            <input type="text" name="cost" id="cost_driveout" placeholder="￥" autocomplete="off" class="layui-input"></div>
+		                        <label class="layui-form-label">停车时间</label>
+		                        <div class="layui-input-inline">
+		                            <input type="text" name="time" id="time" placeholder="0" class="layui-input" readonly></div>
+		                        <div class="layui-form-mid">小时</div>
 		                    </div>
-		                    <div class="layui-form-item" style="align:center">
+		                    <div class="layui-form-item">
+		                        <label class="layui-form-label">费用</label>
+		                        <div class="layui-input-inline">
+		                            <input type="text" name="cost" id="cost" placeholder="0" autocomplete="off" class="layui-input" readonly></div>
+		                    		<div class="layui-form-mid">元</div>
+		                    </div>
+		                    <div class="layui-form-item">
 		                         <div class="layui-inline">
-								      <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="driveout">驶出</button>
+								      <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="gothrough">通行</button>
 								</div>								
 		                    </div>	                                       
-		                </form>		                	                		                
+		                </form>	                	                		                
 			    	</div>
 			    </div>
 			  </div>
@@ -99,7 +85,7 @@ layui.use(['upload','form','element'], function(){
 
 	var uploadInst = upload.render({
 		elem: '#file'
-	    ,url: '/LprSever/upload'
+	    ,url: '/LprSever/uploadtoweb'
 	    ,before: function(obj){
 	
 	      obj.preview(function(index, file, result){
@@ -109,26 +95,28 @@ layui.use(['upload','form','element'], function(){
 	    ,done: function(data){
 	      if(data.code > 0){
 	    	var demoText = $('#demoText');
-	    	$("#licenseplate_drivein").val(data.number);
-	    	$("#licenseplate_driveout").val(data.number);
-	    	
-	    	$("#date_in_drivein").val(getNowFormatDate());
-	    	$("#date_out_driveout").val(getNowFormatDate());
+	    	$("#licenseplate").val(data.number);
+	    	$("#date_in").val(getNowFormatDate());
+	    	$("#date_out").val(getNowFormatDate());
 	        return layer.msg('图片采集成功');
 	      }
 	    }
 	  });
  
-	//监控驶入
-	form.on('submit(drivein)', function(data){
+	//监控通行
+	form.on('submit(gothrough)', function(data){
 		$.ajax({
-			url: '/LprSever/trarecord/drivein',
+			url: '/LprSever/trarecord/drive',
 		    type: 'POST',
 		    data:data.field,
 		    async: false,
 		    dataType: 'json',
 		    success: function (data) {
-		    	$("#space_id_drivein").val(data.parkspace_id);
+		    	$("#parkspace_id").val(data.parkspace_id);
+		    	$("#date_in").val(data.date_in);
+		    	$("#date_out").val(data.date_out);
+		    	$("#time").val(data.time);
+		    	$("#cost").val(data.cost);
 			    layer.msg(data.msg, {time:3000});
 		     },
 		     error: function () {
@@ -138,27 +126,6 @@ layui.use(['upload','form','element'], function(){
 		return false;
 	});
 	
-	//监控驶出
-	form.on('submit(driveout)', function(data){
-		$.ajax({
-			url: '/LprSever/trarecord/driveout',
-		    type: 'POST',
-		    data:data.field,
-		    async: false,
-		    dataType: 'json',
-		    success: function (data) {
-		    	$("#space_id_driveout").val(data.space_id);
-		    	$("#date_in_driveout").val(data.date_in);
-		    	$("#cost_driveout").val(data.cost);
-			     layer.msg(data.msg, {time:3000});
-		     },
-		     error: function () {
-		         layer.msg("服务器错误", {time:3000});
-		     }
-		 });
-		return false;
-	});	
-  
  });
 </script>
 </body>

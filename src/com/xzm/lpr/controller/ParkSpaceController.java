@@ -1,5 +1,6 @@
 package com.xzm.lpr.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +31,7 @@ public class ParkSpaceController {
 			
 	@RequestMapping(value="/parkspace/getParkSpace")
 	@ResponseBody
-	 public String getParkSpace(HttpSession session,String operate,Integer page,Integer limit){
+	 public String getParkSpace(HttpSession session,String operate,Integer page,Integer limit,String keyword) throws UnsupportedEncodingException{
 		
 		PageModel pageModel = new PageModel();
 		if(page != null){
@@ -39,10 +40,13 @@ public class ParkSpaceController {
 		if(page != null){
 			pageModel.setPageSize(limit);
 		}
-		
+		if(keyword!=null) {
+			keyword = new String(keyword.getBytes("ISO-8859-1"), "UTF-8");	
+		}
+		System.out.println("keyword="+keyword);
 		User user=(User) session.getAttribute(LprConstants.USER_SESSION);
 		
-		List<ParkSpace> parkSpaces = lprService.findParkSpace(user,operate,pageModel);
+		List<ParkSpace> parkSpaces = lprService.findParkSpace(user,operate,pageModel,keyword);
 		
 		JSONObject jsonmain = new JSONObject();
 		jsonmain.put("count",pageModel.getRecordCount());

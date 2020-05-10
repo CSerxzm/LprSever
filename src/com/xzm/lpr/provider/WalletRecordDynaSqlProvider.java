@@ -21,6 +21,10 @@ public class WalletRecordDynaSqlProvider {
 						WHERE("  name = #{user.loginname} ");
 					}
 				}
+				if(params.get("keyword") != null){
+					String keyword = (String)params.get("keyword");
+					WHERE("  name like '%"+keyword+"%' or operation like '%"+keyword+"%'");
+				}
 			}
 		}.toString();
 		
@@ -41,6 +45,10 @@ public class WalletRecordDynaSqlProvider {
 					if(user.getLoginname() != null && !user.getLoginname().equals("")){
 						WHERE("  name = #{user.loginname} ");
 					}
+				}
+				if(params.get("keyword") != null){
+					String keyword = (String)params.get("keyword");
+					WHERE("  name like '%"+keyword+"%' or operation like '%"+keyword+"%'");
 				}
 			}
 		}.toString();

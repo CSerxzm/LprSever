@@ -22,6 +22,10 @@ public class TraRecordDynaSqlProvider {
 						WHERE("  space_id = #{user.parkspace_id} ");
 					}
 				}
+				if(params.get("keyword") != null){
+					String keyword = (String)params.get("keyword");
+					WHERE(" space_id like '%"+keyword+"%' or licenseplate like '%"+keyword+"%'");
+				}
 			}
 		}.toString();
 		
@@ -46,6 +50,10 @@ public class TraRecordDynaSqlProvider {
 					if(user.getParkspace_id() != null && !user.getParkspace_id().equals("")){
 						WHERE("  space_id = #{user.parkspace_id}");
 					}
+				}
+				if(params.get("keyword") != null){
+					String keyword = (String)params.get("keyword");
+					WHERE(" space_id like '%"+keyword+"%' or licenseplate like '%"+keyword+"%'");
 				}
 			}
 		}.toString();

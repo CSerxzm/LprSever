@@ -1,5 +1,6 @@
 package com.xzm.lpr.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +52,7 @@ public class UserController {
 	
 	@RequestMapping(value="/user/getUser")
 	@ResponseBody
-	 public String getUser(Integer page,Integer limit){
+	 public String getUser(Integer page,Integer limit,String keyword) throws UnsupportedEncodingException{
 		
 		PageModel pageModel = new PageModel();
 		if(page != null){
@@ -60,8 +61,11 @@ public class UserController {
 		if(page != null){
 			pageModel.setPageSize(limit);
 		}
-		
-		List<User> users = lprService.findUser(null,pageModel);
+		if(keyword!=null) {
+			keyword = new String(keyword.getBytes("ISO-8859-1"), "UTF-8");	
+		}
+		System.out.println("keyword="+keyword);
+		List<User> users = lprService.findUser(null,pageModel,keyword);
 		
 		JSONObject jsonmain = new JSONObject();
 		jsonmain.put("count",pageModel.getRecordCount());
@@ -92,7 +96,7 @@ public class UserController {
 		
 		User user = (User) session.getAttribute(LprConstants.USER_SESSION);
 		
-		List<User> users = lprService.findUser(user,null);
+		List<User> users = lprService.findUser(user,null,null);
 		
 		JSONObject jsonmain = new JSONObject();
 		JSONArray jsonarray = new JSONArray();

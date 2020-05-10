@@ -23,6 +23,10 @@ public class NoticeDynaSqlProvider {
 						WHERE("  content LIKE CONCAT ('%',#{notice.content},'%') ");
 					}
 				}
+				if(params.get("keyword") != null){
+					String keyword = (String)params.get("keyword");
+					WHERE("  title like '%"+keyword+"%' or content like '%"+keyword+"%' or name_publish like '%"+keyword+"%'");
+				}
 			}
 		}.toString();
 		
@@ -48,6 +52,10 @@ public class NoticeDynaSqlProvider {
 					if(notice.getContent() != null && !notice.getContent().equals("")){
 						WHERE("  content LIKE CONCAT ('%',#{notice.content},'%') ");
 					}
+				}
+				if(params.get("keyword") != null){
+					String keyword = (String)params.get("keyword");
+					WHERE("  title like '%"+keyword+"%' or content like '%"+keyword+"%' or name_publish like '%"+keyword+"%'");
 				}
 			}
 		}.toString();

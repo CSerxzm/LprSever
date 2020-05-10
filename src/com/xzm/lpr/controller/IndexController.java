@@ -55,7 +55,7 @@ public class IndexController {
 	@ResponseBody
 	public String getIndex_notice(){
 
-		List<Notice> notices = lprService.findNotice(null);
+		List<Notice> notices = lprService.findNotice(null,null);
 		
 		JSONObject jsonmain = new JSONObject();
 		JSONObject jsonobj_notice = new JSONObject();

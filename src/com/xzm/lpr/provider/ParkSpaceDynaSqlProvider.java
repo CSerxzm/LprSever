@@ -21,6 +21,10 @@ public class ParkSpaceDynaSqlProvider {
 						WHERE("  idle='是'  or (idle='否'  and rentornot='是')  ");
 					}
 				}
+				if(params.get("keyword") != null){
+					String keyword = (String)params.get("keyword");
+					WHERE("  name like '%"+keyword+"%' ");
+				}
 			}
 		}.toString();
 		
@@ -41,6 +45,10 @@ public class ParkSpaceDynaSqlProvider {
 					if(operate.equals("order")){
 						WHERE("  idle='是'  or (idle='否'  and rentornot='是')  ");
 					}
+				}
+				if(params.get("keyword") != null){
+					String keyword = (String)params.get("keyword");
+					WHERE("  name like '%"+keyword+"%' ");
 				}
 			}
 		}.toString();

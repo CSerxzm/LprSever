@@ -18,4 +18,5 @@ public interface ParkLotDao {
 	
 	@UpdateProvider(type=ParkLotDynaSqlProvider.class,method="updateParkLot")
 	Integer update(ParkLot parkLot);
+	
 }

@@ -1,5 +1,6 @@
 package com.xzm.lpr.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ public class NoticeController {
 	
 	@RequestMapping(value="/notice/getNotice")
 	@ResponseBody
-	 public String getNotice(Integer page,Integer limit){
+	 public String getNotice(Integer page,Integer limit,String keyword) throws UnsupportedEncodingException{
 		
 		System.out.println(page+"/"+limit);
 		PageModel pageModel = new PageModel();
@@ -43,8 +44,12 @@ public class NoticeController {
 		if(page != null){
 			pageModel.setPageSize(limit);
 		}
+		if(keyword!=null) {
+			keyword = new String(keyword.getBytes("ISO-8859-1"), "UTF-8");	
+		}
+		System.out.println("keyword="+keyword);
 
-		List<Notice> notices = lprService.findNotice(pageModel);
+		List<Notice> notices = lprService.findNotice(pageModel,keyword);
 		
 		JSONObject jsonmain = new JSONObject();
 		jsonmain.put("count",pageModel.getRecordCount());

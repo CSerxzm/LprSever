@@ -248,9 +248,9 @@
 					<div class="layui-form-item"  pane="">
 						<label class="layui-form-label">权限</label>
 					    <div class="layui-input-block">
-					      <input type="radio" name="authority" value="系统管理员" title="系统管理员" checked>
-	     			 	  <input type="radio" name="authority" value="停车场管理员" title="停车场管理员">
-	     			 	  <input type="radio" name="authority" value="用户" title="用户">
+					      <input type="radio" name="authority" value="root" title="系统管理员" checked>
+	     			 	  <input type="radio" name="authority" value="admin" title="停车场管理员">
+	     			 	  <input type="radio" name="authority" value="user" title="用户">
 					    </div>
 					</div>
 					<div class="layui-form-item">

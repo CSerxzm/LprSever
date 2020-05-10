@@ -37,14 +37,14 @@
                         <div class="layui-input-inline">
                             <input type="number" name="activitynum" autocomplete="off" class="layui-input"></div>
                         <div class="layui-input-inline">
-                        <input type="text" name="activitynum_leave"  class="layui-input" readonly></div>                    
+                        <input type="text" name="activitynum_leave" class="layui-input" readonly></div>                    
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">固定车位</label>
                         <div class="layui-input-inline">
                             <input type="number" name="fixationnum" autocomplete="off" class="layui-input"></div>
                         <div class="layui-input-inline">    
-						<input type="text" name="fixationnum_leave"  class="layui-input" readonly></div>
+						<input type="text" name="fixationnum_leave" class="layui-input" readonly></div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">单位收费</label>

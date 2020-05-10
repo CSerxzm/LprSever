@@ -6,7 +6,7 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>车辆管理系统 </title>
+  <title>管理系统 </title>
   <link rel="stylesheet" href="/LprSever/layui/css/layui.css" media="all">
   <script src="/LprSever/layui/layui.js"></script>
   <link rel="shortcut icon" href="/LprSever/img/stu.ico" />
@@ -15,7 +15,7 @@
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
   <div class="layui-header">
-    <div class="layui-logo" style="color:#FFF;"><i class="layui-icon layui-icon-home"></i>&nbsp;车辆管理系统</div>
+    <div class="layui-logo" style="color:#FFF;"><i class="layui-icon layui-icon-home"></i>&nbsp;管理系统</div>
     <%
     	String pageName = "",parkspace_order="",trarecord="",user="",walletrecord="",parkspace_manage="";
     	request.setCharacterEncoding("utf-8");

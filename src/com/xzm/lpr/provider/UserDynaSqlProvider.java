@@ -23,6 +23,10 @@ public class UserDynaSqlProvider {
 						WHERE("  password = #{user.password} ");
 					}
 				}
+				if(params.get("keyword") != null){
+					String keyword = (String)params.get("keyword");
+					WHERE("  loginname like '%"+keyword+"%' or licenseplate like '%"+keyword+"%' or telephone like '%"+keyword+"%'");
+				}
 			}
 		}.toString();
 		
@@ -46,6 +50,10 @@ public class UserDynaSqlProvider {
 					if(user.getPassword() != null && !user.getPassword().equals("")){
 						WHERE("  password = #{user.password} ");
 					}
+				}
+				if(params.get("keyword") != null){
+					String keyword = (String)params.get("keyword");
+					WHERE("  loginname like '%"+keyword+"%' or licenseplate like '%"+keyword+"%' or telephone like '%"+keyword+"%'");
 				}
 			}
 		}.toString();

@@ -33,6 +33,9 @@ public class FileUploadController{
 	 @Qualifier("lprService")
 	 private LprService lprService;
 	
+	 /*
+	  * 	单片机使用接口
+	  */
 	 @PostMapping(value="/upload")
 	 @ResponseBody
 	 public String upload(HttpServletRequest request,
@@ -64,6 +67,33 @@ public class FileUploadController{
 		
 		return jsonmain.toString();
 		 
+	 }
+	 /*
+	  *	网页使用接口
+	  */
+	 @PostMapping(value="/uploadtoweb")
+	 @ResponseBody
+	 public String uploadTOweb(HttpServletRequest request,
+			MultipartFile file) throws Exception{
+		 
+		 JSONObject jsonmain = new JSONObject();
+		if(!file.isEmpty()){
+			String path = request.getServletContext().getRealPath("/images");
+			String filename = file.getOriginalFilename();
+
+		    File filepath = new File(path,filename);
+	        if (!filepath.getParentFile().exists()) { 
+	        	filepath.getParentFile().mkdirs();
+	        }
+			file.transferTo(new File(path+File.separator+ filename));
+			String number = LicensePlate.getlicensePlate(path+File.separator+ filename);
+			//System.out.println("upload上传文件路径：" + (path+File.separator+ filename));
+			//System.out.println(number);
+			jsonmain.put("code", "200");
+			jsonmain.put("msg", "none");
+			jsonmain.put("number", number);
+		}
+		return jsonmain.toString();
 	 }
 	 
 	 @GetMapping(value="/download")

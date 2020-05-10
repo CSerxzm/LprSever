@@ -1,5 +1,6 @@
 package com.xzm.lpr.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import com.xzm.lpr.domain.TraRecord;
 import com.xzm.lpr.domain.User;
 import com.xzm.lpr.service.LprService;
 import com.xzm.lpr.util.common.LprConstants;
+import com.xzm.lpr.util.common.LprFunc;
 import com.xzm.lpr.util.tag.PageModel;
 
 import net.sf.json.JSONArray;
@@ -31,7 +33,7 @@ public class TraRecordController {
 	
 	@RequestMapping(value="/trarecord/getTraRecord")
 	@ResponseBody
-	 public String getTraRecord(HttpSession session,Integer page,Integer limit){
+	 public String getTraRecord(HttpSession session,Integer page,Integer limit,String keyword) throws UnsupportedEncodingException{
 
 		User user=(User) session.getAttribute(LprConstants.USER_SESSION);
 		
@@ -42,8 +44,12 @@ public class TraRecordController {
 		if(page != null){
 			pageModel.setPageSize(limit);
 		}
-
-		List<TraRecord> trarecords = lprService.findTraRecord(user,pageModel);
+		if(keyword!=null) {
+			keyword = new String(keyword.getBytes("ISO-8859-1"), "UTF-8");	
+		}
+		System.out.println("keyword="+keyword);
+		
+		List<TraRecord> trarecords = lprService.findTraRecord(user,pageModel,keyword);
 		
 		JSONObject jsonmain = new JSONObject();
 		jsonmain.put("count",pageModel.getRecordCount());
@@ -129,68 +135,66 @@ public class TraRecordController {
 		return jsonmain.toString();
 	}
 	
-	//车辆驶入，添加通行记录
-	@RequestMapping(value="/trarecord/drivein")
+	//车辆通行，添加通行记录
+	@RequestMapping(value="/trarecord/drive")
 	@ResponseBody
 	public String driveIn(@RequestParam Map<String,String> map){
 		
 		String licenseplate=map.get("licenseplate");
 		String date_in=map.get("date_in");
-		
-		System.out.println("licenseplate="+licenseplate);
-		
-		JSONObject jsonmain = new JSONObject();
-		
-		//该车牌是否绑定用户
-		Integer parkspace_id = lprService.getParkSpace_idByLicenseplate(licenseplate);
-		
-		if(parkspace_id == null) {
-			//找停车位
-			ParkSpace parkSpace = lprService.getParkSpaceOne();
-			parkspace_id = parkSpace.getId();
-		}
-		
-		jsonmain.put("parkspace_id", parkspace_id);
-		TraRecord traRecord = new TraRecord(parkspace_id,licenseplate,date_in);
-		Integer i = lprService.addTraRecord(traRecord);
-		
-		if( i!=null ) {
-			jsonmain.put("msg", "分配成功");
-		}else {
-			jsonmain.put("msg", "分配失败");
-		}
-		return jsonmain.toString();
-	}
-	
-	/*
-	 * 车辆驶出，修改通行记录
-	 */
-	@RequestMapping(value="/trarecord/driveout")
-	@ResponseBody
-	public String driveOut(@RequestParam Map<String,String> map){
-		
-		String licenseplate=map.get("licenseplate");
 		String date_out=map.get("date_out");
 		
-		//查找记录
-		TraRecord traRecord = lprService.getTraRecordDate_out(licenseplate);
-		
-		Integer cost = 99;
-		traRecord.setDate_out(date_out);
-		traRecord.setCost(cost);//99为临时数值
-		
-		Integer i = lprService.updateTraRecord(traRecord);
+		ParkSpace parkSpace;
 		
 		JSONObject jsonmain = new JSONObject();
 		
-		if( i!=null ) {
-			jsonmain.put("space_id", traRecord.getSpace_id());
-			jsonmain.put("licenseplate", traRecord.getLicenseplate());
-			jsonmain.put("date_in", traRecord.getDate_in());
-			jsonmain.put("msg", "更新成功");
-			jsonmain.put("cost", cost);
+		//驶入还是驶出
+		//返回驶出时间为空的记录
+		TraRecord traRecord = lprService.getTraRecordDate_out(licenseplate);
+		if(traRecord==null) {
+			//驶入
+			//该车牌是否绑定用户
+			Integer parkspace_id = lprService.getParkSpace_idByLicenseplate(licenseplate);
+			if(parkspace_id == null) {
+				//分配停车位
+				parkSpace = lprService.getParkSpaceOne();
+				parkspace_id = parkSpace.getId();
+				parkSpace = new ParkSpace(parkspace_id,null,"是",null,null,null,null);
+				Integer j=lprService.updateParkSpace(parkSpace);
+			}
+			
+			TraRecord traRecord_in = new TraRecord(parkspace_id,licenseplate,date_in);
+			Integer i = lprService.addTraRecord(traRecord_in);
+			
+			jsonmain.put("parkspace_id", parkspace_id);
+
+			if( i!=null ) {
+				jsonmain.put("msg", "分配成功");
+			}else {
+				jsonmain.put("msg", "分配失败");
+			}
+			
 		}else {
-			jsonmain.put("msg", "更新失败");
+			//驶出
+			date_in = traRecord.getDate_in();
+			int time = LprFunc.CalTime(date_in,date_out);
+			Integer cost = lprService.getParkLotActivitycost_per()*time;
+			traRecord.setDate_out(date_out);
+			traRecord.setCost(cost);//99为临时数值
+			Integer i = lprService.updateTraRecord(traRecord);
+			parkSpace = new ParkSpace(traRecord.getSpace_id(),null,"否",null,null,null,null);
+			Integer j=lprService.updateParkSpace(parkSpace);
+			if( i!=null ) {
+				jsonmain.put("parkspace_id", traRecord.getSpace_id());
+				jsonmain.put("licenseplate", traRecord.getLicenseplate());
+				jsonmain.put("date_in", traRecord.getDate_in());
+				jsonmain.put("date_out", traRecord.getDate_out());
+				jsonmain.put("time", time);
+				jsonmain.put("cost", cost);
+				jsonmain.put("msg", "更新成功");
+			}else {
+				jsonmain.put("msg", "更新失败");
+			}
 		}
 		return jsonmain.toString();
 	}

@@ -28,14 +28,14 @@
 				<div class="layui-inline" style="width: auto;">
 						<label class="layui-form-label">关键字</label>
 					    <div class="layui-input-block">
-					      <input type="text" name="dormitory" required  lay-verify="required" placeholder="请输入关键字" autocomplete="off" class="layui-input">
+					      <input type="text" name="keyword" required  lay-verify="required" placeholder="请输入关键字" autocomplete="off" class="layui-input">
 					    </div>
 				</div>
 				<div class="layui-inline">
 					      <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="demo1"><i class="layui-icon layui-icon-search"></i>搜索信息</button>
 				</div>
 				<div class="layui-inline">
-					      <div class="layui-form-mid layui-word-aux">&nbsp;&nbsp;关键字可以是任何关键字</div>
+					      <div class="layui-form-mid layui-word-aux">&nbsp;&nbsp;关键字可以是登录名、车牌号、电话号码</div>
 				</div>
 			</form>
 		</div>
@@ -248,9 +248,9 @@
 					<div class="layui-form-item"  pane="">
 						<label class="layui-form-label">权限</label>
 					    <div class="layui-input-block">
-					      <input type="radio" name="authority" value="系统管理员" title="系统管理员" checked>
-	     			 	  <input type="radio" name="authority" value="停车场管理员" title="停车场管理员">
-	     			 	  <input type="radio" name="authority" value="用户" title="用户">
+					      <input type="radio" name="authority" value="root" title="系统管理员" checked>
+	     			 	  <input type="radio" name="authority" value="admin" title="停车场管理员">
+	     			 	  <input type="radio" name="authority" value="user" title="用户">
 					    </div>
 					</div>
 					<div class="layui-form-item">

@@ -1,5 +1,6 @@
 package com.xzm.lpr.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ public class WalletRecordController {
 	
 	@RequestMapping(value="/walletrecord/getWalletRecord")
 	@ResponseBody
-	 public String getWalletRecord(HttpSession session,Integer page,Integer limit){
+	 public String getWalletRecord(HttpSession session,Integer page,Integer limit,String keyword) throws UnsupportedEncodingException{
 
 		User user=(User) session.getAttribute(LprConstants.USER_SESSION);
 		
@@ -42,8 +43,11 @@ public class WalletRecordController {
 		if(page != null){
 			pageModel.setPageSize(limit);
 		}
-
-		List<WalletRecord> walletrecords = lprService.findWalletRecord(user,pageModel);
+		if(keyword!=null) {
+			keyword = new String(keyword.getBytes("ISO-8859-1"), "UTF-8");	
+		}
+		System.out.println("keyword="+keyword);
+		List<WalletRecord> walletrecords = lprService.findWalletRecord(user,pageModel,keyword);
 		
 		JSONObject jsonmain = new JSONObject();
 		jsonmain.put("code", "200");

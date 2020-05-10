@@ -58,21 +58,22 @@ public class LprServiceImpl implements LprService{
 
 	@Transactional(readOnly=true)
 	@Override
-	public List<User> findUser(User user,PageModel pageModel) {
+	public List<User> findUser(User user,PageModel pageModel,String keyword) {
 		/** 当前需要分页的总数据条数  */
 		Map<String,Object> params = new HashMap<>();
-		int recordCount = userDao.count(params);
-		if(pageModel!=null) {
-			pageModel.setRecordCount(recordCount);			
-		}
+		params.put("keyword", keyword);
 		if(user!=null)
 		{
 			params.put("user", user);
 		}
+		int recordCount = userDao.count(params);
 		if(recordCount > 0){
 	        /** 开始分页查询数据：查询第几页的数据 */
 		    params.put("pageModel", pageModel);
 	    }
+		if(pageModel!=null) {
+			pageModel.setRecordCount(recordCount);			
+		}
 		List<User> users = userDao.selectByPage(params);
 		 
 		return users;
@@ -98,9 +99,11 @@ public class LprServiceImpl implements LprService{
 
 	@Transactional(readOnly=true)
 	@Override
-	public List<Notice> findNotice(PageModel pageModel) {
+	public List<Notice> findNotice(PageModel pageModel,String keyword) {
 		/** 当前需要分页的总数据条数  */
 		Map<String,Object> params = new HashMap<>();
+		params.put("keyword", keyword);
+		
 		int recordCount = noticeDao.count(params);
 		if(pageModel!=null)
 			pageModel.setRecordCount(recordCount);
@@ -138,7 +141,7 @@ public class LprServiceImpl implements LprService{
 	}
 
 	@Override
-	public List<TraRecord> findTraRecord(User user,PageModel pageModel) {
+	public List<TraRecord> findTraRecord(User user,PageModel pageModel,String keyword) {
 		// TODO Auto-generated method stub
 		Map<String,Object> params = new HashMap<>();
 		
@@ -146,7 +149,7 @@ public class LprServiceImpl implements LprService{
 			params.put("user", user);
 			System.out.println(user.getLicenseplate());
 		}
-		
+		params.put("keyword", keyword);
 		int recordCount = traRecordDao.count(params);
 		pageModel.setRecordCount(recordCount);
 		
@@ -180,6 +183,15 @@ public class LprServiceImpl implements LprService{
 		// TODO Auto-generated method stub
 		return parkLotDao.update(parkLot);
 	}
+	
+	public Integer getParkLotActivitycost_per() {
+		Map<String,Object> params = new HashMap<>();
+		List<ParkLot> parkLots = parkLotDao.selectByPage(params);
+		if(parkLots.size()>0) {
+			return parkLots.get(0).getActivitycost_per();
+		}
+		return null;
+	}
 
 	@Override
 	public Integer updateParkSpace(ParkSpace parkSpace) {
@@ -187,11 +199,12 @@ public class LprServiceImpl implements LprService{
 	}
 
 	@Override
-	public List<ParkSpace> findParkSpace(User user,String operate,PageModel pageModel) {
+	public List<ParkSpace> findParkSpace(User user,String operate,PageModel pageModel,String keyword) {
 		Map<String,Object> params = new HashMap<>();
 		
 		params.put("user", user);
 		params.put("operate", operate);
+		params.put("keyword", keyword);
 		int recordCount = parkSpaceDao.count(params);
 		pageModel.setRecordCount(recordCount);
 		if(recordCount > 0){
@@ -205,12 +218,6 @@ public class LprServiceImpl implements LprService{
 	@Override
 	public Integer removeParkSpaceById(int id) {
 		return parkSpaceDao.deleteById(id);
-	}
-
-	@Override
-	public List<Notice> findNotice(Notice notice, PageModel pageModel) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -248,7 +255,7 @@ public class LprServiceImpl implements LprService{
 	}
 
 	@Override
-	public List<WalletRecord> findWalletRecord(User user, PageModel pageModel) {
+	public List<WalletRecord> findWalletRecord(User user, PageModel pageModel,String keyword) {
 		
 		Map<String,Object> params = new HashMap<>();
 		
@@ -256,6 +263,7 @@ public class LprServiceImpl implements LprService{
 			params.put("user", user);
 			System.out.println(user.getLicenseplate());
 		}
+		params.put("keyword", keyword);
 		
 		int recordCount = walletRecordDao.count(params);
 		pageModel.setRecordCount(recordCount);
