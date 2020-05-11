@@ -43,7 +43,6 @@ public class IndexController {
 			jsonobj.put("activitycost_per", parkLot.getActivitycost_per());
 			jsonobj.put("monthcost", parkLot.getMonthcost());
 			jsonobj.put("quartercost", parkLot.getQuartercost());
-			jsonobj.put("halfyearcost", parkLot.getHalfyearcost());
 			jsonobj.put("yearcost", parkLot.getYearcost());
 			jsonarray.add(jsonobj);
 		}

@@ -6,61 +6,76 @@
 <link rel="stylesheet" href="layui/css/layui.css">
 <link rel="stylesheet" href="css/index.css">
 <script src="layui/layui.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/ledstyle.js"></script>
 <link rel="shortcut icon" href="img/favicon.ico" />
 <link rel="bookmark"href="img/favicon.ico" />
 <title>停车场</title>
 </head>
-<body class="layui-layout-body">
-<div class="layui-layout layui-layout-admin">
-	<div class="layui-header">
-		<div class="layui-logo" style="color:#FFF;"><i class="layui-icon layui-icon-home"></i>&nbsp;停车场</div>
-		<ul class="layui-nav layui-layout-right" style="margin-top:15px;">
-	      <li class="layui-nav-item" style="padding-right:10px;">
-				<button class="layui-btn layui-btn-sm" data-method="login">登录</button>
-	      </li>
-	      <li class="layui-nav-item" style="padding-right:10px;">
-				<button class="layui-btn layui-btn-sm" data-method="regist">注册</button>
-	      </li>
-	    </ul>
+
+<body>
+<div style="width:100%;margin:0 auto;">
+	<div class="header" style="width:1335px;height:60px;line-height:60px;padding:5px;background-color: #F2F2F2;margin:0 auto;text-align:center;">
+		<span style="float:left;height:64px;line-height:64px;"><img src="img/home.jpg" style="vertical-align:middle;position:relative;"/></span>
+		<font style="font-family:楷体;font-size:16px;"><span style="float:left;">&nbsp;停车</span></font>
+		<font style="font-family:楷体;font-size:40px;"><div id="name" style="display:inline;margin:0 auto;">停车场</div></font>
+		<span style="float:right;">
+			<button class="layui-btn layui-btn-sm layui-bg-black" data-method="login">登录</button>
+			<button class="layui-btn layui-btn-sm layui-bg-black" data-method="regist">注册</button>
+		</span>
 	</div>
 
-	<div class="layui-body" style="left:0px;bottom:0px;">
-		<div style="padding: 20px; background-color: #F2F2F2">
-		  <div class="layui-row layui-col-space15">
-		    <div class="layui-col-md6">
-		      <div class="layui-card" style="height:563px;border:solid 2px #009688;background:#f2f2f2;">
-				<div class="layui-carousel" id="test1">
-				  <div carousel-item>
-				    <div><img src="img/bg.jpg"></div>
-				    <div><img src="img/1.jpg"></div>
-				    <div><img src="img/2.jpg"></div>
-				    <div><img src="img/3.jpg"></div>
-				  </div>
+	<div style="margin:0 auto;">
+		<div style="height:300px;padding:5px;margin:0 auto;">
+			<div style="float:left;width:60%;height:300px;margin:5px;border:1px solid #000;">
+				<div class="layui-carousel" id="test1" style="background:#F2F2F2;">
+					<div carousel-item>
+						<div><img src="img/1.jpg"></div>
+						<div><img src="img/2.jpg"></div>
+						<div><img src="img/3.jpg"></div>
+					</div>
 				</div>
-				<div>		      
-			        <div class="item"><label id="name"></label>停车场竭诚为您服务！</div>
-			        <div class="item">地址：<label id="address"></label></div>
-			        <div class="item">电话：<label id="telephone"></label></div>
-			        <div class="item">剩余活动停车位：<label id="activitynum_leave"></label>个&nbsp;/&nbsp;<label id="activitynum"></label></div>
-			        <div class="item">剩余灵活停车位：<label id="fixationnum_leave"></label>个&nbsp;/&nbsp;<label id="fixationnum"></label></div>
-			        <div class="item">今日价格:&nbsp;<label id="activitycost_per"></label>&nbsp;元/单位小时。</div>
-		        </div> 
-		      </div>
-		    </div>
-		    <div class="layui-col-md6">
-		    	<div  class="layui-card" style="height:563px;border:solid 2px #009688;background:#f2f2f2;">
-		    		<div style="height:40px;background:#009681;font-weight:bold;text-align:center"><h1>公告&nbsp;&nbsp;</h1></div>
-					<div id ="notice" style="height:500px;overflow-y:scroll;"></div>
-		    	</div>
-		  	</div>
-		</div> 
+			</div>
+			<div style="float:right;width:38%;height:300px;margin:5px;border:1px solid #000;">
+				<div style="height:40px;background:#F2F2F2;font-weight:bold;text-align:center"><h1>公告</h1></div>
+				<div id ="notice" style="height:250px;overflow-y:scroll;"></div>
+			</div>
+		</div>
+		
+		<div style="height:260px;padding:5px;margin:0 auto;">
+			<div style="float:left;width:53%;height:100%;margin:5px;border:1px solid #000;background:#F2F2F2;">
+				<div style="padding:5px;">
+					<div class="item"><span>剩余车位:&nbsp;&nbsp;&nbsp;活动:</span><span class="activitynum_leave"></span><sapn>/</span><span class="activitynum"></span><sapn>&nbsp;&nbsp;个</span>
+					<span>&nbsp;&nbsp;&nbsp;固定:</span><span class="fixationnum_leave"></span><sapn>/</span><span class="fixationnum"></span><sapn>&nbsp;&nbsp;个</span></div>
+					<div class="item"><span>今日价格:&nbsp;&nbsp;&nbsp;</span><span class="activitycost_per"></span><span>&nbsp;&nbsp;元/单位小时。</span></div>
+					<div class="item"><span>租赁价格:&nbsp;&nbsp;&nbsp;按月:</span><span class="monthcost"></span><sapn>元&nbsp;&nbsp;季度:</span>
+					<span class="quartercost"></span><sapn>元&nbsp;&nbsp;年度:</span><span class="yearcost"></span><sapn>元</span></div>
+					<div class="item"><span>停车场地址:&nbsp;&nbsp;&nbsp;</span><span id="address"></span></div>
+					<div class="item"><span>联系电话:&nbsp;&nbsp;&nbsp;</span><span id="telephone"></span></div>
+				</div>
+			</div>
+			<div style="float:right;width:45%;height:260px;margin:5px;border:1px solid #000;">
+				<div id ="map" style="height:100%;"></div>
+			</div>
+		</div>
+		
 	</div>
 	
-	</div>
-
+	
 </div>
 
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.8&key=3d098e8598f64ea72645e21ed4c65598"></script> 
+
 <script>
+
+	//加载高德地图
+	window.onload = function(){
+		var map = new  AMap.Map('map',{
+			resizeEnable: true, 
+			zoom: 10
+		});
+	}
+
 	layui.use(['layer','form','carousel','element'], function(){
 	  var form = layui.form;
 	  var element = layui.element;
@@ -181,12 +196,24 @@
 			  var datalist=data.data[0];
 			  $("#name").text(datalist.name);
 			  $("#address").text(datalist.address);
-			  $("#telephone").text(datalist.telephone);
-			  $("#activitynum_leave").text(datalist.activitynum_leave);
-			  $("#fixationnum_leave").text(datalist.fixationnum_leave);
-			  $("#activitynum").text(datalist.activitynum);
-			  $("#fixationnum").text(datalist.fixationnum);
-			  $("#activitycost_per").text(datalist.activitycost_per);
+			  $("#telephone").text(datalist.telephone);		  
+			  let led0 = new LedStyle(20,30,3,'.fixationnum_leave','red','0');
+			  led0.setValues(datalist.fixationnum_leave);			  
+			  let led1 = new LedStyle(20,30,3,'.activitynum_leave','red','0');
+			  led1.setValues(datalist.activitynum_leave);
+			  let led2 = new LedStyle(20,30,3,'.activitynum','red','0');
+			  led2.setValues(datalist.activitynum);
+			  let led3 = new LedStyle(20,30,3,'.fixationnum','red','0');
+			  led3.setValues(datalist.fixationnum);
+			  let led4 = new LedStyle(20,30,3,'.activitycost_per','red','0');
+			  led4.setValues(datalist.activitycost_per);
+			  let led5 = new LedStyle(20,30,3,'.monthcost','red','0');
+			  led5.setValues(datalist.monthcost);
+			  let led6 = new LedStyle(20,30,3,'.quartercost','red','0');
+			  led6.setValues(datalist.quartercost);
+			  let led7 = new LedStyle(20,30,3,'.yearcost','red','0');
+			  led7.setValues(datalist.yearcost);
+			  
 		  }
 		});
 	  

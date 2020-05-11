@@ -1,12 +1,7 @@
 /*地址,电话,价格等标签间距设置*/
 .item{
-	padding:10px;
-	font-size:20px;
-}
-
-/*价格加粗*/
-#activitycost_per{
-	font-weight:bold;
+	padding:6px;
+	font-size:25px;
 }
 
 /*图片等比例缩放,居中*/
