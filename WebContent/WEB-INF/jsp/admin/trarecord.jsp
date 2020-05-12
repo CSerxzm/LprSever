@@ -18,7 +18,7 @@
 	</script>
 	
 	<div class="layui-card">	
-	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
+	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 15px;">
 	<legend>搜索</legend>
 	</fieldset>  
 	<div class="layui-card">
@@ -166,7 +166,7 @@
 				,"cost": data.cost
 			});
 	    	layer.open({
-	    		  title: '编辑：'+ data.loginname
+	    		  title: '编辑通行记录：'+ data.id
 		    	  ,btn: ['更改','取消']
 			      ,success: function (layero, index) {
 			    	    //添加form标识

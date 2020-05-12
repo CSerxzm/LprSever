@@ -15,11 +15,12 @@ public class TraRecordDynaSqlProvider {
 				FROM(TRARECORDTABLE);
 				if(params.get("user") != null){
 					User user = (User)params.get("user");
-					if(user.getLicenseplate() != null && !user.getLicenseplate().equals("")){
-						WHERE("  licenseplate LIKE CONCAT ('%',#{user.licenseplate},'%') ");
-					}
-					if(user.getParkspace_id() != null && !user.getParkspace_id().equals("")){
-						WHERE("  space_id = #{user.parkspace_id} ");
+					if(user.getAuthority().equals("user")) {
+						if(user.getLicenseplate() != null && !user.getLicenseplate().equals("")){
+							WHERE("  licenseplate LIKE CONCAT ('%',#{user.licenseplate},'%') ");
+						}else {
+							WHERE("  licenseplate LIKE CONCAT ('%',#{NOTHING},'%') ");
+						}
 					}
 				}
 				if(params.get("keyword") != null){
@@ -43,12 +44,12 @@ public class TraRecordDynaSqlProvider {
 				FROM(TRARECORDTABLE);
 				if(params.get("user") != null){
 					User user = (User)params.get("user");
-					System.out.println("sql"+user.getLicenseplate());
-					if(user.getLicenseplate() != null && !user.getLicenseplate().equals("")){
-						WHERE("  licenseplate LIKE CONCAT ('%',#{user.licenseplate},'%') ");
-					}
-					if(user.getParkspace_id() != null && !user.getParkspace_id().equals("")){
-						WHERE("  space_id = #{user.parkspace_id}");
+					if(user.getAuthority().equals("user")) {
+						if(user.getLicenseplate() != null && !user.getLicenseplate().equals("")){
+							WHERE("  licenseplate LIKE CONCAT ('%',#{user.licenseplate},'%') ");
+						}else {
+							WHERE("  licenseplate LIKE CONCAT ('%',#{NOTHING},'%') ");
+						}
 					}
 				}
 				if(params.get("keyword") != null){

@@ -1,9 +1,17 @@
 	//加载高德地图
 	window.onload = function(){
 		var map = new  AMap.Map('map',{
-			resizeEnable: true, 
-			zoom: 10
+			resizeEnable: true,
+			center: [117.20418,31.77143],
+			zoom: 15
 		});
+		// 创建一个 Marker 实例：（标记点）        
+		var marker = new AMap.Marker({
+			position: new AMap.LngLat(117.20418,31.77143),
+			title: "位置信息"
+		});
+		// 将创建的点标记添加到已有的地图实例：       
+		map.add(marker);
 	}
 
 	layui.use(['layer','form','carousel','element'], function(){
@@ -12,6 +20,7 @@
 	  var layer = layui.layer;
 	  var $ = layui.jquery;
 	  var carousel = layui.carousel;
+	  var verifyCode;
 	  
 	  //轮播
 	  carousel.render({
@@ -32,6 +41,7 @@
 		                layero.addClass('layui-form');
 		                layero.find('.layui-layer-btn0').attr('lay-filter', 'formContent').attr('lay-submit', '');
 		                form.render(); 
+		            	verifyCode = new GVerify("v_container");
 		          }
 		    	  ,yes: function(index, layero){
 		    		  //监听提交按钮
@@ -67,7 +77,7 @@
 	                  });
 		    	  }
 	    		  ,type: 1
-	    		  ,area: ['400px', '230px']
+	    		  ,area: ['400px', '350px']
 	    		  ,content: $('#noDisplayFormlogin')  
 	    		}); 	
 	    }
@@ -166,17 +176,17 @@
 	  
 	  $('a').click(function(id){
 		  $.ajax({
-			  url: '/LprSever//notice/getNoticeShowIndex?id='+$(this).attr("id"),
+			  url: '/LprSever/index/getindex_noticeshow?id='+$(this).attr("id"),
 			  type: 'GET',
 			  async: false,
 			  dataType: 'json',
 			  success: function (data) {
 			      layer.open({
 			          type: 1
-			          ,title: data.title
+			          ,title: '公告'
 			          ,offset: 'auto'
 			          ,id:data.title //防止重复弹出
-			          ,content: data.content
+			          ,content:shownotice(data)
 			          ,btn: '我知道了'
 			          ,btnAlign: 'c' //按钮居中
 			          ,area: ['500px', '300px']
@@ -205,10 +215,32 @@
 			  /^[\S]{6,12}$/
 		    ,'密码必须6到12位，且不能出现空格'
 		  ]
+		  ,repassword: function(value) {
+			  if (value === "")
+				  return "请输入二次密码！";
+			  var pwd = $('#password').val();
+			  console.log(pwd);
+			  console.log(value);
+			  if (pwd !== value)
+				  return "二次输入的密码不一致！";
+		  }
 		  ,telephone: [
 			  /^1\d{10}$/
 			    ,'请输入正确的手机号码'
 			  ] 
-		});
-	  		
+		  ,code:function(value) {
+			  var res = verifyCode.validate(value);
+	            if(!res){
+	                return "图片验证码错误！";
+	            }
+		  }
+		});		
 	 });
+	
+	//对公告进行格式控制
+	function shownotice(data){
+		return  '<div style="padding:10px;margin:0 auto;"><div style="text-align:center;"><font style="font-size:20px;">'+data.title
+		+'</font></div><div style="text-align:center;">发布者：'+data.name_publish+'&nbsp;&nbsp;发布时间：'+data.create_date+'</div></hr><div>'
+		+data.content+'</div></div>'
+	}
+

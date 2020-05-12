@@ -13,10 +13,8 @@
 			<form class="layui-form layui-form-pane" lay-filter="parklotForm" id="parklotForm">
                     <div class="layui-form-item">
                     	<div class="layui-inline">
-	                        <label class="layui-form-label">停车场标识</label>
-	                    	<div class="layui-input-inline">
-	                            <input type="text" name="id" autocomplete="off" class="layui-input" readonly></div>
-	                        
+	                        <input type="hidden" name="id" autocomplete="off" class="layui-input" readonly>
+	                            
 	                        <label class="layui-form-label">停车场名字</label>
                         	<div class="layui-input-inline">
                             	<input type="text" name="name" autocomplete="off" class="layui-input"></div>
@@ -37,14 +35,14 @@
                         <div class="layui-input-inline">
                             <input type="number" name="activitynum" autocomplete="off" class="layui-input"></div>
                         <div class="layui-input-inline">
-                        <input type="text" name="activitynum_leave" class="layui-input" readonly></div>                    
+                        <label id="activitynum_leave" class="layui-form-mid"></div>                    
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">固定车位</label>
                         <div class="layui-input-inline">
                             <input type="number" name="fixationnum" autocomplete="off" class="layui-input"></div>
                         <div class="layui-input-inline">    
-						<input type="text" name="fixationnum_leave" class="layui-input" readonly></div>
+						<label id="fixationnum_leave" class="layui-form-mid"></div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">单位收费</label>
@@ -65,10 +63,6 @@
                     </div>
                     <div class="layui-form-item">
                     	<div class="layui-inline">
-	                        <label class="layui-form-label">按半年收费</label>
-	                    	<div class="layui-input-inline">
-	                            <input type="text" name="halfyearcost" autocomplete="off" class="layui-input"></div>
-	                        
 	                        <label class="layui-form-label">按一年收费</label>
                         	<div class="layui-input-inline">
                             	<input type="text" name="yearcost" autocomplete="off" class="layui-input"></div>
@@ -98,20 +92,19 @@
 		  success: function (data) {
 			  var datalist=data.data[0];
 			  form.val('parklotForm', {
-				"id":datalist.id
+				 "id":datalist.id
 				,"name": datalist.name
 				,"address": datalist.address
 				,"telephone": datalist.telephone
 				,"activitynum": datalist.activitynum
 				,"fixationnum": datalist.fixationnum
-				,"activitynum_leave":"剩余停车位"+datalist.activitynum_leave+"个"
-				,"fixationnum_leave":"剩余停车位"+datalist.fixationnum_leave+"个"
 				,"activitycost_per":datalist.activitycost_per
 				,"monthcost":datalist.monthcost
 				,"quartercost":datalist.quartercost
-				,"halfyearcost":datalist.halfyearcost
 				,"yearcost":datalist.yearcost
-			});
+			  });
+			  $("#activitynum_leave").text("剩余停车位"+datalist.activitynum_leave+"个");
+			  $("#fixationnum_leave").text("剩余停车位"+datalist.fixationnum_leave+"个");
 		  },
 		  error: function () {
 			  

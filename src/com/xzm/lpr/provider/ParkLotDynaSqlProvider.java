@@ -55,9 +55,6 @@ public class ParkLotDynaSqlProvider {
 				if(parkLot.getQuartercost()!= null){
 					SET(" quartercost = #{quartercost} ");
 				}
-				if(parkLot.getHalfyearcost()!= null){
-					SET(" halfyearcost = #{halfyearcost} ");
-				}
 				if(parkLot.getYearcost()!= null){
 					SET(" yearcost = #{yearcost} ");
 				}

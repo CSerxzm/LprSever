@@ -18,7 +18,7 @@
 	</script>
 	
 	<div class="layui-card">
-	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
+	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 15px;">
 	<legend>搜索</legend>
 	</fieldset>
 	<div class="layui-card">

@@ -63,12 +63,30 @@ public class IndexController {
 			Notice notice = (Notice)notices.get(i);
 			jsonobj_notice.put("id", notice.getId());
 			jsonobj_notice.put("title", notice.getTitle());
-			jsonobj_notice.put("content", notice.getContent());
 			jsonobj_notice.put("create_date", notice.getCreate_date());
 			jsonarray_notice.add(jsonobj_notice);
 		}
 		jsonmain.put("data", jsonarray_notice);
 		return jsonmain.toString();
+	}
+	
+	@RequestMapping(value="/index/getindex_noticeshow")
+	@ResponseBody
+	 public String getNoticeShowIndex(Integer id){
+		
+		Notice notice = lprService.findNoticeById(id);
+		JSONObject jsonmain = new JSONObject();
+		
+		if(notice != null){
+			jsonmain.put("title", notice.getTitle());
+			jsonmain.put("content", notice.getContent());
+			jsonmain.put("create_date", notice.getCreate_date());
+			jsonmain.put("name_publish", notice.getName_publish());	
+			jsonmain.put("code", "200");
+		}else{
+			jsonmain.put("code", "-1");
+		}
+		return jsonmain.toString();		
 	}
 
 }

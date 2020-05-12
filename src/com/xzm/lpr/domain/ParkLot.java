@@ -17,7 +17,6 @@ public class ParkLot implements Serializable {
 	private Integer activitycost_per;
 	private Integer monthcost;
 	private Integer quartercost;
-	private Integer halfyearcost;
 	private Integer yearcost;
 
 	public ParkLot() {
@@ -25,7 +24,7 @@ public class ParkLot implements Serializable {
 	}
 	
 	public ParkLot(Integer id,String name,String address,String telephone,Integer activitynum,Integer fixationnum
-			,Integer activitycost_per,Integer monthcost,Integer quartercost,Integer halfyearcost,Integer yearcost) {
+			,Integer activitycost_per,Integer monthcost,Integer quartercost,Integer yearcost) {
 		this.id=id;
 		this.name=name;
 		this.address=address;
@@ -35,7 +34,6 @@ public class ParkLot implements Serializable {
 		this.activitycost_per=activitycost_per;
 		this.monthcost=monthcost;
 		this.quartercost=quartercost;
-		this.halfyearcost=halfyearcost;
 		this.yearcost=yearcost;
 	}
 
@@ -125,14 +123,6 @@ public class ParkLot implements Serializable {
 
 	public void setQuartercost(Integer quartercost) {
 		this.quartercost = quartercost;
-	}
-
-	public Integer getHalfyearcost() {
-		return halfyearcost;
-	}
-
-	public void setHalfyearcost(Integer halfyearcost) {
-		this.halfyearcost = halfyearcost;
 	}
 
 	public Integer getYearcost() {

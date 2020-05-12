@@ -15,9 +15,9 @@
 </head>
 <body>
 <div  style="max-width:1350px;margin:0 auto;">
-	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
-	<legend>新闻添加</legend>
-	</fieldset> 
+	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 15px;">
+	<legend>新闻更新</legend>
+	</fieldset>
 	<form class="layui-form" id="updatenotice" enctype="multipart/form-data" style="width:80%;margin:10px auto;">
 		<input type="hidden" name="id" class="layui-input" value="${notice.id}">
 		<div class="layui-form-item">
@@ -31,8 +31,9 @@
     	   	var editor = UM.getEditor('container');
 		</script>
         <div class="layui-form-item"  style="margin:10px 10px;">
-        	<div class="layui-input-block">
-        	<button class="layui-btn layui-btn-normal" lay-submit lay-filter="updatenotice">发布</button>
+        	<div class="layui-input-block" style="float:right;margin-right:50px;">
+        	<button class="layui-btn layui-btn-normal" id="cancel">取消</button>
+        	<button class="layui-btn layui-btn-normal" lay-submit lay-filter="submit">发布</button></div>
         </div>
 	</form>
 </div>
@@ -43,7 +44,9 @@
 		var element = layui.element;
 		var layer = layui.layer;
 		var $ = layui.jquery;
-		form.on('submit(updatenotice)', function(data){
+		
+		//提交按键
+		form.on('submit(submit)', function(data){
 			  var formObject = {};
 			  var formArray =$('#updatenotice').serializeArray();
 			  $.each(formArray,function(i,item){
@@ -57,7 +60,8 @@
 			      async: false,
 			      dataType: 'json',
 			      success: function (data) {
-				      layer.msg(data.msg, {time:3000});
+				      layer.msg(data.msg, {time:30000});
+				      parent.location.reload();
 			      }
 			  	  ,error: function () {
 			          layer.msg("服务器错误", {time:3000});
@@ -65,7 +69,10 @@
 			  });
 		  	return false;
 		  });
-	
+		
+		 $('#cancel').on('click', function(){
+			  parent.location.reload();
+		 });
  });
 </script>
 </body>

@@ -138,22 +138,4 @@ public class NoticeController {
 		return mv;
 	}
 	
-	@RequestMapping(value="/notice/getNoticeShowIndex")
-	@ResponseBody
-	 public String getNoticeShowIndex(Integer id){
-		
-		Notice notice = lprService.findNoticeById(id);
-		JSONObject jsonmain = new JSONObject();
-		
-		if(notice != null){
-			jsonmain.put("title", notice.getTitle());
-			jsonmain.put("content", notice.getContent());
-			jsonmain.put("create_date", notice.getCreate_date());
-			jsonmain.put("name_publish", notice.getName_publish());	
-			jsonmain.put("code", "200");
-		}else{
-			jsonmain.put("code", "-1");
-		}
-		return jsonmain.toString();		
-	}
 }

@@ -18,7 +18,7 @@
 	</script>
 	
 	<div class="layui-card">
-	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
+	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 15px;">
 	<legend>搜索</legend>
 	</fieldset>  
 	
@@ -228,22 +228,22 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label"><i class="layui-icon layui-icon-username">&nbsp;</i>登录名</label>
                         <div class="layui-input-block">
-                            <input type="text" name="loginname" lay-verify="required|username" placeholder="请输入登录名" class="layui-input"></div>
+                            <input type="text" name="loginname" lay-verify="required|username" class="layui-input"></div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label"><i class="layui-icon layui-icon-password">&nbsp;</i>密&nbsp;&nbsp;码</label>
                         <div class="layui-input-block">
-                            <input type="password" name="password" lay-verify="required|password" placeholder="请输入密码" class="layui-input"></div>
+                            <input type="password" name="password" lay-verify="required|password" class="layui-input"></div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">电话号码</label>
                         <div class="layui-input-block">
-                            <input type="text" name="telephone"  required placeholder="请输入电话号码"  class="layui-input"></div>
+                            <input type="text" name="telephone"  required class="layui-input"></div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">注册时间</label>
                         <div class="layui-input-block">
-                            <input type="text" name="createdate" id="createdate" placeholder="请输入注册时间" class="layui-input"></div>
+                            <input type="text" name="createdate" id="createdate" class="layui-input"></div>
                     </div>
 					<div class="layui-form-item"  pane="">
 						<label class="layui-form-label">权限</label>
@@ -256,12 +256,12 @@
 					<div class="layui-form-item">
                         <label class="layui-form-label">停车位</label>
                         <div class="layui-input-block">
-                            <input type="text" name="parkspace_id" placeholder="请输入停车位" class="layui-input"></div>
+                            <input type="text" name="parkspace_id" class="layui-input" autocomplete="off"></div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">车辆牌照</label>
                         <div class="layui-input-block">
-                            <input type="text" name="licenseplate" placeholder="请输入车牌照" class="layui-input"></div>
+                            <input type="text" name="licenseplate" class="layui-input" autocomplete="off"></div>
                     </div>
                 </form>
             </div>

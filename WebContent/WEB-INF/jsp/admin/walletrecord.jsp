@@ -14,7 +14,7 @@
 	</script>
 	
 	<div class="layui-card">	
-	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
+	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 15px;">
 	<legend>搜索</legend>
 	</fieldset>  
 	<div class="layui-card">
@@ -79,7 +79,7 @@
 	    ,layEvent = obj.event
 	    ,$ = layui.jquery;
 	  	if(layEvent === 'del'){
-	  		layer.confirm('真的删除记录：'+data.id+'?', function(index){
+	  		layer.confirm('真的删除费用记录：'+data.id+'?', function(index){
 		  	  	$.ajax({
 		  	  		url: '/LprSever/walletrecord/removeWalletRecord?id='+data.id,
 		  		    type: 'GET',

@@ -2,6 +2,9 @@ package com.xzm.lpr.controller;
 
 import java.io.File;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,11 +30,13 @@ import com.xzm.lpr.service.LprService;
 import net.sf.json.JSONObject;
 
 @Controller
-public class FileUploadController{
+public class LprController{
 	
 	 @Autowired
 	 @Qualifier("lprService")
 	 private LprService lprService;
+	 
+	 List<String> list = new ArrayList<>(Arrays.asList("川", "皖", "吉","苏","京"));
 	
 	 /*
 	  * 	单片机使用接口
@@ -54,9 +59,11 @@ public class FileUploadController{
 			
 			String number = LicensePlate.getlicensePlate(path+File.separator+ filename);
 			
+			
 			/*用字母表示第一个汉字,兼容单片机。
 				等待实现
 			 */
+				list.indexOf("皖");
 			
 			System.out.println("upload上传文件路径：" + (path+File.separator+ filename));
 			System.out.println(number);
@@ -87,8 +94,14 @@ public class FileUploadController{
 	        }
 			file.transferTo(new File(path+File.separator+ filename));
 			String number = LicensePlate.getlicensePlate(path+File.separator+ filename);
-			//System.out.println("upload上传文件路径：" + (path+File.separator+ filename));
-			//System.out.println(number);
+			
+			//替换第一个汉字，待实现
+			char[] character = number.toCharArray();
+			System.out.println(character[0]);
+			System.out.println(list.indexOf(character[0]));
+			number = new String(character);
+			System.out.println(number);
+			
 			jsonmain.put("code", "200");
 			jsonmain.put("msg", "none");
 			jsonmain.put("number", number);

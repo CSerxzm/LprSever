@@ -3,11 +3,17 @@ package com.xzm.lpr.util.common;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class LprFunc {
+	
     public static void main(String[] args) {
         System.out.println(CalTime("2019-12-15 16:05:55", "2019-12-15 18:10:55"));
+    	List<String> list = new ArrayList<>(Arrays.asList("川", "皖", "吉","苏","京"));
+    	System.out.println(list.indexOf("川"));
     }
     // 计算两个时间差返回小时。
     public static int CalTime(String date_in, String date_out) {
@@ -23,4 +29,5 @@ public class LprFunc {
         }
         return (int)Math.ceil(hours);
     }
+    
 }

@@ -147,7 +147,6 @@ public class LprServiceImpl implements LprService{
 		
 		if(user!=null && user.getAuthority()!=null && user.getAuthority().equals("user") ) {
 			params.put("user", user);
-			System.out.println(user.getLicenseplate());
 		}
 		params.put("keyword", keyword);
 		int recordCount = traRecordDao.count(params);

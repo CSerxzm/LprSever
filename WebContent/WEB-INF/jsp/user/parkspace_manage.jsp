@@ -32,7 +32,7 @@
 	  ,$ = layui.jquery;
 	  
 	  var array;
-	  var array_month=[1,3,6,12];
+	  var array_month=[1,3,12];
 	  
 	  form.on('submit(demo1)', function(data){
 	    		table.reload('parkspaceTable', {
@@ -168,8 +168,7 @@
 					      <select name="rentcycle" id="rentcycle" lay-filter="rentcycle">
 					        <option value="0" selected>1个月</option>
 					        <option value="1">3个月</option>
-					        <option value="2">6个月</option>
-					        <option value="3">1年</option>
+					        <option value="2">1年</option>
 					      </select>
 					    </div>
 					</div>

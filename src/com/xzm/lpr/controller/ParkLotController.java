@@ -45,7 +45,6 @@ public class ParkLotController {
 			jsonobj.put("activitycost_per", parkLot.getActivitycost_per());
 			jsonobj.put("monthcost", parkLot.getMonthcost());
 			jsonobj.put("quartercost", parkLot.getQuartercost());
-			jsonobj.put("halfyearcost", parkLot.getHalfyearcost());
 			jsonobj.put("yearcost", parkLot.getYearcost());
 			jsonarray.add(jsonobj);
 		}
@@ -68,11 +67,10 @@ public class ParkLotController {
 		Integer activitycost_per=Integer.valueOf(map.get("activitycost_per"));
 		Integer monthcost=Integer.valueOf(map.get("monthcost"));
 		Integer quartercost=Integer.valueOf(map.get("quartercost"));
-		Integer halfyearcost=Integer.valueOf(map.get("halfyearcost"));
 		Integer yearcost=Integer.valueOf(map.get("yearcost"));
 		
 		ParkLot parkLot = new ParkLot(id,name,address,telephone,activity_spaces_num,fixation_spaces_num
-				,activitycost_per,monthcost,quartercost,halfyearcost,yearcost);
+				,activitycost_per,monthcost,quartercost,yearcost);
 		
 		Integer i=lprService.updateParkLot(parkLot);
 		JSONObject jsonmain = new JSONObject();

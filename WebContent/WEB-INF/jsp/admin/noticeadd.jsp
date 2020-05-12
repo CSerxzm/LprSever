@@ -15,7 +15,7 @@
 </head>
 <body>
 <div  style="max-width:1350px;margin:0 auto;">
-	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
+	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 15px;">
 	<legend>新闻添加</legend>
 	</fieldset> 
 	<form class="layui-form" id="addnotice" enctype="multipart/form-data" style="width:80%;margin:10px auto;">
@@ -30,8 +30,9 @@
     	   	var editor = UM.getEditor('container');
 		</script>
         <div class="layui-form-item"  style="margin:10px 10px;">
-        	<div class="layui-input-block">
-        	<button class="layui-btn layui-btn-normal" lay-submit lay-filter="addnotice">发布</button>
+        	<div class="layui-input-block" style="float:right;margin-right:50px;">
+        	<button class="layui-btn layui-btn-normal" id="cancel">取消</button>
+        	<button class="layui-btn layui-btn-normal" lay-submit lay-filter="submit">发布</button></div>
         </div>
 	</form>
 </div>
@@ -43,7 +44,7 @@
 		var layer = layui.layer;
 		var $ = layui.jquery;
   
-		form.on('submit(addnotice)', function(data){
+		form.on('submit(submit)', function(data){
 			  var formObject = {};
 			  var formArray =$('#addnotice').serializeArray();
 			  $.each(formArray,function(i,item){
@@ -57,7 +58,7 @@
 			      dataType: 'json',
 			      success: function (data) {
 			    	  layer.msg(data.msg, {time:3000});
-				      window.location.href="notice";
+				      parent.location.reload();
 			      }
 			  	  ,error: function () {
 			          layer.msg("服务器错误", {time:3000});
@@ -66,6 +67,9 @@
 		  	return false;
 		});
 		
+		$('#cancel').on('click', function(){
+			 parent.location.reload();
+		});
  });
 </script>
 </body>

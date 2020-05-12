@@ -9,15 +9,16 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/ledstyle.js"></script>
 <script src="js/index.js"></script>
-<link rel="shortcut icon" href="img/favicon.ico" />
-<link rel="bookmark"href="img/favicon.ico" />
+<script src="js/random.js"></script>
+<link rel="shortcut icon" href="/LprSever/img/stu.ico" />
+<link rel="bookmark"href="/LprSever/img/stu.ico" />
 <title>停车场</title>
 </head>
 
 <body>
 <div style="width:100%;margin:0 auto;">
 	<div class="header" style="width:1335px;height:60px;line-height:60px;padding:5px;background-color: #F2F2F2;margin:0 auto;text-align:center;">
-		<span style="float:left;height:64px;line-height:64px;"><img src="img/home.jpg" style="vertical-align:middle;position:relative;"/></span>
+		<span style="float:left;height:60px;line-height:60px;"><img src="img/home.jpg" style="vertical-align:middle;position:relative;"/></span>
 		<font style="font-family:楷体;font-size:16px;"><span style="float:left;">&nbsp;停车</span></font>
 		<font style="font-family:楷体;font-size:40px;"><div id="name" style="display:inline;margin:0 auto;">停车场</div></font>
 		<span style="float:right;">
@@ -29,7 +30,7 @@
 	<div style="margin:0 auto;">
 		<div style="height:300px;padding:5px;margin:0 auto;">
 			<div style="float:left;width:60%;height:300px;margin:5px;border:1px solid #000;">
-				<div class="layui-carousel" id="test1" style="background:#F2F2F2;">
+				<div class="layui-carousel" id="test1">
 					<div carousel-item>
 						<div><img src="img/1.jpg"></div>
 						<div><img src="img/2.jpg"></div>
@@ -75,12 +76,20 @@
                       <div class="layui-form-item">
                         <label class="layui-form-label"><i class="layui-icon layui-icon-username">&nbsp;</i>用户名</label>
                         <div class="layui-input-block">
-                            <input type="text" name="loginname" lay-verify="required" placeholder="请输入用户名" class="layui-input"></div>
+                            <input type="text" name="loginname" lay-verify="required" class="layui-input"></div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label"><i class="layui-icon layui-icon-password">&nbsp;</i>密&nbsp;&nbsp;码</label>
                         <div class="layui-input-block">
-                            <input type="password" name="password" lay-verify="required" placeholder="请输入密码" class="layui-input"></div>
+                            <input type="password" name="password" lay-verify="required" class="layui-input"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">验证码</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="code" lay-verify="required" class="layui-input" autocomplete="off"></div>   
+                    </div>
+                    <div class="layui-form-item">
+						<div id="v_container" style="width:200px;height:50px;margin:0 auto;"></div>
                     </div>
                 </form>
             </div>
@@ -93,22 +102,22 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label"><i class="layui-icon layui-icon-username">&nbsp;</i>登录名</label>
                         <div class="layui-input-block">
-                            <input type="text" name="loginname" lay-verify="required|loginname" placeholder="请输入登录名" class="layui-input"></div>
+                            <input type="text" name="loginname" lay-verify="required|loginname" class="layui-input" autocomplete="off"></div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label"><i class="layui-icon layui-icon-password">&nbsp;</i>密&nbsp;&nbsp;码</label>
                         <div class="layui-input-block">
-                            <input type="password" name="password" lay-verify="required|password" placeholder="请输入密码" class="layui-input"></div>
+                            <input type="password" name="password" id="password" lay-verify="required|password" class="layui-input" autocomplete="off"></div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label"><i class="layui-icon layui-icon-password">&nbsp;</i>密&nbsp;&nbsp;码</label>
+                        <label class="layui-form-label"><i class="layui-icon layui-icon-password">&nbsp;</i>确认密码</label>
                         <div class="layui-input-block">
-                            <input type="password" name="password" lay-verify="required|password" placeholder="请再次输入密码" class="layui-input"></div>
+                            <input type="password" name="repassword" lay-verify="required|repassword" class="layui-input" autocomplete="off"></div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label"><i class="layui-icon layui-icon-cellphone">&nbsp;</i>电话号码</label>
                         <div class="layui-input-block">
-                            <input type="text" name="telephone" lay-verify="required|telephone" placeholder="请输入手机号码" class="layui-input"></div>
+                            <input type="text" name="telephone" lay-verify="required|telephone" class="layui-input" autocomplete="off"></div>
                     </div>
                 </form>
             </div>

@@ -10,7 +10,7 @@
 <body>
 <div  style="max-width:1350px;margin:0 auto;">
 	<div class="layui-card">
-		<fieldset class="layui-elem-field layui-field-title" style="margin-top:10px;">
+		<fieldset class="layui-elem-field layui-field-title" style="margin-top:15px;">
 			<legend>车牌识别</legend>
 		</fieldset>
 		<div class="layui-container" style="width:100%">

@@ -18,9 +18,9 @@
 	</script>
 	
 <div  style="max-width:1350px;margin:0 auto;">
-	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 15px;">
 	<legend>搜索</legend>
-	</fieldset>  
+	</fieldset>
 	<div class="layui-card">
 		<div class="layui-card-body">
 			<form class="layui-form layui-form-pane layui-inline" lay-filter="example">
@@ -94,7 +94,7 @@
 	    ,layEvent = obj.event
 	    ,$ = layui.jquery;
 	  	if(layEvent === 'del'){
-	  		layer.confirm('真的删除记录：'+data.id+'?', function(index){
+	  		layer.confirm('删除公告：'+data.title+'?', function(index){
 		  	  	$.ajax({
 		  	  		url: '/LprSever/notice/removeNotice?id='+data.id,
 		  		    type: 'GET',
@@ -112,14 +112,42 @@
 	  	     });
 	  	}
 	  	else if(layEvent === 'edit'){
-	  		window.location.href = '/LprSever/notice/toupdateNotice?id='+data.id;
+			window.location.href = '/LprSever/notice/toupdateNotice?id='+data.id;
 	  	}
 	  	else if(layEvent === 'show'){
-	  		window.location.href = '/LprSever/notice/getNoticeShow?id='+data.id;
+			  $.ajax({
+				  url: '/LprSever/index/getindex_noticeshow?id='+data.id,
+				  type: 'GET',
+				  async: false,
+				  dataType: 'json',
+				  success: function (data) {
+				      layer.open({
+				          type: 1
+				          ,title: '公告'
+				          ,offset: 'auto'
+				          ,id:data.title //防止重复弹出
+				          ,content:shownotice(data)
+				          ,btn: '我知道了'
+				          ,btnAlign: 'c' //按钮居中
+				          ,area: ['500px', '300px']
+				          ,yes: function(){
+				            layer.closeAll();
+				          }
+				        });
+				 }
+			  });
 	  	}
 	  }); 
 	  
 	});
+	
+	//对公告进行格式控制,预览
+	function shownotice(data){
+		return  '<div style="padding:10px;margin:0 auto;"><div style="text-align:center;"><font style="font-size:20px;">'+data.title
+		+'</font></div><div style="text-align:center;">发布者：'+data.name_publish+'&nbsp;&nbsp;发布时间：'+data.create_date+'</div></hr><div>'
+		+data.content+'</div></div>'
+	}
+	
 	</script>
 	</div>
 </div>
